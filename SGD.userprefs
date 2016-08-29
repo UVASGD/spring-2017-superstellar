@@ -1,9 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Controls.cs">
     <Files>
-      <File FileName="Assets/Controls.cs" Line="38" Column="42" />
-      <File FileName="Assets/FollowMouseScript.cs" Line="22" Column="67" />
+      <File FileName="SGD.sln" Line="1" Column="1" />
+      <File FileName="Assets/Controls.cs" Line="67" Column="34" />
+      <File FileName="Assets/FollowMouseScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

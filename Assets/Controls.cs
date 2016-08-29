@@ -3,9 +3,11 @@
 public class Controls: MonoBehaviour
 {
 	public GameObject projectile;
-	public Vector2 mProjectileSpeed = new Vector2 (10f, 10f);
-	public Vector2 mSpeed = new Vector2(15, 15);
-	private Vector2 mMovement;
+
+	private Vector3 righttop = new Vector3(0.95105651629f,0.30901699437f,0);
+	private Vector3 rightbot = new Vector3(0.58778525229f,-0.80901699437f,0);
+	private Vector3 leftbot = new Vector3(-0.58778525229f,-0.80901699437f,0);
+	private Vector3 lefttop = new Vector3(-0.95105651629f,0.30901699437f,0);
 
 	void Update( )
 	{
@@ -34,14 +36,40 @@ public class Controls: MonoBehaviour
 	}
 
 	void Shoot(int point) {
-//		SpriteRenderer sr = projectile.GetComponent<SpriteRenderer> (); sr.enabled = true;
+
 		GameObject proj = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+		SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer> (); 
 		SpriteRenderer sr = proj.GetComponent<SpriteRenderer> (); 
-		sr.enabled = true;
 		Rigidbody rb = proj.GetComponent<Rigidbody> ();
-		rb.AddForce(Vector3.up * 100f);
 
-//		cooldown = Time.time + attackSpeed;
+		switch (point) {
 
+			case 1:
+				spr.sprite = Resources.Load<Sprite>("star_removed");
+				sr.sprite = Resources.Load<Sprite>("star_top");
+				rb.AddForce(Vector3.up * 100f);
+				break;
+			case 2:
+				spr.sprite = Resources.Load<Sprite>("star_removed_right_top");
+				sr.sprite = Resources.Load<Sprite>("star_righttop");
+				rb.AddForce(righttop * 100f);
+				break;
+			case 3:
+				spr.sprite = Resources.Load<Sprite>("star_removed_right_bottom");
+				sr.sprite = Resources.Load<Sprite>("star_rightbot");
+				rb.AddForce(rightbot * 100f);
+				break;
+			case 4:
+				spr.sprite = Resources.Load<Sprite>("star_removed_left_bottom");
+				sr.sprite = Resources.Load<Sprite>("star_leftbot");
+				rb.AddForce(leftbot * 100f);
+				break;
+			case 5:
+				spr.sprite = Resources.Load<Sprite>("star_removed_left_top");
+				sr.sprite = Resources.Load<Sprite>("star_lefttop");
+				rb.AddForce(lefttop * 100f);
+				break;
+		}
+		sr.enabled = true;
 	}
 }
