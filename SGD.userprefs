@@ -1,9 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Controls.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/FollowMouseScript.cs">
     <Files>
-      <File FileName="SGD.sln" Line="1" Column="1" />
-      <File FileName="Assets/Controls.cs" Line="67" Column="34" />
+      <File FileName="Assets/Controls.cs" Line="73" Column="21" />
       <File FileName="Assets/FollowMouseScript.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

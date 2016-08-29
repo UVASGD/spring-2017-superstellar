@@ -3,11 +3,12 @@
 public class Controls: MonoBehaviour
 {
 	public GameObject projectile;
-
+	
 	private Vector3 righttop = new Vector3(0.95105651629f,0.30901699437f,0);
 	private Vector3 rightbot = new Vector3(0.58778525229f,-0.80901699437f,0);
 	private Vector3 leftbot = new Vector3(-0.58778525229f,-0.80901699437f,0);
 	private Vector3 lefttop = new Vector3(-0.95105651629f,0.30901699437f,0);
+
 
 	void Update( )
 	{
@@ -30,9 +31,6 @@ public class Controls: MonoBehaviour
 		if( Input.GetKeyDown( KeyCode.Alpha5 ) )
 
 			Shoot (5);
-
-//		if( Input.GetKeyUp( KeyCode.Space ) )
-//			Debug.Log( "Space key was released." );
 	}
 
 	void Shoot(int point) {
@@ -52,6 +50,8 @@ public class Controls: MonoBehaviour
 			case 2:
 				spr.sprite = Resources.Load<Sprite>("star_removed_right_top");
 				sr.sprite = Resources.Load<Sprite>("star_righttop");
+			righttop.x += transform.rotation.z;
+			righttop.y += transform.rotation.z;
 				rb.AddForce(righttop * 100f);
 				break;
 			case 3:
