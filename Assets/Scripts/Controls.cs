@@ -3,7 +3,8 @@
 public class Controls: MonoBehaviour
 {
 	public GameObject projectile;
-	
+
+	private Vector3 top = Vector3.up;
 	private Vector3 righttop = new Vector3(0.95105651629f,0.30901699437f,0);
 	private Vector3 rightbot = new Vector3(0.58778525229f,-0.80901699437f,0);
 	private Vector3 leftbot = new Vector3(-0.58778525229f,-0.80901699437f,0);
@@ -12,25 +13,27 @@ public class Controls: MonoBehaviour
 
 	void Update( )
 	{
+		int[] points = getOrientation (transform.rotation);
+
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 
-			Shoot (1);
+			Shoot (points[0]);
 
 		if( Input.GetKeyDown( KeyCode.Alpha2 ) )
 
-			Shoot (2);
+			Shoot (points[1]);
 
 		if (Input.GetKeyDown (KeyCode.Alpha3))
 
-			Shoot (3);
+			Shoot (points[2]);
 
 		if( Input.GetKeyDown( KeyCode.Alpha4 ) )
 
-			Shoot (4);
+			Shoot (points[3]);
 
 		if( Input.GetKeyDown( KeyCode.Alpha5 ) )
 
-			Shoot (5);
+			Shoot (points[4]);
 	}
 
 	void Shoot(int point) {
@@ -45,13 +48,11 @@ public class Controls: MonoBehaviour
 			case 1:
 				spr.sprite = Resources.Load<Sprite>("star_removed");
 				sr.sprite = Resources.Load<Sprite>("star_top");
-				rb.AddForce(Vector3.up * 100f);
+				rb.AddForce(top * 100f);
 				break;
 			case 2:
 				spr.sprite = Resources.Load<Sprite>("star_removed_right_top");
 				sr.sprite = Resources.Load<Sprite>("star_righttop");
-			righttop.x += transform.rotation.z;
-			righttop.y += transform.rotation.z;
 				rb.AddForce(righttop * 100f);
 				break;
 			case 3:
@@ -71,5 +72,28 @@ public class Controls: MonoBehaviour
 				break;
 		}
 		sr.enabled = true;
+	}
+
+	int[] getOrientation(Quaternion q) {
+
+		int[] points = new int[5];
+		float angle = q.eulerAngles.z;
+
+		if (!(angle < Mathf.Clamp(angle,0.0f,72.0f) || angle > Mathf.Clamp(angle,0.0f,72.0f))) {
+			points = new int[] {1,2,3,4,5};
+		} else if (!(angle < Mathf.Clamp(angle,72.0f,144.0f) || angle > Mathf.Clamp(angle,72.0f,144.0f))) {
+			points = new int[] {5,1,2,3,4};
+		} else if (!(angle < Mathf.Clamp(angle,144.0f,216.0f) || angle > Mathf.Clamp(angle,144.0f,216.0f))) {
+			points = new int[] {4,5,1,2,3};
+		} else if (!(angle < Mathf.Clamp(angle,216.0f,288.0f) || angle > Mathf.Clamp(angle,216.0f,288.0f))) {
+			points = new int[] {3,4,5,1,2};
+		} else if (!(angle < Mathf.Clamp(angle,288.0f,360.0f) || angle > Mathf.Clamp(angle,288.0f,360.0f))) {
+			points = new int[] {2,3,4,5,1};
+		}
+
+		Debug.Log (angle);
+
+		return points;
+
 	}
 }
