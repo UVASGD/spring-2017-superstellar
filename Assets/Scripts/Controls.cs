@@ -91,8 +91,6 @@ public class Controls: MonoBehaviour
 			points = new int[] {2,3,4,5,1};
 		}
 
-		Debug.Log (angle);
-
 		return points;
 
 	}
