@@ -3,7 +3,8 @@
 public class Controls: MonoBehaviour
 {
 	public GameObject projectile;
-	
+	public float lifetime = 2.0f;
+
 	
 	//Direction Vectors for projectiles
 	private Vector3 top = Vector3.up;
@@ -81,6 +82,8 @@ public class Controls: MonoBehaviour
 		}
 		proj.AddComponent<PolygonCollider2D> ();
 		sr.enabled = true; //enable sprite render, projectile shows up
+		Destroy(proj, lifetime);
+
 	}
 	
 	//Decides orientation of rotating star
