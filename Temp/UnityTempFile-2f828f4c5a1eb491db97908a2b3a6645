@@ -68,8 +68,8 @@
 -define:UNITY_EDITOR
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_OSX
-'Assets/CameraMovement.cs'
-'Assets/Collision.cs'
+'Assets/Scripts/CameraMovement.cs'
+'Assets/Scripts/CollisionHandler.cs'
 'Assets/Scripts/Controls.cs'
 'Assets/Scripts/FollowMouseScript.cs'
 -r:'/Applications/Unity/Unity 5.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
