@@ -55,29 +55,29 @@ public class Controls: MonoBehaviour
 		switch (point) {
 			
 		case 1:
-			spr.sprite = Resources.Load<Sprite>("star_removed");
-			sr.sprite = Resources.Load<Sprite>("star_top");
-			rb.AddForce(top * 100.0f);
+			spr.sprite = Resources.Load<Sprite>("red");
+			sr.sprite = Resources.Load<Sprite>("redonly");
+			rb.AddForce(top * 200.0f);
 			break;
 		case 2:
-			spr.sprite = Resources.Load<Sprite>("star_removed_right_top");
-			sr.sprite = Resources.Load<Sprite>("star_righttop");
-			rb.AddForce(righttop * 100.0f);
+			spr.sprite = Resources.Load<Sprite>("yellow");
+			sr.sprite = Resources.Load<Sprite>("yelonly");
+			rb.AddForce(righttop * 200.0f);
 			break;
 		case 3:
-			spr.sprite = Resources.Load<Sprite>("star_removed_right_bottom");
-			sr.sprite = Resources.Load<Sprite>("star_rightbot");
-			rb.AddForce(rightbot * 100.0f);
+			spr.sprite = Resources.Load<Sprite>("green");
+			sr.sprite = Resources.Load<Sprite>("gonly");
+			rb.AddForce(rightbot * 200.0f);
 			break;
 		case 4:
-			spr.sprite = Resources.Load<Sprite>("star_removed_left_bottom");
-			sr.sprite = Resources.Load<Sprite>("star_leftbot");
-			rb.AddForce(leftbot * 100.0f);
+			spr.sprite = Resources.Load<Sprite>("missing1");
+			sr.sprite = Resources.Load<Sprite>("bluonly");
+			rb.AddForce(leftbot * 200.0f);
 			break;
 		case 5:
-			spr.sprite = Resources.Load<Sprite>("star_removed_left_top");
-			sr.sprite = Resources.Load<Sprite>("star_lefttop");
-			rb.AddForce(lefttop * 100.0f);
+			spr.sprite = Resources.Load<Sprite>("purple");
+			sr.sprite = Resources.Load<Sprite>("missing4");
+			rb.AddForce(lefttop * 200.0f);
 			break;
 		}
 		proj.AddComponent<PolygonCollider2D> ();
