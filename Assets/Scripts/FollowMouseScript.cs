@@ -15,7 +15,7 @@ public class FollowMouseScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		followMouse ();
-		rotate ();
+//		rotate ();
 	}
 	
 	//makes star follow mouse (works fine)
