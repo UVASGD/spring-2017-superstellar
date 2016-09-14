@@ -1,0 +1,48 @@
+<linker>
+<assembly fullname="Assembly-CSharp">
+<type fullname="Photon.MonoBehaviour" preserve="all"/>
+<type fullname="Photon.PunBehaviour" preserve="all"/>
+<type fullname="PhotonHandler" preserve="all"/>
+<type fullname="PhotonLagSimulationGui" preserve="all"/>
+<type fullname="PhotonStatsGui" preserve="all"/>
+<type fullname="PhotonView" preserve="all"/>
+<type fullname="ServerSettings" preserve="all"/>
+<type fullname="ExitGames.Client.Photon.MonoBehaviourExt" preserve="all"/>
+<type fullname="PhotonAnimatorView" preserve="all"/>
+<type fullname="PhotonRigidbody2DView" preserve="all"/>
+<type fullname="PhotonRigidbodyView" preserve="all"/>
+<type fullname="PhotonTransformView" preserve="all"/>
+<type fullname="ConnectAndJoinRandom" preserve="all"/>
+<type fullname="HighlightOwnedGameObj" preserve="all"/>
+<type fullname="InRoomChat" preserve="all"/>
+<type fullname="InRoomRoundTimer" preserve="all"/>
+<type fullname="InRoomTime" preserve="all"/>
+<type fullname="InputToEvent" preserve="all"/>
+<type fullname="ManualPhotonViewAllocator" preserve="all"/>
+<type fullname="MoveByKeys" preserve="all"/>
+<type fullname="OnAwakeUsePhotonView" preserve="all"/>
+<type fullname="OnClickDestroy" preserve="all"/>
+<type fullname="OnClickInstantiate" preserve="all"/>
+<type fullname="OnClickLoadSomething" preserve="all"/>
+<type fullname="OnJoinedInstantiate" preserve="all"/>
+<type fullname="OnStartDelete" preserve="all"/>
+<type fullname="PickupItem" preserve="all"/>
+<type fullname="PickupItemSimple" preserve="all"/>
+<type fullname="PickupItemSyncer" preserve="all"/>
+<type fullname="PointedAtGameObjectInfo" preserve="all"/>
+<type fullname="PunPlayerScores" preserve="all"/>
+<type fullname="PunTeams" preserve="all"/>
+<type fullname="PunTurnManager" preserve="all"/>
+<type fullname="QuitOnEscapeOrBack" preserve="all"/>
+<type fullname="ServerTime" preserve="all"/>
+<type fullname="ShowInfoOfPlayer" preserve="all"/>
+<type fullname="ShowStatusWhenConnecting" preserve="all"/>
+<type fullname="SmoothSyncMovement" preserve="all"/>
+<type fullname="SupportLogger" preserve="all"/>
+<type fullname="SupportLogging" preserve="all"/>
+<type fullname="CameraMovement" preserve="all"/>
+<type fullname="CollisionHandler" preserve="all"/>
+<type fullname="Controls" preserve="all"/>
+<type fullname="FollowMouseScript" preserve="all"/>
+</assembly>
+</linker>

@@ -7,11 +7,11 @@ public class Controls: MonoBehaviour
 
 	
 	//Direction Vectors for projectiles
-	private Vector3 top = Vector3.up;
-	private Vector3 righttop = new Vector3(0.95105651629f,0.30901699437f,0);
-	private Vector3 rightbot = new Vector3(0.58778525229f,-0.80901699437f,0);
-	private Vector3 leftbot = new Vector3(-0.58778525229f,-0.80901699437f,0);
-	private Vector3 lefttop = new Vector3(-0.95105651629f,0.30901699437f,0);
+	private Vector2 top = Vector2.up;
+	private Vector2 righttop = new Vector2(0.95105651629f,0.30901699437f);
+	private Vector2 rightbot = new Vector2(0.58778525229f,-0.80901699437f);
+	private Vector2 leftbot = new Vector2(-0.58778525229f,-0.80901699437f);
+	private Vector2 lefttop = new Vector2(-0.95105651629f,0.30901699437f);
 	
 	
 	//Real-time update. Put conditions you always want to check for here
@@ -57,30 +57,38 @@ public class Controls: MonoBehaviour
 		case 1:
 			spr.sprite = Resources.Load<Sprite>("red");
 			sr.sprite = Resources.Load<Sprite>("redonly");
-			rb.AddForce(top * 200.0f);
+			rb.AddForce(top * 100.0f);
 			break;
 		case 2:
 			spr.sprite = Resources.Load<Sprite>("yellow");
 			sr.sprite = Resources.Load<Sprite>("yelonly");
-			rb.AddForce(righttop * 200.0f);
+			rb.AddForce(righttop * 100.0f);
 			break;
 		case 3:
 			spr.sprite = Resources.Load<Sprite>("green");
 			sr.sprite = Resources.Load<Sprite>("gonly");
-			rb.AddForce(rightbot * 200.0f);
+			rb.AddForce(rightbot * 100.0f);
 			break;
 		case 4:
 			spr.sprite = Resources.Load<Sprite>("missing1");
 			sr.sprite = Resources.Load<Sprite>("bluonly");
-			rb.AddForce(leftbot * 200.0f);
+			rb.AddForce(leftbot * 100.0f);
 			break;
 		case 5:
 			spr.sprite = Resources.Load<Sprite>("purple");
 			sr.sprite = Resources.Load<Sprite>("missing4");
-			rb.AddForce(lefttop * 200.0f);
+			rb.AddForce(lefttop * 100.0f);
 			break;
 		}
-		proj.AddComponent<PolygonCollider2D> ();
+
+		/**
+		 * ADDING COLLIDER INTERFERES WITH PROJECTILE MOTION
+		*/
+
+//		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
+//		pc.density = 0;
+
+
 		sr.enabled = true; //enable sprite render, projectile shows up
 		Destroy(proj, lifetime);
 
