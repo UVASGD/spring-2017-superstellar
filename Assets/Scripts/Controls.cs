@@ -17,27 +17,27 @@ public class Controls: MonoBehaviour
 	//Real-time update. Put conditions you always want to check for here
 	void Update( )
 	{
-		int[] points = getOrientation (transform.rotation);
+		getOrientation(transform.rotation);
 		
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 			
-			Shoot (points[0]); //fires "top" point
+			Shoot (1); //fires "top" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha2 ) )
 			
-			Shoot (points[1]); //fires "right top" point
+			Shoot (2); //fires "right top" point
 		
 		if (Input.GetKeyDown (KeyCode.Alpha3))
 			
-			Shoot (points[2]); //fires "right bottom" point
+			Shoot (3); //fires "right bottom" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha4 ) )
 			
-			Shoot (points[3]); //fires "left bottom" point
+			Shoot (4); //fires "left bottom" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha5 ) )
 			
-			Shoot (points[4]); //fires "left top" point
+			Shoot (5); //fires "left top" point
 	}
 	
 	
@@ -95,26 +95,25 @@ public class Controls: MonoBehaviour
 	}
 	
 	//Decides orientation of rotating star
-	int[] getOrientation(Quaternion q) {
+	void getOrientation(Quaternion q) {
 		
-		int[] points = new int[5];
 		float angle = q.eulerAngles.z;
-		
-		//Top point rotates to right 72 degrees. Increments that every if statement
-		if (!(angle < Mathf.Clamp(angle,0.0f,72.0f) || angle > Mathf.Clamp(angle,0.0f,72.0f))) {
-			points = new int[] {1,2,3,4,5};
-		} else if (!(angle < Mathf.Clamp(angle,72.0f,144.0f) || angle > Mathf.Clamp(angle,72.0f,144.0f))) {
-			points = new int[] {5,1,2,3,4};
-		} else if (!(angle < Mathf.Clamp(angle,144.0f,216.0f) || angle > Mathf.Clamp(angle,144.0f,216.0f))) {
-			points = new int[] {4,5,1,2,3};
-		} else if (!(angle < Mathf.Clamp(angle,216.0f,288.0f) || angle > Mathf.Clamp(angle,216.0f,288.0f))) {
-			points = new int[] {3,4,5,1,2};
-		} else if (!(angle < Mathf.Clamp(angle,288.0f,360.0f) || angle > Mathf.Clamp(angle,288.0f,360.0f))) {
-			points = new int[] {2,3,4,5,1};
-		}
-		
-		//return correct order of direction vectors
-		return points;
-		
+	
+		float topAngle = (Mathf.Atan2 (0,1) * Mathf.Rad2Deg) + angle;
+		float righttopAngle = (Mathf.Atan2 (0.95105651629f,0.30901699437f) * Mathf.Rad2Deg) + angle;
+		float rightbotAngle = (Mathf.Atan2 (0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg) + angle;
+		float leftbotAngle = (Mathf.Atan2 (-0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg) + angle;
+		float lefttopAngle = (Mathf.Atan2 (-0.95105651629f,0.30901699437f) * Mathf.Rad2Deg) + angle;
+
+		top.x = -(Mathf.Sin(topAngle * Mathf.Deg2Rad));
+		top.y = (Mathf.Cos(topAngle * Mathf.Deg2Rad));
+		righttop.x = -(Mathf.Sin(righttopAngle * Mathf.Deg2Rad));
+		righttop.y = (Mathf.Cos(righttopAngle * Mathf.Deg2Rad));
+		rightbot.x = -(Mathf.Sin(rightbotAngle * Mathf.Deg2Rad));
+		rightbot.y = (Mathf.Cos(rightbotAngle * Mathf.Deg2Rad));
+		leftbot.x = -(Mathf.Sin(leftbotAngle * Mathf.Deg2Rad));
+		leftbot.y = (Mathf.Cos(leftbotAngle * Mathf.Deg2Rad));
+		lefttop.x = -(Mathf.Sin(lefttopAngle * Mathf.Deg2Rad));
+		lefttop.y = (Mathf.Cos(lefttopAngle * Mathf.Deg2Rad));
 	}
 }
