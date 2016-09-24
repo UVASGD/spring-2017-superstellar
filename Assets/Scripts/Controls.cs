@@ -4,6 +4,7 @@ public class Controls: MonoBehaviour
 {
 	public GameObject projectile;
 	public float lifetime = 2.0f;
+	public float projForce = 100.0f;
 
 	
 	//Direction Vectors for projectiles
@@ -55,29 +56,29 @@ public class Controls: MonoBehaviour
 		switch (point) {
 			
 		case 1:
-			spr.sprite = Resources.Load<Sprite>("red");
+			spr.sprite = Resources.Load<Sprite>("missingred");
 			sr.sprite = Resources.Load<Sprite>("redonly");
-			rb.AddForce(top * 100.0f);
+			rb.AddForce(top * projForce);
 			break;
 		case 2:
-			spr.sprite = Resources.Load<Sprite>("yellow");
+			spr.sprite = Resources.Load<Sprite>("missingyellow");
 			sr.sprite = Resources.Load<Sprite>("yelonly");
-			rb.AddForce(righttop * 100.0f);
+			rb.AddForce(righttop * projForce);
 			break;
 		case 3:
-			spr.sprite = Resources.Load<Sprite>("green");
+			spr.sprite = Resources.Load<Sprite>("missinggreen");
 			sr.sprite = Resources.Load<Sprite>("gonly");
-			rb.AddForce(rightbot * 100.0f);
+			rb.AddForce(rightbot * projForce);
 			break;
 		case 4:
-			spr.sprite = Resources.Load<Sprite>("missing1");
+			spr.sprite = Resources.Load<Sprite>("missingblue");
 			sr.sprite = Resources.Load<Sprite>("bluonly");
-			rb.AddForce(leftbot * 100.0f);
+			rb.AddForce(leftbot * projForce);
 			break;
 		case 5:
-			spr.sprite = Resources.Load<Sprite>("purple");
+			spr.sprite = Resources.Load<Sprite>("missingpurple");
 			sr.sprite = Resources.Load<Sprite>("missing4");
-			rb.AddForce(lefttop * 100.0f);
+			rb.AddForce(lefttop * projForce);
 			break;
 		}
 
