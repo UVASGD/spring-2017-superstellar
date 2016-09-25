@@ -4,7 +4,7 @@ public class Controls: MonoBehaviour
 {
 	public GameObject projectile;
 	public float lifetime = 2.0f;
-	public float projForce = 100.0f;
+	public float projForce = 10000.0f;
 
 	
 	//Direction Vectors for projectiles
@@ -13,7 +13,13 @@ public class Controls: MonoBehaviour
 	private Vector2 rightbot = new Vector2(0.58778525229f,-0.80901699437f);
 	private Vector2 leftbot = new Vector2(-0.58778525229f,-0.80901699437f);
 	private Vector2 lefttop = new Vector2(-0.95105651629f,0.30901699437f);
-	
+
+	private float topAngle = (Mathf.Atan2 (0,1) * Mathf.Rad2Deg);
+	private float righttopAngle = (Mathf.Atan2 (0.95105651629f, 0.30901699437f) * Mathf.Rad2Deg);
+	private float rightbotAngle = (Mathf.Atan2 (0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg);
+	private float leftbotAngle = (Mathf.Atan2 (-0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg);
+	private float lefttopAngle = (Mathf.Atan2 (-0.95105651629f,0.30901699437f) * Mathf.Rad2Deg);
+
 	
 	//Real-time update. Put conditions you always want to check for here
 	void Update( )
@@ -56,29 +62,34 @@ public class Controls: MonoBehaviour
 		switch (point) {
 			
 		case 1:
-			spr.sprite = Resources.Load<Sprite>("missingred");
-			sr.sprite = Resources.Load<Sprite>("redonly");
-			rb.AddForce(top * projForce);
+			spr.sprite = Resources.Load<Sprite> ("missingred");
+			sr.sprite = Resources.Load<Sprite> ("redonly");
+			rb.AddForce (top * projForce);
+			rb.MoveRotation (topAngle - 90);
 			break;
 		case 2:
 			spr.sprite = Resources.Load<Sprite>("missingyellow");
 			sr.sprite = Resources.Load<Sprite>("yelonly");
 			rb.AddForce(righttop * projForce);
+			rb.MoveRotation (topAngle - 90 - 72);
 			break;
 		case 3:
 			spr.sprite = Resources.Load<Sprite>("missinggreen");
 			sr.sprite = Resources.Load<Sprite>("gonly");
 			rb.AddForce(rightbot * projForce);
+			rb.MoveRotation (topAngle - 90 - 144);
 			break;
 		case 4:
 			spr.sprite = Resources.Load<Sprite>("missingblue");
 			sr.sprite = Resources.Load<Sprite>("bluonly");
 			rb.AddForce(leftbot * projForce);
+			rb.MoveRotation (topAngle - 90 - 216);
 			break;
 		case 5:
 			spr.sprite = Resources.Load<Sprite>("missingpurple");
-			sr.sprite = Resources.Load<Sprite>("missing4");
+			sr.sprite = Resources.Load<Sprite>("purponly");
 			rb.AddForce(lefttop * projForce);
+			rb.MoveRotation (topAngle - 90 - 288);
 			break;
 		}
 
@@ -100,14 +111,14 @@ public class Controls: MonoBehaviour
 		
 		float angle = q.eulerAngles.z;
 	
-		float topAngle = (Mathf.Atan2 (0,1) * Mathf.Rad2Deg) + angle;
-		float righttopAngle = (Mathf.Atan2 (0.95105651629f,0.30901699437f) * Mathf.Rad2Deg) + angle;
-		float rightbotAngle = (Mathf.Atan2 (0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg) + angle;
-		float leftbotAngle = (Mathf.Atan2 (-0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg) + angle;
-		float lefttopAngle = (Mathf.Atan2 (-0.95105651629f,0.30901699437f) * Mathf.Rad2Deg) + angle;
+		topAngle = (Mathf.Atan2 (0,1) * Mathf.Rad2Deg) + angle + 90;
+		righttopAngle = topAngle - 72 + 180;
+		rightbotAngle = topAngle - 144 + 180;
+		leftbotAngle = topAngle - 216 + 180;
+		lefttopAngle = topAngle - 288 + 180;
 
-		top.x = -(Mathf.Sin(topAngle * Mathf.Deg2Rad));
-		top.y = (Mathf.Cos(topAngle * Mathf.Deg2Rad));
+		top.y = -(Mathf.Cos(topAngle * Mathf.Deg2Rad));
+		top.x = (Mathf.Sin(topAngle * Mathf.Deg2Rad));
 		righttop.x = -(Mathf.Sin(righttopAngle * Mathf.Deg2Rad));
 		righttop.y = (Mathf.Cos(righttopAngle * Mathf.Deg2Rad));
 		rightbot.x = -(Mathf.Sin(rightbotAngle * Mathf.Deg2Rad));
