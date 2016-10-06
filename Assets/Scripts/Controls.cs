@@ -93,13 +93,9 @@ public class Controls: MonoBehaviour
 			break;
 		}
 
-		/**
-		 * ADDING COLLIDER INTERFERES WITH PROJECTILE MOTION
-		*/
-
-//		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
-//		pc.density = 0;
-
+		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
+		pc.density = 0;
+		pc.isTrigger = true;
 
 		sr.enabled = true; //enable sprite render, projectile shows up
 		Destroy(proj, lifetime);
