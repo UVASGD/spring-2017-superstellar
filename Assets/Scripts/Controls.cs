@@ -148,7 +148,7 @@ public class Controls: MonoBehaviour
 	IEnumerator reload(SpriteRenderer sprIndex, float delayTime, int strPt)
 	{
 		yield return new WaitForSeconds (delayTime);
-		spri [spri.FindIndex (d=>d == sprIndex)].sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White");
+		spri [spri.FindIndex (d=>d == sprIndex)].sprite = Resources.Load<Sprite> ("colorful");
 		spri.Remove (sprIndex);
 		canShoot [strPt] = 1;
 	}
