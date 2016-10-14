@@ -1,11 +1,20 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Controls: MonoBehaviour
 {
 	public GameObject projectile;
-	public float lifetime = 2.0f;
-	public float projForce = 10000.0f;
+	public float lifetime;
+	public float projForce;
 
+	public float starPointNum;
+//	public List<GameObject> starpoints = new List<GameObject>();
+	public float reloadTime;
+	private List<SpriteRenderer> spri = new List<SpriteRenderer>();
+	private List<int> canShoot = new List<int> (new int[12]);
+	private List<int> autoShoot = new List<int> (new int[12]);
+	public bool autoShootAll;
 	
 	//Direction Vectors for projectiles
 	private Vector2 top = Vector2.up;
@@ -20,31 +29,61 @@ public class Controls: MonoBehaviour
 	private float leftbotAngle = (Mathf.Atan2 (-0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg);
 	private float lefttopAngle = (Mathf.Atan2 (-0.95105651629f,0.30901699437f) * Mathf.Rad2Deg);
 
-	
+
+	void Start() 
+	{
+		for (int i = 0; i < starPointNum; i++) {
+			canShoot [i] = 1;
+//			if (autoShootAll)
+//				autoShoot [i] = 1;
+		}
+	}
 	//Real-time update. Put conditions you always want to check for here
 	void Update( )
 	{
+		Debug.Log (autoShoot [0]);
+
 		getOrientation(transform.rotation);
-		
-		if (Input.GetKeyDown (KeyCode.Alpha1))
-			
+
+		if (Input.GetKeyDown (KeyCode.F))
+		{
+			if (autoShootAll)
+				autoShootAll = false;
+			else {
+				autoShootAll = true;
+			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.Alpha1) && Input.GetKeyDown (KeyCode.E))
+		{
+			if (autoShoot [0] == 1)
+				autoShoot [0] = 0;
+			else if (autoShoot [0] == 0){
+				autoShoot [0] = 1;
+			}
+		}
+
+
+		if ((Input.GetKeyDown (KeyCode.Alpha1) || autoShoot [0] == 1 || autoShootAll) && canShoot [0] == 1)
+
 			Shoot (1); //fires "top" point
-		
-		if( Input.GetKeyDown( KeyCode.Alpha2 ) )
-			
+
+		if( (Input.GetKeyDown( KeyCode.Alpha2 ) || autoShootAll) && canShoot [1] == 1)
+
 			Shoot (2); //fires "right top" point
-		
-		if (Input.GetKeyDown (KeyCode.Alpha3))
-			
+
+		if ((Input.GetKeyDown (KeyCode.Alpha3) || autoShootAll) && canShoot [2] == 1)
+
 			Shoot (3); //fires "right bottom" point
-		
-		if( Input.GetKeyDown( KeyCode.Alpha4 ) )
-			
+
+		if( (Input.GetKeyDown( KeyCode.Alpha4 ) || autoShootAll) && canShoot [3] == 1)
+
 			Shoot (4); //fires "left bottom" point
-		
-		if( Input.GetKeyDown( KeyCode.Alpha5 ) )
-			
+
+		if( (Input.GetKeyDown( KeyCode.Alpha5 ) || autoShootAll) && canShoot [4] == 1)
+
 			Shoot (5); //fires "left top" point
+	
 	}
 	
 	
@@ -56,7 +95,10 @@ public class Controls: MonoBehaviour
 		SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer> (); 
 		SpriteRenderer sr = proj.GetComponent<SpriteRenderer> (); 
 		Rigidbody2D rb = proj.GetComponent<Rigidbody2D> ();
-		
+
+		spri.Add(spr);
+		canShoot [point - 1] = 0;
+
 		//switch statement determines which sprite to use for star and projectile
 		//also adds force to make projectile move
 		switch (point) {
@@ -98,8 +140,17 @@ public class Controls: MonoBehaviour
 		pc.isTrigger = true;
 
 		sr.enabled = true; //enable sprite render, projectile shows up
+		StartCoroutine(reload(spr,reloadTime, point - 1));
 		Destroy(proj, lifetime);
 
+	}
+
+	IEnumerator reload(SpriteRenderer sprIndex, float delayTime, int strPt)
+	{
+		yield return new WaitForSeconds (delayTime);
+		spri [spri.FindIndex (d=>d == sprIndex)].sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White");
+		spri.Remove (sprIndex);
+		canShoot [strPt] = 1;
 	}
 	
 	//Decides orientation of rotating star

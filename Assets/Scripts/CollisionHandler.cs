@@ -7,5 +7,10 @@ public class CollisionHandler : MonoBehaviour {
 		{
 			Debug.Log(coll.gameObject.name);
 		}
+		
+		void OnCollisionEnter2D(Collision2D coll)
+		{
+			Debug.Log(coll.gameObject.name);
+		}
 	
 }
