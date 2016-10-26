@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Controls: MonoBehaviour
+public class Controls: Photon.MonoBehaviour
 {
 	public GameObject projectile;
 	public float lifetime = 2.0f;
@@ -22,34 +22,44 @@ public class Controls: MonoBehaviour
 	private float leftbotAngle = (Mathf.Atan2 (-0.58778525229f,-0.80901699437f) * Mathf.Rad2Deg);
 	private float lefttopAngle = (Mathf.Atan2 (-0.95105651629f,0.30901699437f) * Mathf.Rad2Deg);
 
-	
+
+	void OnEnable()
+	{
+		if (this.photonView != null && !this.photonView.isMine) {
+			//			Debug.Log("entered disable");
+			this.enabled = false;
+			return;
+		}
+	}
+
 	//Real-time update. Put conditions you always want to check for here
 	void Update( )
 	{
 
 		ScenePhotonView = this.GetComponent<PhotonView>();
 
-		getOrientation(transform.rotation);
+		ScenePhotonView.RPC("getOrientation", PhotonTargets.All, transform.rotation);
+//		getOrientation(transform.rotation);
 		
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 			
-			Shot (1); //fires "top" point
+			ScenePhotonView.RPC("Shoot", PhotonTargets.All, 1); //fires "top" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha2 ) )
 			
-			Shot (2); //fires "right top" point
+			ScenePhotonView.RPC("Shoot", PhotonTargets.All, 2); //fires "right top" point
 		
 		if (Input.GetKeyDown (KeyCode.Alpha3))
 			
-			Shot (3); //fires "right bottom" point
+			ScenePhotonView.RPC("Shoot", PhotonTargets.All, 3); //fires "right bottom" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha4 ) )
 			
-			Shot (4); //fires "left bottom" point
+			ScenePhotonView.RPC("Shoot", PhotonTargets.All, 4); //fires "left bottom" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha5 ) )
 			
-			Shot (5); //fires "left top" point
+			ScenePhotonView.RPC("Shoot", PhotonTargets.All, 5); //fires "left top" point
 	}
 
 
@@ -113,7 +123,8 @@ public class Controls: MonoBehaviour
 		Destroy(proj, lifetime);
 
 	}
-	
+
+	[PunRPC]
 	//Decides orientation of rotating star
 	void getOrientation(Quaternion q) {
 		

@@ -8,7 +8,7 @@ public class OnJoinedInstantiate : MonoBehaviour
     public GameObject[] PrefabsToInstantiate;   // set in inspector
 
     public void OnJoinedRoom()
-    {
+	{
         if (this.PrefabsToInstantiate != null)
         {
             foreach (GameObject o in this.PrefabsToInstantiate)
@@ -27,6 +27,7 @@ public class OnJoinedInstantiate : MonoBehaviour
                 Vector3 itempos = spawnPos + this.PositionOffset * random;
 
 				Debug.Log (o.transform.localScale);
+				Debug.Log ("......");
                 PhotonNetwork.Instantiate(o.name, itempos, Quaternion.identity, 0);
             }
         }
