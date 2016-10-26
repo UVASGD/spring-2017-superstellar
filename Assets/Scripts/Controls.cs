@@ -6,7 +6,9 @@ public class Controls: MonoBehaviour
 	public float lifetime = 2.0f;
 	public float projForce = 10000.0f;
 
-	
+
+	private static PhotonView ScenePhotonView;
+
 	//Direction Vectors for projectiles
 	private Vector2 top = Vector2.up;
 	private Vector2 righttop = new Vector2(0.95105651629f,0.30901699437f);
@@ -24,30 +26,40 @@ public class Controls: MonoBehaviour
 	//Real-time update. Put conditions you always want to check for here
 	void Update( )
 	{
+
+		ScenePhotonView = this.GetComponent<PhotonView>();
+
 		getOrientation(transform.rotation);
 		
 		if (Input.GetKeyDown (KeyCode.Alpha1))
 			
-			Shoot (1); //fires "top" point
+			Shot (1); //fires "top" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha2 ) )
 			
-			Shoot (2); //fires "right top" point
+			Shot (2); //fires "right top" point
 		
 		if (Input.GetKeyDown (KeyCode.Alpha3))
 			
-			Shoot (3); //fires "right bottom" point
+			Shot (3); //fires "right bottom" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha4 ) )
 			
-			Shoot (4); //fires "left bottom" point
+			Shot (4); //fires "left bottom" point
 		
 		if( Input.GetKeyDown( KeyCode.Alpha5 ) )
 			
-			Shoot (5); //fires "left top" point
+			Shot (5); //fires "left top" point
 	}
-	
-	
+
+
+	void Shot(int point)
+	{
+		Debug.Log("Shoot: " + point);
+		ScenePhotonView.RPC("Shoot", PhotonTargets.All, point);
+	}
+
+	[PunRPC]
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
 		
@@ -62,32 +74,32 @@ public class Controls: MonoBehaviour
 		switch (point) {
 			
 		case 1:
-			spr.sprite = Resources.Load<Sprite> ("missingred");
-			sr.sprite = Resources.Load<Sprite> ("redonly");
+			spr.sprite = Resources.Load<Sprite> ("Colorful/missingred");
+			sr.sprite = Resources.Load<Sprite> ("Colorful/redonly");
 			rb.AddForce (top * projForce);
 			rb.MoveRotation (topAngle - 90);
 			break;
 		case 2:
-			spr.sprite = Resources.Load<Sprite>("missingyellow");
-			sr.sprite = Resources.Load<Sprite>("yelonly");
+			spr.sprite = Resources.Load<Sprite>("Colorful/missingyellow");
+			sr.sprite = Resources.Load<Sprite>("Colorful/yelonly");
 			rb.AddForce(righttop * projForce);
 			rb.MoveRotation (topAngle - 90 - 72);
 			break;
 		case 3:
-			spr.sprite = Resources.Load<Sprite>("missinggreen");
-			sr.sprite = Resources.Load<Sprite>("gonly");
+			spr.sprite = Resources.Load<Sprite>("Colorful/missinggreen");
+			sr.sprite = Resources.Load<Sprite>("Colorful/gonly");
 			rb.AddForce(rightbot * projForce);
 			rb.MoveRotation (topAngle - 90 - 144);
 			break;
 		case 4:
-			spr.sprite = Resources.Load<Sprite>("missingblue");
-			sr.sprite = Resources.Load<Sprite>("bluonly");
+			spr.sprite = Resources.Load<Sprite>("Colorful/missingblue");
+			sr.sprite = Resources.Load<Sprite>("Colorful/bluonly");
 			rb.AddForce(leftbot * projForce);
 			rb.MoveRotation (topAngle - 90 - 216);
 			break;
 		case 5:
-			spr.sprite = Resources.Load<Sprite>("missingpurple");
-			sr.sprite = Resources.Load<Sprite>("purponly");
+			spr.sprite = Resources.Load<Sprite>("Colorful/missingpurple");
+			sr.sprite = Resources.Load<Sprite>("Colorful/purponly");
 			rb.AddForce(lefttop * projForce);
 			rb.MoveRotation (topAngle - 90 - 288);
 			break;

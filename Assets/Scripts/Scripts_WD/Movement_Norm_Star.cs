@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Movement_Norm_Star : MonoBehaviour {
+public class Movement_Norm_Star : Photon.MonoBehaviour {
 	
 	//Inspector Variables
 	public float playerSpeed = 100; //speed player moves
@@ -10,6 +10,25 @@ public class Movement_Norm_Star : MonoBehaviour {
 	private Vector3 dampSpeed = Vector3.zero;
 	public float smoothTime = 0.5f;
 
+	public bool isControllable = false;
+	public bool AssignAsTagObject = true;
+
+	void Awake()
+	{
+		// PUN: automatically determine isControllable, if this GO has a PhotonView
+		PhotonView pv = this.gameObject.GetComponent<PhotonView> ();
+		if (pv != null) {
+			isControllable = pv.isMine;
+//			Debug.Log ("made mine");
+
+			// The pickup demo assigns this GameObject as the PhotonPlayer.TagObject. This way, we can access this character (controller, position, etc) easily
+			if (this.AssignAsTagObject) {
+				pv.owner.TagObject = this.gameObject;
+//				Debug.Log ("tagged mine");
+			}
+		}
+	}
+
 	void Start()
 	{
 		
@@ -17,11 +36,12 @@ public class Movement_Norm_Star : MonoBehaviour {
 
 	void Update () 
 	{
-		movTarget = transform.position;
-		moveFunct(); // Player Movement
-		rotate();//Player Turning
-		//transform.localScale += new Vector3(Time.deltaTime / 20,Time.deltaTime / 20,0);
-
+		if (this.photonView.isMine) {
+			movTarget = transform.position;
+			moveFunct(); // Player Movement
+			rotate();//Player Turning
+			//transform.localScale += new Vector3(Time.deltaTime / 20,Time.deltaTime / 20,0);
+		}
 	}
 
 	void moveFunct()
