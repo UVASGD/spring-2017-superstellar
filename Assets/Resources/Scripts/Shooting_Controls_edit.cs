@@ -6,24 +6,27 @@ public class Shooting_Controls_edit: MonoBehaviour
 {
 	public GameObject projectile;
 	public GameObject starPointSprite;
-	public float lifetime = 2.0f;
-	public float projForce = 500.0f;
-	public int starPointNum = 5;
-	public List<GameObject> starpoints = new List<GameObject>();
-	public float reloadTime;
+	private float lifetime = 2.0f;
+	private float projForce = 500.0f;
+	private int starPointNum = 5;
+	private List<GameObject> starpoints = new List<GameObject>();
+	private float reloadTime = 2.0f;
 	private List<SpriteRenderer> spri = new List<SpriteRenderer>();
-	public List<int> canShoot = new List<int> (12);
-	public List<int> autoShoot = new List<int> (12);
-	public bool autoShootAll;
-	public List<int> shootOnMouse = new List<int> (12);
+	private List<int> canShoot = new List<int> (12);
+	private List<int> autoShoot = new List<int> (12);
+	private bool autoShootAll = false;
+	private List<int> shootOnMouse = new List<int> (12);
 	
 	//Direction Vectors for projectiles
 	private List<Vector2> pointVectList = new List<Vector2>(12); 
 	private List<float> pointAngles = new List<float>(12);
-	public List<float> pointAngles2 = new List<float>(12);
+	private List<float> pointAngles2 = new List<float>(12);
 
 
 	void Start() {
+		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		resetShooting (transform.rotation, starPointNum);
 	}
 
