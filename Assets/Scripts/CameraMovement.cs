@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CameraMovement : MonoBehaviour {
 	
@@ -14,10 +15,18 @@ public class CameraMovement : MonoBehaviour {
 	private float maxY;
 	
 	private Vector3 offset;         //Private variable to store the offset distance between the player and camera
+	private float offsetZoom;
+
+	private float targetOrtho;
+	private float smoothSpeed = 5.0f;
+
+	private Shooting_Controls_edit shootScript;
+	private List<float> starSize = new List<float>(13);
 	
 	// Use this for initialization
 	void Start () 
 	{
+		targetOrtho = Camera.main.orthographicSize;
 		mapX = bg.transform.localScale.x;
 		mapY = bg.transform.localScale.y;
 		
@@ -32,7 +41,11 @@ public class CameraMovement : MonoBehaviour {
 		maxX = mapX / 2.0f - horzExtent;
 		minY = vertExtent - mapY / 2.0f;
 		maxY = mapY / 2.0f - vertExtent;
-		
+
+		shootScript = player.GetComponent<Shooting_Controls_edit>();
+		starSize = shootScript.starSizes;
+
+
 	}
 	
 	// LateUpdate is called after Update each frame
@@ -45,5 +58,14 @@ public class CameraMovement : MonoBehaviour {
 		v3.y = Mathf.Clamp(v3.y, minY, maxY);
 		
 		transform.position = v3 + offset;
+
+
+		//Zoom when star changes size
+		int starClass = shootScript.starType;
+		targetOrtho = starSize [starClass - 1]*5f;
+		Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
 	}
+
+
+
 }

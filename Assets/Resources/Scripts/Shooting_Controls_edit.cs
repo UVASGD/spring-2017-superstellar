@@ -4,18 +4,50 @@ using System.Collections.Generic;
 
 public class Shooting_Controls_edit: MonoBehaviour
 {
+	//sprites -> projectile and non-projected point
 	public GameObject projectile;
 	public GameObject starPointSprite;
+
+	//variables
 	private float lifetime = 2.0f;
 	private float projForce = 500.0f;
 	private int starPointNum = 5;
+	private int starMass = 0;
+	private int maxPointHealth = 10;
+	private int maxPointDam = 10;
+	private int maxPlayerHealth = 100;
+	private int maxPlayerDam = 100;
+	private int playerRegen = 1;
+
+	//holds the non-projected points
 	private List<GameObject> starpoints = new List<GameObject>();
+
+	//time to regen point
 	private float reloadTime = 2.0f;
+
+	//holds the non-projected points in limbo after projectiles shot
 	private List<SpriteRenderer> spri = new List<SpriteRenderer>();
+
+	//shooting conditions
 	private List<int> canShoot = new List<int> (12);
 	private List<int> autoShoot = new List<int> (12);
 	private bool autoShootAll = false;
 	private List<int> shootOnMouse = new List<int> (12);
+
+	//class variables
+	private List<Material> starMats = new List<Material> (13);
+	private List<float> projSpeeds = new List<float> (13);
+	private List<float> projLife = new List<float> (13);
+	private List<float> projRegen = new List<float> (13);
+	private List<int> starPtClass = new List<int> (13);
+	public List<float> starSizes = new List<float> (13);
+	private List<int> starPtHealth = new List<int> (13);
+	private List<int> starPtDam = new List<int> (13);
+	private List<int> starBodyHealth = new List<int> (13);
+	private List<int> starBodyRegen = new List<int> (13);
+	private List<int> starBodyDam = new List<int> (13);
+		
+	public int starType = 1;
 	
 	//Direction Vectors for projectiles
 	private List<Vector2> pointVectList = new List<Vector2>(12); 
@@ -23,11 +55,27 @@ public class Shooting_Controls_edit: MonoBehaviour
 	private List<float> pointAngles2 = new List<float>(12);
 
 
+
 	void Start() {
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-		resetShooting (transform.rotation, starPointNum);
+		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
+			Resources.Load<Material> ("Materials/Star_G_Red"),Resources.Load<Material> ("Materials/Star_SG_Red"),Resources.Load<Material> ("Materials/Star_D_White"),
+			Resources.Load<Material> ("Materials/Star_SG_Blue"),Resources.Load<Material> ("Materials/Star_S_Nova"),Resources.Load<Material> ("Materials/Star_HG_Blue"),
+			Resources.Load<Material> ("Materials/Star_Neutron"),Resources.Load<Material> ("Materials/Star_H_Nova"),Resources.Load<Material> ("Materials/Star_B_Hole"),
+			Resources.Load<Material> ("Materials/Star_Quasar"),Resources.Load<Material> ("Materials/Star_Pulsar")};
+		projSpeeds = new List<float>{ 300f, 400f, 400f, 500f, 500f, 300f, 700f, 600f, 900f, 800f, 300f, 500f, 1000f };
+		projLife = new List<float>{ 2f, 3f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f, 1f };
+		projRegen = new List<float>{ 5f, 0.75f, 1f, 0.75f, 0.5f, 1.25f, 0.5f, 0.5f, 0.5f, 0.75f, 0.75f, 0.5f, 0.25f };
+		starPtClass = new List<int>{ 5, 4, 6, 8, 4, 10, 6, 12, 3, 7, 11, 9, 2 };
+		starPtHealth = new List<int>{ 10, 5, 20, 8, 5, 100, 6, 12, 3, 7, 11, 9, 2 };
+		starSizes = new List<float>{ 1f, 0.95f, 1.22f, 1.58f, 0.87f, 2f, 1.12f, 2.25f, 0.77f, 1.18f, 0.89f, 0.79f, 0.71f };
+		starPtDam = new List<int>{ 5, 4, 6, 8, 4, 10, 6, 12, 3, 7, 11, 9, 2 };
+		starBodyHealth = new List<int>{ 5, 4, 6, 8, 4, 10, 6, 12, 3, 7, 11, 9, 2 };
+		starBodyRegen = new List<int>{ 5, 4, 6, 8, 4, 10, 6, 12, 3, 7, 11, 9, 2 };
+		starBodyDam = new List<int>{ 5, 4, 6, 8, 4, 10, 6, 12, 3, 7, 11, 9, 2 };
+		upgradeStar (1);
 	}
 
 
@@ -36,6 +84,8 @@ public class Shooting_Controls_edit: MonoBehaviour
 	void Update( )
 	{
 		redrawStar(transform.rotation, starPointNum);
+
+		healthRegen (playerRegen);
 
 		List<KeyCode> shootKeys = new List<KeyCode> (12);
 		shootKeys = new List<KeyCode>{KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5,
@@ -51,18 +101,22 @@ public class Shooting_Controls_edit: MonoBehaviour
 			}
 		}
 
-		if (Input.GetKeyDown (KeyCode.Y) && starPointNum > 1)
+		if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
 		{
 			
-			starPointNum = starPointNum - 1;
-			resetShooting (transform.rotation, starPointNum);
+			//starPointNum = starPointNum - 1;
+			starType = starType - 1;
+			//resetShooting (transform.rotation, starPointNum);
+			upgradeStar(starType);
 		}
 
-		if (Input.GetKeyDown (KeyCode.U) && starPointNum < 12)
+		if (Input.GetKeyDown (KeyCode.U) && starType < 13)
 		{
 			
-			starPointNum = starPointNum + 1;
-			resetShooting (transform.rotation, starPointNum);
+			//starPointNum = starPointNum + 1;
+			starType = starType + 1;
+			//resetShooting (transform.rotation, starPointNum);
+			upgradeStar(starType);
 		}
 
 
@@ -125,90 +179,21 @@ public class Shooting_Controls_edit: MonoBehaviour
 		
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+		proj.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
+		proj.GetComponent<Renderer> ().material = starMats [starType - 1];
+		proj.GetComponent<Health_Management> ().Health = maxPointHealth;
+		proj.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 		SpriteRenderer spr = starpoints [point - 1].GetComponent<SpriteRenderer> (); 
 		SpriteRenderer sr = proj.GetComponent<SpriteRenderer> (); 
 		Rigidbody2D rb = proj.GetComponent<Rigidbody2D> ();
 		spri.Add(spr);
 		canShoot [point - 1] = 0;
-		
-		//switch statement determines which sprite to use for star and projectile
-		//also adds force to make projectile move
-		switch (point) {
-			
-		case 1:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[0] + 90);
-			sr.sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce (pointVectList[0]*projForce);
-			break;
-		case 2:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[1] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[1]*projForce);
-			break;
-		case 3:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[2] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[2]*projForce);
-			break;
-		case 4:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[3] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[3]*projForce);
-			break;
-		case 5:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[4] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[4]*projForce);
-			break;
-		case 6:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[5] + 90);
-			sr.sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce (pointVectList[5]*projForce);
-			break;
-		case 7:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[6] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[6]*projForce);
-			break;
-		case 8:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[7] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[7]*projForce);
-			break;
-		case 9:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[8] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[8]*projForce);
-			break;
-		case 10:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[9] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[9]*projForce);
-			break;
-		case 11:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[10] + 90);
-			sr.sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce (pointVectList[10]*projForce);
-			break;
-		case 12:
-			spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-			rb.MoveRotation (pointAngles[11] + 90);
-			sr.sprite = Resources.Load<Sprite>("Sprites/Point_Attached_White_Lineat60");
-			rb.AddForce(pointVectList[11]*projForce);
-			break;
-		
-		}
+		spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
+		rb.MoveRotation (pointAngles[point - 1] + 90);
+		sr.sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White_Lineat60");
+		rb.AddForce (pointVectList[point - 1]*projForce);
+		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] * projForce/10f);
+
 
 		/**
 		 * ADDING COLLIDER INTERFERES WITH PROJECTILE MOTION
@@ -219,20 +204,38 @@ public class Shooting_Controls_edit: MonoBehaviour
 
 
 		sr.enabled = true; //enable sprite render, projectile shows up
-		StartCoroutine(reload(spr,reloadTime, point - 1, starPointNum));
+		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1, starPointNum));
 		Destroy(proj, lifetime);
 
 
 	}
 
-	IEnumerator reload(SpriteRenderer sprIndex, float delayTime, int strPt, int strPtN)
+	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strPtN)
 	{
 		yield return new WaitForSeconds (delayTime);
 		if (strPtN == starPointNum) {
 			spri [spri.FindIndex (d => d == sprIndex)].sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White");
 			spri.Remove (sprIndex);
+			strPont.GetComponent<Health_Management> ().Health = maxPointHealth;
+			strPont.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 			canShoot [strPt] = 1;
+			strPont.GetComponent<Collider2D>().enabled = true;
 		}
+	}
+
+	public void destroyStarPoint(GameObject starIndex){
+		if (canShoot [starpoints.FindIndex(d => d == starIndex)] == 1){
+		starIndex.GetComponent<Collider2D> ().enabled = false;
+		canShoot [starpoints.FindIndex(d => d == starIndex)] = 0;
+		spri.Add (starIndex.GetComponent<SpriteRenderer> ());
+		starIndex.GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
+		StartCoroutine(reload(starIndex,starIndex.GetComponent<SpriteRenderer>(),reloadTime, starpoints.FindIndex(d => d == starIndex), starPointNum));
+	
+		}
+	}
+
+	public void healthRegen(int starRegen){
+		GetComponent<Health_Management> ().Health = Mathf.MoveTowards (GetComponent<Health_Management> ().Health, maxPlayerHealth, starRegen * Time.deltaTime);
 	}
 
 	void redrawStar(Quaternion q, int numPoints) {
@@ -273,15 +276,46 @@ public class Shooting_Controls_edit: MonoBehaviour
 		for(int i = 0; i < numPoints; i++)
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
-			newPt.transform.parent = transform;
+			newPt.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
+			newPt.GetComponent<Renderer> ().material = starMats [starType - 1];
+
 			//newPt.transform.localScale = transform.localScale;
-			Rigidbody2D rbs = newPt.GetComponent<Rigidbody2D> ();
-			rbs.MoveRotation (pointAngles2 [i] + 90);
+			//Rigidbody2D rbs = newPt.GetComponent<Rigidbody2D> ();
+			//rbs.MoveRotation (pointAngles2 [i] + 90);
+			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
+			newPt.transform.parent = transform;
+			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
+			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 			starpoints.Add (newPt);
 			canShoot [i] = 1;
 			autoShoot [i] = 0;
 			shootOnMouse [i] = 1;
 		}
+	}
+
+	void upgradeStar(int starGrade){
+
+		transform.localScale = new Vector3(starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f);
+		GetComponent<Renderer> ().material = starMats [starType - 1];
+		starPointNum = starPtClass [starGrade - 1];
+		maxPointHealth = starPtHealth [starGrade - 1];
+		maxPointDam = starPtDam [starGrade - 1];
+		maxPlayerHealth = starBodyHealth [starGrade - 1];
+		maxPlayerDam = starBodyDam [starGrade - 1];
+		playerRegen = starBodyRegen [starGrade - 1];
+		GetComponent<Health_Management> ().Health = maxPlayerHealth;
+		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
+		resetShooting (transform.rotation, starPointNum);
+		lifetime = projLife [starGrade - 1];
+		projForce = projSpeeds [starGrade - 1];
+		reloadTime = projRegen [starGrade - 1];
+
+
+
+	}
+
+	public void AddMass(int points){
+		starMass += points;
 	}
 	
 	//Decides orientation of rotating star

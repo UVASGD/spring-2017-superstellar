@@ -138,9 +138,11 @@
      <Compile Include="Assets\PhotonChatApi\ChatState.cs" />
      <Compile Include="Assets\PhotonChatApi\ChatUserStatus.cs" />
      <Compile Include="Assets\PhotonChatApi\IChatClientListener.cs" />
+     <Compile Include="Assets\Resources\Scripts\Health_Management.cs" />
      <Compile Include="Assets\Resources\Scripts\Movement_Norm_Star.cs" />
      <Compile Include="Assets\Resources\Scripts\Shooting_Controls.cs" />
      <Compile Include="Assets\Resources\Scripts\Shooting_Controls_edit.cs" />
+     <Compile Include="Assets\Resources\Scripts\Star_Spawner.cs" />
      <Compile Include="Assets\Scripts\CameraMovement.cs" />
      <Compile Include="Assets\Scripts\CollisionHandler.cs" />
      <Compile Include="Assets\Scripts\Controls.cs" />
