@@ -4,14 +4,20 @@ using System.Collections;
 public class Movement_Norm_Star : MonoBehaviour {
 	
 	//Inspector Variables
-	private float playerSpeed = 2f; //speed player moves
-	//private float turnSpeed  = 100; // speed player turns
-	private Vector2 movTarget;
-	private Vector2 dampSpeed = Vector2.zero;
-	private float smoothTime = 0.5f;
-	private Vector2 velTarget;
+	private float playerSpeed = 2f; 
+	//speed player moves
 
-	public Vector2 velo = Vector2.zero;
+	private Vector2 movTarget;
+	// where the player is to move towards
+
+	private Vector2 dampSpeed = Vector2.zero;
+	// the dampspeed for smoothdamping player movement
+
+	private float smoothTime = 0.5f;
+	// the smoothdamping delay
+
+	private Vector2 velTarget;
+	// the target velocity based on the differenct between player position and movTarget
 
 	void Start()
 	{
@@ -20,45 +26,50 @@ public class Movement_Norm_Star : MonoBehaviour {
 
 	void Update () 
 	{
+		// calibrate movTarget with player position
 		movTarget.x = transform.position.x;
 		movTarget.y = transform.position.y;
-		moveFunct(); // Player Movement
-		rotate();//Player Turning
-		//transform.localScale += new Vector3(Time.deltaTime / 20,Time.deltaTime / 20,0);
 
-		velo = GetComponent<Rigidbody2D> ().velocity;
+		// Player Movement
+		moveFunct();
+
+		//Player Turning w/ mouse
+		rotate();
 
 	}
 
 	void moveFunct()
 	{
-
+		// add to movTarget based on key input
 		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {//Press up arrow key to move forward on the Y AXIS
 			movTarget += new Vector2(0f, playerSpeed * Time.deltaTime / (transform.localScale.x));
-			//velTarget = new Vector2 (0, playerSpeed / transform.localScale.x);
+
 		} 
-		if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {//Press up arrow key to move forward on the Y AXIS
+		if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {//Press down arrow key to move backward on the Y AXIS
 			movTarget += new Vector2(0f, -playerSpeed * Time.deltaTime / (transform.localScale.x));
-			//velTarget = new Vector2 (0, -playerSpeed / transform.localScale.x);
+
 		} 
-		if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {//Press up arrow key to move forward on the Y AXIS
+		if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {//Press right arrow key to move forward on the X AXIS
 			movTarget += new Vector2(playerSpeed * Time.deltaTime / (transform.localScale.x), 0f);
-			//velTarget = new Vector2 (playerSpeed / transform.localScale.x,0);
+
 		} 
-		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {//Press up arrow key to move forward on the Y AXIS
+		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {//Press left arrow key to move backward on the X AXIS
 			movTarget += new Vector2(-playerSpeed * Time.deltaTime / (transform.localScale.x), 0f);
-			//velTarget = new Vector2 (-playerSpeed / transform.localScale.x,0);
+
 		} 
+
+		// if no movement input, set velocity target to zero
 		if (! Input.GetKey(KeyCode.UpArrow) && ! Input.GetKey(KeyCode.DownArrow) && ! Input.GetKey(KeyCode.RightArrow) && ! Input.GetKey(KeyCode.LeftArrow)
 			&& ! Input.GetKey(KeyCode.W) && ! Input.GetKey(KeyCode.A) && ! Input.GetKey(KeyCode.S) && ! Input.GetKey(KeyCode.D)){
 			velTarget = new Vector2 (0f, 0f);
 		}
 
+		// set target velocity
 		velTarget.x = (movTarget.x - transform.position.x)/Time.deltaTime;
 		velTarget.y = (movTarget.y - transform.position.y)/Time.deltaTime;
 
+		// accelerate the player to the target velocity with smoothdamp
 		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
-		//transform.position = Vector3.SmoothDamp (transform.position, movTarget, ref dampSpeed, smoothTime, playerSpeed / (transform.localScale.x));
 
 	}
 

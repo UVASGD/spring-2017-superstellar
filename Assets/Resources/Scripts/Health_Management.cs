@@ -2,31 +2,60 @@
 using System.Collections;
 
 public class Health_Management : MonoBehaviour {
-	public GameObject player;
 
+
+
+	// amount of health object has
 	public float Health;
+
+	// amount of points to give when object dies
 	public int pointsToGive;
 
-	// Use this for initialization
+	public GameObject[] playerTags;
+
 	void Start () {
 	
 	}
 	
-	// Update is called once per frame
+
 	void Update () {
 		
 	
 	}
 
-	public void giveDamage(int damage){
+	// give damage to the object
+	public void giveDamage(int damage, GameObject killer){
 		Health -= damage;
+
+		// kill the object when its health is depleted
 		if (Health <= 0) {
+
+			// if the object is an un-shot starpoint, destroy it using the shooting controls script
 			if (gameObject.tag == "Star_Point") {
 				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (gameObject);
+
+				// if the object is a player, kill it (not yet...)
 			} else if (gameObject.tag == "Player_Star") {
+
+				// if the object is anything else, destroy it and give the player points
 			} else {
 				Destroy (gameObject);
-				player.GetComponent<Shooting_Controls_edit> ().AddMass (pointsToGive);
+
+				// player to give points to
+				int killerTag = killer.GetComponent<Tag_Manager>().tag;
+
+				//if (playerTags == null){
+					//playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
+				//}
+				playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
+
+				for (int i = 0; i < playerTags.GetLength (0); i++) {
+					if (playerTags [i].GetComponent<Tag_Manager> ().tag == killerTag) {
+
+					
+						playerTags[i].GetComponent<Shooting_Controls_edit> ().AddMass (pointsToGive);
+					}
+				}
 			}
 		}
 	}

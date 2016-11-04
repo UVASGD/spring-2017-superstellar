@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class CollisionHandler : MonoBehaviour {
 
+	// damage that the object gives to objects that collide with it
 	public int damage_to_give;
 		
 
@@ -16,29 +17,29 @@ public class CollisionHandler : MonoBehaviour {
 		{
 			Debug.Log(other.gameObject.name);
 
-		if (other.gameObject.tag == "BG_Stars") {
-			if (gameObject.tag != "BG_Stars") {
-				other.gameObject.GetComponent<Health_Management> ().giveDamage (damage_to_give);
+			// give damage to background stars
+			if (other.gameObject.tag == "BG_Stars") {
+				if (gameObject.tag != "BG_Stars") {
+				other.gameObject.GetComponent<Health_Management> ().giveDamage (damage_to_give, gameObject);
+
+				}
+
+			}
+
+			// give damage to starpoints (shot and un-shot)
+			if (other.gameObject.tag == "Star_Proj" || other.gameObject.tag == "Star_Point") {
+			other.gameObject.GetComponent<Health_Management>().giveDamage(damage_to_give, gameObject);
+
+			}
+
+			// give damage to players and add recoil force
+			if (other.gameObject.tag == "Player_Star") {
+			other.gameObject.GetComponent<Health_Management>().giveDamage(damage_to_give, gameObject);
+				other.gameObject.GetComponent<Rigidbody2D> ().AddForce (other.gameObject.GetComponent<Rigidbody2D> ().velocity.normalized * -100);
 
 			}
 
 		}
-
-		if (other.gameObject.tag == "Star_Proj" || other.gameObject.tag == "Star_Point") {
-			other.gameObject.GetComponent<Health_Management>().giveDamage(damage_to_give);
-
-		}
-
-		if (other.gameObject.tag == "Player_Star") {
-			other.gameObject.GetComponent<Health_Management>().giveDamage(damage_to_give);
-			other.gameObject.GetComponent<Rigidbody2D> ().AddForce (other.gameObject.GetComponent<Rigidbody2D> ().velocity.normalized * -100);
-
-		}
-
-		}
-
-	void giveMoreDamage(GameObject stubborn){
-		stubborn.GetComponent<Health_Management> ().giveDamage (damage_to_give);
-	}
+		
 	
 }

@@ -6,27 +6,30 @@ public class CameraMovement : MonoBehaviour {
 	
 	public GameObject player;       //sets reference to player game object
 	public GameObject bg;			//sets reference to game map
-	
+
+	// map dimensions
 	float mapX;
 	float mapY;
+
+	// bounds that camera is limited to
 	private float minX;
 	private float maxX;
 	private float minY;
 	private float maxY;
 	
 	private Vector3 offset;         //Private variable to store the offset distance between the player and camera
-	private float offsetZoom;
 
-	private float targetOrtho;
+	// camera zoom level and the speed the camera changes zoom
+	private float targetOrtho = 5f;
 	private float smoothSpeed = 5.0f;
 
+	// accesses player data
 	private Shooting_Controls_edit shootScript;
 	private List<float> starSize = new List<float>(13);
 	
 	// Use this for initialization
 	void Start () 
 	{
-		targetOrtho = Camera.main.orthographicSize;
 		mapX = bg.transform.localScale.x;
 		mapY = bg.transform.localScale.y;
 		
@@ -48,8 +51,8 @@ public class CameraMovement : MonoBehaviour {
 
 	}
 	
-	// LateUpdate is called after Update each frame
-	void LateUpdate () 
+
+	void Update () 
 	{
 		// Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.on;
 		Vector3 v3 = player.transform.position;
