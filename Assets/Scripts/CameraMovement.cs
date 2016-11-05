@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CameraMovement : MonoBehaviour {
-	
+public class CameraMovement : Photon.MonoBehaviour {
+
+	public Transform cameraTransform;
 	public GameObject player;       //sets reference to player game object
 	public GameObject bg;			//sets reference to game map
 
@@ -26,7 +27,43 @@ public class CameraMovement : MonoBehaviour {
 	// accesses player data
 	private Shooting_Controls_edit shootScript;
 	private List<float> starSize = new List<float>(13);
-	
+
+	void OnEnable()
+	{
+		if (this.photonView != null && !this.photonView.isMine) {
+			//			Debug.Log("entered disable");
+			this.enabled = false;
+			return;
+		}
+
+		//		Debug.Log (this.photonView.isMine);
+		if (!cameraTransform && Camera.main)
+			cameraTransform = Camera.main.transform;
+			Debug.Log ("Camera enabled");
+		if (!cameraTransform) {
+			//			Debug.Log ("Please assign a camera to the ThirdPersonCamera script.");
+			enabled = false;
+		}
+
+		bg = GameObject.Find ("Background");
+		mapX = bg.transform.localScale.x;
+		mapY = bg.transform.localScale.y;
+		//
+		//		//Calculate and store the offset value by getting the distance between the player's position and camera's position.
+		offset = cameraTransform.position - transform.position;
+		//
+		float vertExtent = Camera.main.orthographicSize;    
+		float horzExtent = vertExtent * Screen.width / Screen.height;
+		//
+		//		// Calculations assume map is position at the origin
+		minX = horzExtent - mapX / 2.0f;
+		maxX = mapX / 2.0f - horzExtent;
+		minY = vertExtent - mapY / 2.0f;
+		maxY = mapY / 2.0f - vertExtent;
+
+		//		m_CameraTransformCamera = cameraTransform.GetComponent<Camera> ();
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -47,8 +84,6 @@ public class CameraMovement : MonoBehaviour {
 
 		shootScript = player.GetComponent<Shooting_Controls_edit>();
 		starSize = shootScript.starSizes;
-
-
 	}
 	
 

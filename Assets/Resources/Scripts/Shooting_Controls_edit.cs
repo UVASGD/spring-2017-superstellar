@@ -120,7 +120,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	void OnEnable()
 	{
 		if (this.photonView != null && !this.photonView.isMine) {
-			//			Debug.Log("entered disable");
+						Debug.Log("entered disable");
 			this.enabled = false;
 			return;
 		}
@@ -267,7 +267,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		// loads proper sprites -> projectile triangle sprite and empty "nub" sprite
 		spr.sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
-		sr.sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White_Lineat60");
+		sr.sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White60");
 
 		// shoots projectile at proper rotation, direction, and speed, and gives recoil to player
 		proj.transform.RotateAround(transform.position,Vector3.forward, (pointAngles [point-1] + 90));
