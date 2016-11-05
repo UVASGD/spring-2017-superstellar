@@ -22,3 +22,7 @@ We learned how to use Unity and how to use the Photon Unity Network to create a 
 
 ###What's next for About Me Without Me
 Add more types of stars and polish the mechanics of the game
+
+###Licensing
+This game is covered by the following creative commons license:
+https://creativecommons.org/licenses/by-sa/2.5/legalcode
