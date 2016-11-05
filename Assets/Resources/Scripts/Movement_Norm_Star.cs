@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Movement_Norm_Star : MonoBehaviour {
+public class Movement_Norm_Star : Photon.MonoBehaviour {
 	
 	//Inspector Variables
 	private float playerSpeed = 2f; 
@@ -19,10 +19,19 @@ public class Movement_Norm_Star : MonoBehaviour {
 	private Vector2 velTarget;
 	// the target velocity based on the differenct between player position and movTarget
 
-	void Start()
-	{
-		
-	}
+	public bool isControllable = false;
+	public bool AssignAsTagObject = true;
+
+//	void Awake()
+//	{
+//		// PUN: automatically determine isControllable, if this GO has a PhotonView
+////		PhotonView pv = this.gameObject.GetComponent<PhotonView> ();
+//		if (this.photonView != null && !this.photonView.isMine) {
+//			//			Debug.Log("entered disable");
+//			this.enabled = false;
+//			return;
+//		}
+//	}
 
 	void Update () 
 	{

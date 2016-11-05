@@ -160,13 +160,13 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	{
 		ScenePhotonView = this.GetComponent<PhotonView>();
 
-		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation);
-
+		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
 		// calculate the directions to shoot projectiles at that instant
-		redrawStar(transform.rotation, starPointNum);
+//		redrawStar(transform.rotation, starPointNum);
 
+		ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
 		// regenerate player health
-		healthRegen (playerRegen);
+//		healthRegen (playerRegen);
 
 		// set values for keys that can be used for shooting
 		List<KeyCode> shootKeys = new List<KeyCode> (12);
@@ -187,14 +187,16 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
 		{
 			starType = starType - 1;
-			upgradeStar(starType);
+//			upgradeStar(starType);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
 		}
 
 		// upgrade star class (testing purposes)
 		if (Input.GetKeyDown (KeyCode.U) && starType < 13)
 		{
 			starType = starType + 1;
-			upgradeStar(starType);
+//			upgradeStar(starType);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
 		}
 
 
@@ -238,15 +240,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			
 	}
 
-	void Shot(int point)
-	{
-		Debug.Log("Shoot: " + point);
-		ScenePhotonView.RPC("Shoot", PhotonTargets.All, point);
-	}
-
 	[PunRPC]
-	
-	
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
 		
@@ -281,6 +275,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] * projForce/10f);
 
 		// tells starpoint regeneration function to run
+
+//		ScenePhotonView.RPC("reload", PhotonTargets.All, starpoints [point - 1],spr,reloadTime, point - 1, starType);
 		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1, starType));
 
 		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
@@ -294,7 +290,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	}
 
 
-
+	[PunRPC]
 	// regenerate starpoints after they were shot off or destroyed
 	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strClassN)
 	{
@@ -317,6 +313,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		}
 	}
 
+	[PunRPC]
 	// kills un-shot starpoints when their health reaches 0
 	public void destroyStarPoint(GameObject starIndex){
 
@@ -335,6 +332,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		}
 	}
 
+	[PunRPC]
 	// tells the health manager to regenerate player health over time
 	public void healthRegen(float starRegen){
 		GetComponent<Health_Management> ().Health = Mathf.MoveTowards (GetComponent<Health_Management> ().Health, maxPlayerHealth, starRegen * Time.deltaTime);
@@ -364,6 +362,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		}
 	}
 
+	[PunRPC]
 	// redraws the star with a particular number of points
 	void resetShooting(Quaternion q, int numPoints){
 
@@ -408,6 +407,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		}
 	}
 
+	[PunRPC]
 	// reloads star under a particular class -> establishes stats and redraws the star
 	void upgradeStar(int starGrade){
 
@@ -430,6 +430,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 	}
 
+	[PunRPC]
 	// gives points to the player
 	public void AddMass(int points){
 		starMass += points;
