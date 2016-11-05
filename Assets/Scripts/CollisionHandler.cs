@@ -5,7 +5,10 @@ public class CollisionHandler : MonoBehaviour {
 
 		void OnTriggerEnter2D(Collider2D coll)
 		{
-			Debug.Log(coll.gameObject.name);
+			if (coll.gameObject.tag != "Player") {
+//				Debug.Log (coll.gameObject.name);
+				Destroy (coll.gameObject);
+			}
 		}
 	
 }

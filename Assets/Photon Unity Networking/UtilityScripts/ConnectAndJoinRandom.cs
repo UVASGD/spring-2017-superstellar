@@ -52,8 +52,9 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 
     public virtual void OnPhotonRandomJoinFailed()
     {
-        Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = 4}, null);");
-        PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = 4 }, null);
+		byte numplayers = 100;
+		Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = "+ numplayers + "}, null);");
+		PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = numplayers }, null);
     }
 
     // the following methods are implemented to give you some context. re-implement them as needed.
