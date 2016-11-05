@@ -2,8 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Shooting_Controls_edit: MonoBehaviour
+public class Shooting_Controls_edit: Photon.MonoBehaviour
 {
+
+	private static PhotonView ScenePhotonView;
+
 	//sprites -> projectile and non-projected point
 	public GameObject projectile;
 	public GameObject starPointSprite;
@@ -114,7 +117,14 @@ public class Shooting_Controls_edit: MonoBehaviour
 	private List<float> pointAngles2 = new List<float>(12);
 	// the angles at which starpoints are regenerated
 
-
+	void OnEnable()
+	{
+		if (this.photonView != null && !this.photonView.isMine) {
+			//			Debug.Log("entered disable");
+			this.enabled = false;
+			return;
+		}
+	}
 
 	void Start() {
 		// set initial shooting conditions
@@ -148,6 +158,10 @@ public class Shooting_Controls_edit: MonoBehaviour
 
 	void Update( )
 	{
+		ScenePhotonView = this.GetComponent<PhotonView>();
+
+		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation);
+
 		// calculate the directions to shoot projectiles at that instant
 		redrawStar(transform.rotation, starPointNum);
 
@@ -210,7 +224,7 @@ public class Shooting_Controls_edit: MonoBehaviour
 
 				// check conditions to see if starpoint can be shot
 				if (((Input.GetKeyDown (shootKeys [i]) || autoShoot [i] == 1 || autoShootAll || Input.GetKey(KeyCode.R))||((Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space)) && shootOnMouse [i] == 1)) && canShoot [i] == 1)
-					Shoot (i + 1);
+					ScenePhotonView.RPC("Shoot", PhotonTargets.All, i + 1);
 			} 
 
 			// non-existant starpoints can't be shot
@@ -223,6 +237,14 @@ public class Shooting_Controls_edit: MonoBehaviour
 		}
 			
 	}
+
+	void Shot(int point)
+	{
+		Debug.Log("Shoot: " + point);
+		ScenePhotonView.RPC("Shoot", PhotonTargets.All, point);
+	}
+
+	[PunRPC]
 	
 	
 	//Creates projectile and shoots it in appropriate direction
@@ -261,11 +283,17 @@ public class Shooting_Controls_edit: MonoBehaviour
 		// tells starpoint regeneration function to run
 		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1, starType));
 
+		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
+		pc.density = 0;
+		pc.isTrigger = true;
+
 		// destroys projectile
 		Destroy(proj, lifetime);
 
 
 	}
+
+
 
 	// regenerate starpoints after they were shot off or destroyed
 	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strClassN)
@@ -312,6 +340,7 @@ public class Shooting_Controls_edit: MonoBehaviour
 		GetComponent<Health_Management> ().Health = Mathf.MoveTowards (GetComponent<Health_Management> ().Health, maxPlayerHealth, starRegen * Time.deltaTime);
 	}
 
+	[PunRPC]
 	// calculates the angles and direction vectors for projectiles
 	void redrawStar(Quaternion q, int numPoints) {
 			
