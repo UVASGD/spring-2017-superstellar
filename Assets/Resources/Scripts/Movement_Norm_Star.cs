@@ -22,16 +22,15 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	public bool isControllable = false;
 	public bool AssignAsTagObject = true;
 
-//	void Awake()
-//	{
-//		// PUN: automatically determine isControllable, if this GO has a PhotonView
-////		PhotonView pv = this.gameObject.GetComponent<PhotonView> ();
-//		if (this.photonView != null && !this.photonView.isMine) {
-//			//			Debug.Log("entered disable");
-//			this.enabled = false;
-//			return;
-//		}
-//	}
+
+	void OnEnable()
+	{
+		if (this.photonView != null && !this.photonView.isMine) {
+						Debug.Log("entered disable");
+			this.enabled = false;
+			return;
+		}
+	}
 
 	void Update () 
 	{
