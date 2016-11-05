@@ -30,11 +30,11 @@ public class CameraMovement : Photon.MonoBehaviour {
 
 	void OnEnable()
 	{
-		if (this.photonView != null && !this.photonView.isMine) {
-			//			Debug.Log("entered disable");
-			this.enabled = false;
-			return;
-		}
+//		if (this.photonView != null && !this.photonView.isMine) {
+//			//			Debug.Log("entered disable");
+//			this.enabled = false;
+//			return;
+//		}
 
 		//		Debug.Log (this.photonView.isMine);
 		if (!cameraTransform && Camera.main)
