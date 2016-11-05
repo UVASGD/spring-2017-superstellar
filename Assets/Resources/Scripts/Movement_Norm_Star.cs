@@ -40,8 +40,9 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 		movTarget.y = transform.position.y;
 
 		// Player Movement
-		moveFunct();
-
+			
+			moveFunct ();
+	
 		//Player Turning w/ mouse
 		rotate();
 
@@ -51,20 +52,31 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	{
 		// add to movTarget based on key input
 		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {//Press up arrow key to move forward on the Y AXIS
-			movTarget += new Vector2(0f, playerSpeed * Time.deltaTime / (transform.localScale.x));
+
+			if (movTarget.y < 100) {
+				movTarget += new Vector2 (0f, playerSpeed * Time.deltaTime / (transform.localScale.x));
+			}
 
 		} 
 		if (Input.GetKey (KeyCode.DownArrow) || Input.GetKey (KeyCode.S)) {//Press down arrow key to move backward on the Y AXIS
-			movTarget += new Vector2(0f, -playerSpeed * Time.deltaTime / (transform.localScale.x));
+
+			if (movTarget.y > -100) {
+				movTarget += new Vector2 (0f, -playerSpeed * Time.deltaTime / (transform.localScale.x));
+			}
 
 		} 
 		if (Input.GetKey (KeyCode.RightArrow) || Input.GetKey (KeyCode.D)) {//Press right arrow key to move forward on the X AXIS
-			movTarget += new Vector2(playerSpeed * Time.deltaTime / (transform.localScale.x), 0f);
+
+			if (movTarget.x < 100) {
+				movTarget += new Vector2 (playerSpeed * Time.deltaTime / (transform.localScale.x), 0f);
+			}
 
 		} 
 		if (Input.GetKey (KeyCode.LeftArrow) || Input.GetKey (KeyCode.A)) {//Press left arrow key to move backward on the X AXIS
-			movTarget += new Vector2(-playerSpeed * Time.deltaTime / (transform.localScale.x), 0f);
 
+			if (movTarget.x > -100) {
+				movTarget += new Vector2 (-playerSpeed * Time.deltaTime / (transform.localScale.x), 0f);
+			}
 		} 
 
 		// if no movement input, set velocity target to zero
