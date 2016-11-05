@@ -117,18 +117,16 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private List<float> pointAngles2 = new List<float>(12);
 	// the angles at which starpoints are regenerated
 
-//	void OnEnable()
-//	{
-//		if (this.photonView != null && !this.photonView.isMine) {
-//						Debug.Log("entered disable");
-//			this.enabled = false;
-//			return;
-//		}
-//	}
+	void OnEnable()
+	{
+		if (this.photonView != null && !this.photonView.isMine) {
+						Debug.Log("entered disable");
+			this.enabled = false;
+			return;
+		}
+	}
 
 	void Start() {
-
-		ScenePhotonView = this.GetComponent<PhotonView>();
 		// set initial shooting conditions
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -154,13 +152,14 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 
 		// initialize star to class 1
-		ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1);
-//		upgradeStar (1);
+		upgradeStar (1);
 	}
 
 
 	void Update( )
 	{
+		ScenePhotonView = this.GetComponent<PhotonView>();
+
 		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
 		// calculate the directions to shoot projectiles at that instant
 //		redrawStar(transform.rotation, starPointNum);

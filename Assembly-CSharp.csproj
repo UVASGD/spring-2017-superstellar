@@ -45,7 +45,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CheckIfMine.cs" />
      <Compile Include="Assets\GitChecks\Controls_Check.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayerApply.cs" />
