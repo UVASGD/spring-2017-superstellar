@@ -67,30 +67,34 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 	void moveFunct()
 	{
-
+		Vector3 translatePos;
 		if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))//Press up arrow key to move forward on the Y AXIS
 		{
-			if (movTarget.y < maxY) {
-				movTarget += new Vector3 (0f, playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
+			translatePos = new Vector3 (0f, playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
+			if (movTarget.y + translatePos.y < maxY) {
+				movTarget += translatePos;
 			}
 
 		}
 		if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))//Press up arrow key to move forward on the Y AXIS
 		{
-			if (movTarget.y > minY) {
-				movTarget += new Vector3 (0f, -playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
+			translatePos = new Vector3 (0f, -playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
+			if (movTarget.y + translatePos.y > minY) {
+				movTarget += translatePos;
 			}
 		}
 		if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))//Press up arrow key to move forward on the Y AXIS
 		{
-			if (movTarget.x < maxX) {
-				movTarget += new Vector3 (playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f, 0f);
+			translatePos = new Vector3 (playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f, 0f);
+			if (movTarget.x + translatePos.x < maxX) {
+				movTarget += translatePos;
 			}
 		}
 		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))//Press up arrow key to move forward on the Y AXIS
 		{
-			if (movTarget.x > minX) {
-				movTarget += new Vector3 (-playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f, 0f);
+			translatePos = new Vector3 (-playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f, 0f);
+			if (movTarget.x + translatePos.x > minX) {
+				movTarget += translatePos;
 			}
 		}
 		transform.position = Vector3.SmoothDamp (transform.position, movTarget, ref dampSpeed, smoothTime, playerSpeed / (transform.localScale.x * transform.localScale.x));
