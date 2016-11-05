@@ -13,6 +13,16 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	public bool isControllable = false;
 	public bool AssignAsTagObject = true;
 
+
+	public GameObject bg;			//sets reference to game map
+
+	float mapX;
+	float mapY;
+	private float minX;
+	private float maxX;
+	private float minY;
+	private float maxY;
+
 	void Awake()
 	{
 		// PUN: automatically determine isControllable, if this GO has a PhotonView
@@ -31,7 +41,18 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 	void Start()
 	{
-		
+		bg = GameObject.Find ("Background");
+		mapX = bg.transform.localScale.x;
+		mapY = bg.transform.localScale.y;
+		//
+		float vertExtent = Camera.main.orthographicSize;    
+		float horzExtent = vertExtent * Screen.width / Screen.height;
+		//
+		//		// Calculations assume map is position at the origin
+		minX = horzExtent - mapX / 2.0f;
+		maxX = mapX / 2.0f - horzExtent;
+		minY = vertExtent - mapY / 2.0f;
+		maxY = mapY / 2.0f - vertExtent;
 	}
 
 	void Update () 
@@ -49,24 +70,28 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 		if(Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W))//Press up arrow key to move forward on the Y AXIS
 		{
-			movTarget += new Vector3(0f, playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
-
+			if (movTarget.y < maxY) {
+				movTarget += new Vector3 (0f, playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
+			}
 
 		}
 		if(Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))//Press up arrow key to move forward on the Y AXIS
 		{
-			movTarget += new Vector3(0f, -playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
-
+			if (movTarget.y > minY) {
+				movTarget += new Vector3 (0f, -playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f);
+			}
 		}
 		if(Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))//Press up arrow key to move forward on the Y AXIS
 		{
-			movTarget += new Vector3(playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f,0f);
-
+			if (movTarget.x < maxX) {
+				movTarget += new Vector3 (playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f, 0f);
+			}
 		}
 		if(Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))//Press up arrow key to move forward on the Y AXIS
 		{
-			movTarget += new Vector3(-playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f,0f);
-
+			if (movTarget.x > minX) {
+				movTarget += new Vector3 (-playerSpeed * Time.deltaTime / (transform.localScale.x * transform.localScale.x), 0f, 0f);
+			}
 		}
 		transform.position = Vector3.SmoothDamp (transform.position, movTarget, ref dampSpeed, smoothTime, playerSpeed / (transform.localScale.x * transform.localScale.x));
 

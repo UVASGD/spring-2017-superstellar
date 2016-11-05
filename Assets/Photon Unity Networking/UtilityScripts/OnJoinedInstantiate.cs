@@ -9,6 +9,8 @@ public class OnJoinedInstantiate : MonoBehaviour
 
     public void OnJoinedRoom()
 	{
+		
+		Destroy(GameObject.Find("Title"));
         if (this.PrefabsToInstantiate != null)
         {
             foreach (GameObject o in this.PrefabsToInstantiate)
