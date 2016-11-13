@@ -19,6 +19,8 @@ public class Score_Manager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+
+
 		text1 = word1.GetComponent<Text>();
 		text2 = word2.GetComponent<Text>();
 

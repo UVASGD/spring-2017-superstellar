@@ -19,17 +19,24 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	private Vector2 velTarget;
 	// the target velocity based on the differenct between player position and movTarget
 
+//	private Camera camera = 
+
 	public bool isControllable = false;
 	public bool AssignAsTagObject = true;
 
+	private GameObject parent;
 
 	void OnEnable()
 	{
+		this.transform.SetParent(GameObject.Find("Player(Clone)").transform);
+		parent = this.transform.parent.gameObject;
+
 		if (this.photonView != null && !this.photonView.isMine) {
-						Debug.Log("entered disable");
 			this.enabled = false;
 			return;
 		}
+
+		Debug.Log (parent);
 	}
 
 	void Update () 
@@ -39,8 +46,7 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 		movTarget.y = transform.position.y;
 
 		// Player Movement
-			
-			moveFunct ();
+		moveFunct ();
 	
 		//Player Turning w/ mouse
 		rotate();
@@ -94,9 +100,11 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	}
 
 	void rotate() {
-		Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
-		Vector3 dir = Input.mousePosition - pos;
-		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 
+		
+//		Vector3 pos =  parent.gameObject.GetComponentInChildren<PlayerCamera>
+//			Camera.main.WorldToScreenPoint(transform.position);
+//		Vector3 dir = Input.mousePosition - pos;
+//		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+//		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 
 	}
 }

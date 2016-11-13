@@ -23,6 +23,8 @@ public class Follow_Player : MonoBehaviour {
 
 		transform.localScale = player.transform.localScale;
 
+
+		Debug.Log (player);
 		float currentHealth = (int)player.GetComponent<Health_Management> ().Health;
 		float maxHealth = (int)player.GetComponent<Shooting_Controls_edit> ().maxPlayerHealth;
 

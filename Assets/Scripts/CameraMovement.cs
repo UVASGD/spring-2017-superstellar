@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class CameraMovement : Photon.MonoBehaviour {
 
-	public Transform cameraTransform;
 	public GameObject player;       //sets reference to player game object
 	public GameObject bg;			//sets reference to game map
 
@@ -28,18 +27,31 @@ public class CameraMovement : Photon.MonoBehaviour {
 	private Shooting_Controls_edit shootScript;
 	private List<float> starSize = new List<float>(13);
 
+	private GameObject parent;
+
+	private Transform cameraTransform;
+
 	void OnEnable()
 	{
-//		if (this.photonView != null && !this.photonView.isMine) {
-//			//			Debug.Log("entered disable");
-//			this.enabled = false;
-//			return;
-//		}
+		this.transform.SetParent(GameObject.Find("Player(Clone)").transform);
+//		Debug.Log (GameObject.Find ("Player").transform);
+//		Debug.Log (this.transform.parent.gameObject);
+		parent = this.transform.parent.gameObject;
+
+		PhotonView photonView = parent.GetPhotonView ();
+		if (photonView != null && !photonView.isMine) {
+//			Debug.Log ("entered disable camera");
+			this.enabled = false;
+			return;
+		} else {
+			//			Debug.Log ("enabled camera : " + photonView.ownerId);
+//			Camera.main.transform.tag = "Untagged";
+//			this.GetComponent<Camera>().transform.tag = "MainCamera";
+		}
 
 		//		Debug.Log (this.photonView.isMine);
 		if (!cameraTransform && Camera.main)
 			cameraTransform = Camera.main.transform;
-			Debug.Log ("Camera enabled");
 		if (!cameraTransform) {
 			//			Debug.Log ("Please assign a camera to the ThirdPersonCamera script.");
 			enabled = false;
@@ -52,7 +64,7 @@ public class CameraMovement : Photon.MonoBehaviour {
 		//		//Calculate and store the offset value by getting the distance between the player's position and camera's position.
 		offset = cameraTransform.position - transform.position;
 		//
-		float vertExtent = Camera.main.orthographicSize;    
+		float vertExtent = Camera.main.orthographicSize;
 		float horzExtent = vertExtent * Screen.width / Screen.height;
 		//
 		//		// Calculations assume map is position at the origin
@@ -69,10 +81,10 @@ public class CameraMovement : Photon.MonoBehaviour {
 	{
 		mapX = bg.transform.localScale.x;
 		mapY = bg.transform.localScale.y;
-		
+
 		//Calculate and store the offset value by getting the distance between the player's position and camera's position.
 		offset = transform.position - player.transform.position;
-		
+
 		float vertExtent = Camera.main.orthographicSize;    
 		float horzExtent = vertExtent * Screen.width / Screen.height;
 		
@@ -82,8 +94,14 @@ public class CameraMovement : Photon.MonoBehaviour {
 		minY = vertExtent - mapY / 2.0f;
 		maxY = mapY / 2.0f - vertExtent;
 
-		shootScript = player.GetComponent<Shooting_Controls_edit>();
-		starSize = shootScript.starSizes;
+//		shootScript = parent.gameObject.GetComponentInChildren<Shooting_Controls_edit>();
+//		Debug.Log (shootScript.GetType());
+//
+//
+////		Debug.Log (instance);
+//		starSize = shootScript.starSizes;
+////		starSize = shootScript.starSizes;
+//		Debug.Log (starSize.Count);
 	}
 	
 
@@ -91,17 +109,24 @@ public class CameraMovement : Photon.MonoBehaviour {
 	{
 		// Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.on;
 		Vector3 v3 = player.transform.position;
-		
+
+		Debug.Log(player.transform.position);
+
 		v3.x = Mathf.Clamp(v3.x, minX, maxX);
 		v3.y = Mathf.Clamp(v3.y, minY, maxY);
 		
 		transform.position = v3 + offset;
 
+		Debug.Log (transform.position);
 
+//		Debug.Log (shootScript.starType);
+//		Debug.Log (starSize.Count);
 		//Zoom when star changes size
-		int starClass = shootScript.starType;
-		targetOrtho = starSize [starClass - 1]*5f;
-		Camera.main.orthographicSize = Mathf.MoveTowards (Camera.main.orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
+//		int starClass = shootScript.starType;
+//
+//		targetOrtho = starSize[starClass - 1]*5f;
+
+//		this.GetComponent<Camera>().orthographicSize = Mathf.MoveTowards (this.GetComponent<Camera>().orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
 	}
 
 

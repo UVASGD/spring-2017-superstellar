@@ -117,14 +117,16 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private List<float> pointAngles2 = new List<float>(12);
 	// the angles at which starpoints are regenerated
 
-//	void OnEnable()
-//	{
-//		if (this.photonView != null && !this.photonView.isMine) {
-//						Debug.Log("entered disable");
-//			this.enabled = false;
-//			return;
-//		}
-//	}
+	void OnEnable()
+	{
+		if (this.photonView != null && !this.photonView.isMine) {
+			Debug.Log ("disabled controls : " + this.photonView.ownerId);
+			this.enabled = false;
+			return;
+		} else {
+			Debug.Log("I am player "+ this.photonView.ownerId);
+		}
+	}
 
 	void Start() {
 
@@ -156,6 +158,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		// initialize star to class 1
 		ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1);
 //		upgradeStar (1);
+
+//		Debug.Log (starSizes.Count);
 	}
 
 

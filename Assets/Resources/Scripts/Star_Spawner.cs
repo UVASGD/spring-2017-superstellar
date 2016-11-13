@@ -27,8 +27,11 @@ public class Star_Spawner : MonoBehaviour {
 	// holds all the spawned items
 	private List<GameObject> spawnedStuff = new List<GameObject>();
 
+	private GameObject container;
+
 	void Start () {
 
+		container = GameObject.Find("BG Stars");
 		// set spawner bounds
 		mapX = bg.transform.localScale.x;
 		mapY = bg.transform.localScale.y;
@@ -54,6 +57,11 @@ public class Star_Spawner : MonoBehaviour {
 
 			// spawn star and give it random rotation, torque, and force, then add it to the list
 			GameObject spawnedStar = Instantiate (starSpawn, target, Quaternion.identity) as GameObject;
+
+//			Debug.Log("instantiating background stars");
+			spawnedStar.transform.SetParent(container.transform);
+//			Debug.Log (spawnedStar.transform.parent);
+
 			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
 			int RandAngle = Random.Range (0, 360);
 			spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
@@ -71,6 +79,11 @@ public class Star_Spawner : MonoBehaviour {
 				Vector3 target = new Vector3 (x, y, 0);
 
 				GameObject spawnedStar = Instantiate (starSpawn, target, Quaternion.identity) as GameObject;
+
+//				Debug.Log("instantiating background stars");
+				spawnedStar.transform.SetParent(container.transform);
+//				Debug.Log (spawnedStar.transform.parent);
+
 				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
 				int RandAngle = Random.Range (0, 360);
 				spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
