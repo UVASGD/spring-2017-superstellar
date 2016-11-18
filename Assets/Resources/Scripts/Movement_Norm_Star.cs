@@ -28,13 +28,13 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 	void OnEnable()
 	{
-		this.transform.SetParent(GameObject.Find("Player(Clone)").transform);
 		parent = this.transform.parent.gameObject;
 
 		if (this.photonView != null && !this.photonView.isMine) {
 			this.enabled = false;
 			return;
 		}
+		Debug.Log(this.photonView.ownerId);
 	}
 
 	void Update () 
@@ -98,7 +98,6 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	}
 
 	void rotate() {
-		
 		Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
 		Vector3 dir = Input.mousePosition - pos;
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
