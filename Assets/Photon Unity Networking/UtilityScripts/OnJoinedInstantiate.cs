@@ -7,7 +7,7 @@ public class OnJoinedInstantiate : MonoBehaviour
     public float PositionOffset = 2.0f;
     public GameObject[] PrefabsToInstantiate;   // set in inspector
 
-    public void OnEnable()
+    public void OnJoinedRoom()
     {
         if (this.PrefabsToInstantiate != null)
         {
