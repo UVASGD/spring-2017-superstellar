@@ -20,7 +20,7 @@ We have a great team and we were able to create a functional game in a relativel
 ###What we learned
 We learned how to use Unity and how to use the Photon Unity Network to create a multiplayer game
 
-###What's next for About Me Without Me
+###What's next for Super Stellar
 Add more types of stars and polish the mechanics of the game
 
 ###Licensing
