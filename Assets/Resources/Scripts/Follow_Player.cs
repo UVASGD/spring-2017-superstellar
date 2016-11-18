@@ -4,13 +4,16 @@ using UnityEngine.UI;
 
 public class Follow_Player : MonoBehaviour {
 
-	public GameObject player;
+	private GameObject player;
 
-	public Image bar;
+	private Image bar;
 
 	// Use this for initialization
 	void Start () {
-	
+		player = this.gameObject.transform.parent.FindChild("Star").gameObject;
+
+		Transform barParent = this.gameObject.transform.Find("Health Bar");
+		bar = barParent.FindChild ("Health_Bar_BG").GetComponent<Image>();
 	}
 	
 	// Update is called once per frame
@@ -23,8 +26,6 @@ public class Follow_Player : MonoBehaviour {
 
 		transform.localScale = player.transform.localScale;
 
-
-		Debug.Log (player);
 		float currentHealth = (int)player.GetComponent<Health_Management> ().Health;
 		float maxHealth = (int)player.GetComponent<Shooting_Controls_edit> ().maxPlayerHealth;
 

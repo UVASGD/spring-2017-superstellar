@@ -35,8 +35,6 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 			this.enabled = false;
 			return;
 		}
-
-		Debug.Log (parent);
 	}
 
 	void Update () 
@@ -101,10 +99,9 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 	void rotate() {
 		
-//		Vector3 pos =  parent.gameObject.GetComponentInChildren<PlayerCamera>
-//			Camera.main.WorldToScreenPoint(transform.position);
-//		Vector3 dir = Input.mousePosition - pos;
-//		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-//		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 
+		Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+		Vector3 dir = Input.mousePosition - pos;
+		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward); 
 	}
 }

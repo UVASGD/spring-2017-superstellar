@@ -14,20 +14,18 @@ public class Score_Manager : MonoBehaviour {
 
 	Text text2;
 
-	public GameObject player;
+	private GameObject player;
 
 	// Use this for initialization
 	void Start () {
 
-
+		player = this.gameObject.transform.parent.FindChild("Star").gameObject;
 
 		text1 = word1.GetComponent<Text>();
 		text2 = word2.GetComponent<Text>();
 
 		score = 0;
 
-
-	
 	}
 	
 	// Update is called once per frame
