@@ -24,7 +24,7 @@ public class Follow_Player : MonoBehaviour {
 		float x = player.transform.position.x;
 		float y = player.transform.position.y - 1.5f*player.transform.localScale.x;
 
-		transform.position = new Vector3 (x, y, 0);
+		transform.position = new Vector3 (x, y, -5);
 
 		transform.localScale = player.transform.localScale;
 
