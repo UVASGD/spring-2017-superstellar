@@ -248,7 +248,10 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	[PunRPC]
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
-		
+
+
+		Debug.Log (this.photonView.ownerId);
+
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
 

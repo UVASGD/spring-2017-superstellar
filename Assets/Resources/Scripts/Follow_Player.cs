@@ -12,6 +12,8 @@ public class Follow_Player : MonoBehaviour {
 	void Start () {
 		player = this.gameObject.transform.parent.FindChild("Star").gameObject;
 
+		Debug.Log (this.gameObject.transform.parent.GetComponentsInChildren<Transform> ().Length);
+
 		Transform barParent = this.gameObject.transform.Find("Health Bar");
 		bar = barParent.FindChild ("Health_Bar_BG").GetComponent<Image>();
 	}
