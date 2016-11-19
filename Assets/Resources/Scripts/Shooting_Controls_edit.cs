@@ -159,7 +159,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1);
 //		upgradeStar (1);
 
-//		Debug.Log (starSizes.Count);
+		Debug.Log (starSizes.Count);
 	}
 
 

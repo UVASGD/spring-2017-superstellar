@@ -10,6 +10,7 @@ public class Follow_Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
 		player = this.gameObject.transform.parent.FindChild("Star").gameObject;
 
 		Debug.Log (this.gameObject.transform.parent.GetComponentsInChildren<Transform> ().Length);
