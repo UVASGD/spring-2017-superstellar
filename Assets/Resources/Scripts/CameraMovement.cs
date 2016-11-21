@@ -40,18 +40,18 @@ public class CameraMovement : Photon.MonoBehaviour {
 
 		PhotonView photonView = parent.GetPhotonView ();
 		if (photonView != null && !photonView.isMine) {
-			Debug.Log ("disabled camera : " + photonView.ownerId);
+//			Debug.Log ("disabled camera : " + photonView.ownerId);
 			this.gameObject.GetComponent<Camera> ().enabled = false;
 			this.enabled = false;
 			return;
 		} else {
-			Debug.Log ("enabled camera : " + photonView.ownerId);
+//			Debug.Log ("enabled camera : " + photonView.ownerId);
 			Camera.main.enabled = false;
 			this.GetComponent<Camera>().transform.tag = "MainCamera";
 		}
 
 
-		Debug.Log(photonView.ownerId);
+//		Debug.Log(photonView.ownerId);
 		//		Debug.Log (this.photonView.isMine);
 		if (!cameraTransform && Camera.main)
 			cameraTransform = Camera.main.transform;
@@ -114,7 +114,7 @@ public class CameraMovement : Photon.MonoBehaviour {
 		//Zoom when star changes size
 		int starClass = shootScript.starType;
 
-		Debug.Log (starSize.Count);
+//		Debug.Log (starSize.Count);
 		targetOrtho = starSize[starClass - 1]*5f;
 
 		this.GetComponent<Camera>().orthographicSize = Mathf.MoveTowards (this.GetComponent<Camera>().orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);

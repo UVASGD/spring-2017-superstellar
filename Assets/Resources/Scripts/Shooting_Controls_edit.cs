@@ -117,26 +117,29 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private List<float> pointAngles2 = new List<float>(12);
 	// the angles at which starpoints are regenerated
 
-	void OnEnable()
-	{
-		if (this.photonView != null && !this.photonView.isMine) {
-			Debug.Log ("disabled controls : " + this.photonView.ownerId);
-			this.enabled = false;
-			return;
-		} else {
-			Debug.Log("I am player "+ this.photonView.ownerId);
-		}
-	}
+//	void OnEnable()
+//	{
+//		Debug.Log ("Shooting Controls");
+//		if (this.photonView != null && !this.photonView.isMine) {
+//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
+//			this.enabled = false;
+//			return;
+//		} else {
+//			Debug.Log("I am player "+ this.photonView.ownerId);
+//		}
+//	}
 
 	void Start() {
 
-		ScenePhotonView = this.GetComponent<PhotonView>();
-		// set initial shooting conditions
+
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 		playerTag = GetComponent<Tag_Manager> ().tag;
+
+		starpoints = GetComponent<StarManager>().starpoints;
+		starSizes = GetComponent<StarManager>().starSizes;
 
 		// set class values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
@@ -155,16 +158,24 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		starBodyRegen = new List<float>{ 0.1f, 0.2f, 0.05f, 0.03f, 0.3f, 0.02f, 0.3f, 0.01f, 0.4f, 0.4f, 0.3f, 0.2f, 0.5f };
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 
-		// initialize star to class 1
-		ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1);
-//		upgradeStar (1);
+		Debug.Log ("SHOOTING CONTROLS");
+		if (this.photonView != null && !this.photonView.isMine) {
+			//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
+			this.enabled = false;
+			return;
+		} else {
+			//			Debug.Log("I am player "+ this.photonView.ownerId);
+		}
+			
+		ScenePhotonView = this.GetComponent<PhotonView>();
+		// set initial shooting conditions
 
-		Debug.Log (starSizes.Count);
 	}
 
 
 	void Update( )
 	{
+
 		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
 		// calculate the directions to shoot projectiles at that instant
 //		redrawStar(transform.rotation, starPointNum);
@@ -187,23 +198,6 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 				autoShootAll = true;
 			}
 		}
-
-		// downgrade star class (testing purposes)
-		if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
-		{
-			starType = starType - 1;
-//			upgradeStar(starType);
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
-		}
-
-		// upgrade star class (testing purposes)
-		if (Input.GetKeyDown (KeyCode.U) && starType < 13)
-		{
-			starType = starType + 1;
-//			upgradeStar(starType);
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
-		}
-
 
 		// check to see if stars can be shot
 		for (int i = 0; i < 12; i++) {
@@ -230,8 +224,10 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 				}
 
 				// check conditions to see if starpoint can be shot
-				if (((Input.GetKeyDown (shootKeys [i]) || autoShoot [i] == 1 || autoShootAll || Input.GetKey(KeyCode.R))||((Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space)) && shootOnMouse [i] == 1)) && canShoot [i] == 1)
-					ScenePhotonView.RPC("Shoot", PhotonTargets.All, i + 1);
+				if (((Input.GetKeyDown (shootKeys [i]) || autoShoot [i] == 1 || autoShootAll || Input.GetKey (KeyCode.R)) || ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.Space)) && shootOnMouse [i] == 1)) && canShoot [i] == 1) {
+//					Debug.Log ("starSizes: " + starSizes.Count);
+					ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i + 1);
+				}
 			} 
 
 			// non-existant starpoints can't be shot
@@ -244,6 +240,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		}
 			
 	}
+
+
 
 	[PunRPC]
 	//Creates projectile and shoots it in appropriate direction
@@ -258,6 +256,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		proj.GetComponent<Tag_Manager> ().tag = playerTag;
 
 		// sets projectile size, material, health, damage, and accesses its rigidbody and spriterenderer
+		Debug.Log ("starSizes: " + starSizes.Count);
 		proj.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
 		proj.GetComponent<Renderer> ().material = starMats [starType - 1];
 		proj.GetComponent<Health_Management> ().Health = maxPointHealth;
@@ -279,6 +278,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		// shoots projectile at proper rotation, direction, and speed, and gives recoil to player
 		proj.transform.RotateAround(transform.position,Vector3.forward, (pointAngles [point-1] + 90));
+		Debug.Log (projForce);
 		rb.AddForce (pointVectList[point - 1]*projForce);
 		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] * projForce/10f);
 
@@ -369,74 +369,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			pointVectList.Add(new Vector2(Mathf.Sin (pointAngles [i] * Mathf.Deg2Rad),  -Mathf.Cos (pointAngles [i] * Mathf.Deg2Rad)));
 		}
 	}
-
-	[PunRPC]
-	// redraws the star with a particular number of points
-	void resetShooting(Quaternion q, int numPoints){
-
-		// turns shooting off and clears the reload to-do list
-		autoShootAll = false;
-		spri.Clear ();
-
-		// destroys all the old starpoints and clears the starpoint list
-		int oldPt = starpoints.Count;
-		for (int i = 0; i < oldPt; i++) {
-			Destroy (starpoints [i]);
-		}
-		starpoints.Clear ();
-
-		// calculates the angles to draw the new starpoints at
-		float angle2 = q.eulerAngles.z;
-		float topAngle2 = angle2 + 90;
-		pointAngles2.Clear ();
-		pointAngles2.Add(topAngle2);
-		for(int i = 1; i < numPoints; i++)
-		{
-			pointAngles2.Add(topAngle2 - i * (360 / numPoints));
-		}
-
-		// instantiates the new starpoints and gives them size, health, and damage, then adds them to the list and makes them shootable
-		for(int i = 0; i < numPoints; i++)
-		{
-			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
-
-			newPt.GetComponent<Tag_Manager> ().tag = playerTag;
-
-			newPt.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
-			newPt.GetComponent<Renderer> ().material = starMats [starType - 1];
-			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
-			newPt.transform.parent = transform;
-			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
-			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
-			starpoints.Add (newPt);
-			canShoot [i] = 1;
-			autoShoot [i] = 0;
-			shootOnMouse [i] = 1;
-		}
-	}
-
-	[PunRPC]
-	// reloads star under a particular class -> establishes stats and redraws the star
-	void upgradeStar(int starGrade){
-
-		transform.localScale = new Vector3(starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f);
-		GetComponent<Renderer> ().material = starMats [starGrade - 1];
-		starPointNum = starPtClass [starGrade - 1];
-		maxPointHealth = starPtHealth [starGrade - 1];
-		maxPointDam = starPtDam [starGrade - 1];
-		maxPlayerHealth = starBodyHealth [starGrade - 1];
-		maxPlayerDam = starBodyDam [starGrade - 1];
-		playerRegen = starBodyRegen [starGrade - 1];
-		GetComponent<Health_Management> ().Health = maxPlayerHealth;
-		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
-		resetShooting (transform.rotation, starPointNum);
-		lifetime = projLife [starGrade - 1];
-		projForce = projSpeeds [starGrade - 1];
-		reloadTime = projRegen [starGrade - 1];
-
-
-
-	}
+		
 
 	[PunRPC]
 	// gives points to the player

@@ -28,7 +28,7 @@ public class OnJoinedInstantiate : MonoBehaviour
 
                 PhotonNetwork.Instantiate(o.name, itempos, Quaternion.identity, 0);
 
-				Debug.Log (o.GetComponentsInChildren<Transform> ().Length);
+//				Debug.Log (o.GetComponentsInChildren<Transform> ().Length);
             }
         }
     }

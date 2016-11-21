@@ -53,7 +53,7 @@ public class Health_Management : MonoBehaviour {
 					if (playerTags [i].GetComponent<Tag_Manager> ().tag == killerTag) {
 
 					
-						playerTags[i].GetComponent<Shooting_Controls_edit> ().AddMass (pointsToGive);
+						playerTags[i].GetComponent<StarManager> ().AddMass (pointsToGive);
 					}
 				}
 			}
