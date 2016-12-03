@@ -126,8 +126,12 @@ public class StarManager: Photon.MonoBehaviour
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		Debug.Log(this.photonView.ownerId.ToString());
+		Debug.Log(this.tag);
 
-		playerTag = this.photonView.ownerId.ToString();
+		this.tag = this.photonView.ownerId.ToString();
+		playerTag = this.tag;
+
 
 		// set class values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
@@ -237,7 +241,7 @@ public class StarManager: Photon.MonoBehaviour
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
 
-			newPt.GetComponent<Tag_Manager> ().tag = playerTag;
+			newPt.tag = playerTag;
 
 			newPt.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMats [starType - 1];

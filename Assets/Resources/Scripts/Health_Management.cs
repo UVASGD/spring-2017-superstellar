@@ -56,7 +56,7 @@ public class Health_Management : Photon.MonoBehaviour {
 				Destroy (gameObject);
 
 				// player to give points to
-				string killerTag = killer.GetComponent<Tag_Manager>().tag;
+				string killerTag = killer.tag;
 
 				//if (playerTags == null){
 					//playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
@@ -64,7 +64,7 @@ public class Health_Management : Photon.MonoBehaviour {
 				playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
 
 				for (int i = 0; i < playerTags.GetLength (0); i++) {
-					if (playerTags [i].GetComponent<Tag_Manager> ().tag == killerTag) {
+					if (playerTags [i].tag == killerTag) {
 
 					
 						playerTags[i].GetComponent<StarManager> ().AddMass (pointsToGive);

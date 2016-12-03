@@ -33,14 +33,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		{
 
 
-		GameObject[] starproj = GameObject.FindGameObjectsWithTag (other.gameObject.GetComponent<Tag_Manager> ().tag);
-		for (int i = 0; i < starproj.Length; i++) {
-			if (starproj [i].name == "Star") {
 
-				p = starproj [i].GetComponent<PhotonView> ();
-			}
-
-		}
 
 //			other.GetComponent<Tag_Manager>().tag.GetComponent<PhotonView>();
 //		Debug.Log(p);
@@ -48,25 +41,45 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			// give damage to background stars
 			if (other.gameObject.tag == "BG_Stars") {
 				if (gameObject.tag != "BG_Stars") {
-				p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
+				//p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
+				Debug.Log(findStar());
 
 				}
 
 			}
 
-			// give damage to starpoints (shot and un-shot)
-			if (other.gameObject.tag == "Star_Proj" || other.gameObject.tag == "Star_Point") {
-			p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
-			}
-
-			// give damage to players and add recoil force
-			if (other.gameObject.tag == "Player_Star") {
-				p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
-				other.gameObject.GetComponent<Rigidbody2D> ().AddForce (other.gameObject.GetComponent<Rigidbody2D> ().velocity.normalized * -100);
-
-			}
+//			// give damage to starpoints (shot and un-shot)
+//			if (other.gameObject.tag == "Star_Proj" || other.gameObject.tag == "Star_Point") {
+//			Debug.Log(findStar());
+//
+//			//p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
+//			}
+//
+//			// give damage to players and add recoil force
+//			if (other.gameObject.tag == "Player_Star") {
+//			Debug.Log(findStar());
+//
+//				//p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
+//				other.gameObject.GetComponent<Rigidbody2D> ().AddForce (other.gameObject.GetComponent<Rigidbody2D> ().velocity.normalized * -100);
+//
+//			}
 
 		}
+
+
+	public PhotonView findStar(){
+		Debug.Log (gameObject.tag);
+//		GameObject[] starproj = GameObject.FindGameObjectsWithTag (gameObject.tag);
+//		for (int i = 0; i < starproj.Length; i++) {
+//			if (starproj [i].name == "Star") {
+//
+//				p = starproj [i].GetComponent<PhotonView> ();
+//			}
+//
+//		}
+		return p;
+
+	}
 
 
 	[PunRPC]
@@ -88,7 +101,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				Destroy (gameObject);
 
 				// player to give points to
-				string killerTag = killer.GetComponent<Tag_Manager>().tag;
+				string killerTag = killer.tag;
 
 				//if (playerTags == null){
 				//playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
@@ -96,7 +109,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
 
 				for (int i = 0; i < playerTags.GetLength (0); i++) {
-					if (playerTags [i].GetComponent<Tag_Manager> ().tag == killerTag) {
+					if (playerTags [i].tag == killerTag) {
 
 
 						playerTags[i].GetComponent<StarManager> ().AddMass (pointsToGive);

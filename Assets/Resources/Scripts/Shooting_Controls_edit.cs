@@ -136,7 +136,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-		playerTag = GetComponent<Tag_Manager> ().tag;
+		this.tag = this.photonView.ownerId.ToString();
+		playerTag = this.tag;
 
 		starpoints = GetComponent<StarManager>().starpoints;
 		starSizes = GetComponent<StarManager>().starSizes;
@@ -253,7 +254,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
 
-		proj.GetComponent<Tag_Manager> ().tag = playerTag;
+		proj.tag = playerTag;
 
 		// sets projectile size, material, health, damage, and accesses its rigidbody and spriterenderer
 		Debug.Log ("starSizes: " + starSizes.Count);
