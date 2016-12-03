@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Tag_Manager : MonoBehaviour {
 
-	public int tag;
+	public string tag;
 
 	// Use this for initialization
 	void Start () {

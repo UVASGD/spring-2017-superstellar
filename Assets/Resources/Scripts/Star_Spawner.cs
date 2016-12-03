@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -22,7 +22,7 @@ public class Star_Spawner : MonoBehaviour {
 	public float speed  = 0.5f;
 
 	// max number of item to exist at once
-	public int numSpawn = 100;
+	public int numSpawn = 1000;
 
 	// holds all the spawned items
 	private List<GameObject> spawnedStuff = new List<GameObject>();

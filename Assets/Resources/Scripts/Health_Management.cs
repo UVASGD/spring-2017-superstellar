@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Health_Management : MonoBehaviour {
+public class Health_Management : Photon.MonoBehaviour {
 
 
 
@@ -13,8 +13,20 @@ public class Health_Management : MonoBehaviour {
 
 	public GameObject[] playerTags;
 
+	private static PhotonView ScenePhotonView;
+
+
 	void Start () {
-	
+
+		Debug.Log ("HEALTH MULTI");
+		if (this.photonView != null && !this.photonView.isMine) {
+			this.enabled = false;
+			return;
+		} 
+
+		ScenePhotonView = this.GetComponent<PhotonView>();
+
+
 	}
 	
 
@@ -24,6 +36,8 @@ public class Health_Management : MonoBehaviour {
 	}
 
 	// give damage to the object
+
+	[PunRPC]
 	public void giveDamage(int damage, GameObject killer){
 		Health -= damage;
 
@@ -42,7 +56,7 @@ public class Health_Management : MonoBehaviour {
 				Destroy (gameObject);
 
 				// player to give points to
-				int killerTag = killer.GetComponent<Tag_Manager>().tag;
+				string killerTag = killer.GetComponent<Tag_Manager>().tag;
 
 				//if (playerTags == null){
 					//playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");

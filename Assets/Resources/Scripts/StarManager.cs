@@ -42,7 +42,7 @@ public class StarManager: Photon.MonoBehaviour
 	public float reloadTime = 2.0f;
 	//time to regen point
 
-	public int playerTag = 0;
+	public string playerTag;
 
 
 
@@ -127,7 +127,7 @@ public class StarManager: Photon.MonoBehaviour
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-		playerTag = GetComponent<Tag_Manager> ().tag;
+		playerTag = this.photonView.ownerId.ToString();
 
 		// set class values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
@@ -198,7 +198,7 @@ public class StarManager: Photon.MonoBehaviour
 			spri.Remove (sprIndex);
 
 			// gives the regenerated point max health and damage
-			strPont.GetComponent<Health_Management> ().Health = maxPointHealth;
+			strPont.GetComponent<CollisionHandler> ().Health = maxPointHealth;
 			strPont.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 
 			// sets the starpoint as able to be shot and able to collide with objects
@@ -243,7 +243,7 @@ public class StarManager: Photon.MonoBehaviour
 			newPt.GetComponent<Renderer> ().material = starMats [starType - 1];
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
 			newPt.transform.parent = transform;
-			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
+			newPt.GetComponent<CollisionHandler> ().Health = maxPointHealth;
 			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 			starpoints.Add (newPt);
 			canShoot [i] = 1;
@@ -264,7 +264,7 @@ public class StarManager: Photon.MonoBehaviour
 		maxPlayerHealth = starBodyHealth [starGrade - 1];
 		maxPlayerDam = starBodyDam [starGrade - 1];
 		playerRegen = starBodyRegen [starGrade - 1];
-		GetComponent<Health_Management> ().Health = maxPlayerHealth;
+		GetComponent<CollisionHandler> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
 		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum);
 //		resetShooting (transform.rotation, starPointNum);

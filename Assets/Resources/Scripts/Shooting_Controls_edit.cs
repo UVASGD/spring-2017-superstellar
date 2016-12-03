@@ -42,7 +42,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private float reloadTime = 2.0f;
 	//time to regen point
 
-	public int playerTag = 0;
+	public string playerTag;
 
 
 
@@ -131,7 +131,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 	void Start() {
 
-
+		Debug.Log (this.name);
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -259,7 +259,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		Debug.Log ("starSizes: " + starSizes.Count);
 		proj.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
 		proj.GetComponent<Renderer> ().material = starMats [starType - 1];
-		proj.GetComponent<Health_Management> ().Health = maxPointHealth;
+		proj.GetComponent<CollisionHandler> ().Health = maxPointHealth;
 		proj.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 		SpriteRenderer sr = proj.GetComponent<SpriteRenderer> ();
 		Rigidbody2D rb = proj.GetComponent<Rigidbody2D> ();
@@ -312,7 +312,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			spri.Remove (sprIndex);
 
 			// gives the regenerated point max health and damage
-			strPont.GetComponent<Health_Management> ().Health = maxPointHealth;
+			strPont.GetComponent<CollisionHandler> ().Health = maxPointHealth;
 			strPont.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 
 			// sets the starpoint as able to be shot and able to collide with objects
@@ -343,7 +343,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	[PunRPC]
 	// tells the health manager to regenerate player health over time
 	public void healthRegen(float starRegen){
-		GetComponent<Health_Management> ().Health = Mathf.MoveTowards (GetComponent<Health_Management> ().Health, maxPlayerHealth, starRegen * Time.deltaTime);
+		GetComponent<CollisionHandler> ().Health = Mathf.MoveTowards (GetComponent<CollisionHandler> ().Health, maxPlayerHealth, starRegen * Time.deltaTime);
 	}
 
 	[PunRPC]
