@@ -55,16 +55,16 @@ public class StarManager: Photon.MonoBehaviour
 
 
 	//shooting conditions
-	private List<int> canShoot = new List<int> (12);
+	public List<int> canShoot = new List<int> (12);
 	// determines whether a starpoint can be shot
 
-	private List<int> autoShoot = new List<int> (12);
+	public List<int> autoShoot = new List<int> (12);
 	// determines whether an individual starpoint will automatically fire after regenerating
 
 	private bool autoShootAll = false;
 	// determines whether all starpoints will automatically fire all at once after they regenerate
 
-	private List<int> shootOnMouse = new List<int> (12);
+	public List<int> shootOnMouse = new List<int> (12);
 	// determines whether an individual starpoint will fire on mouse click or spacebar
 
 
@@ -155,20 +155,31 @@ public class StarManager: Photon.MonoBehaviour
 		//		upgradeStar (1);
 
 		Debug.Log ("starSizes: " + starSizes.Count);
+
+		if (this.GetComponent<Movement_Norm_Star> ().enabled == false) {
+			this.enabled = false;
+		}
 	}
 
 
 	void Update( )
 	{
-//		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
+
+
+		ScenePhotonView = this.GetComponent<PhotonView>();
+		Debug.Log (ScenePhotonView.ownerId);
+
+		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
 //		// calculate the directions to shoot projectiles at that instant
 //		//		redrawStar(transform.rotation, starPointNum);
 //
-//		ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
+		ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
 //		// regenerate player health
 //		//		healthRegen (playerRegen);
 
-		// downgrade star class (testing purposes)
+
+
+//		 downgrade star class (testing purposes)
 //		if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
 //		{
 //			starType = starType - 1;
@@ -275,7 +286,14 @@ public class StarManager: Photon.MonoBehaviour
 		lifetime = projLife [starGrade - 1];
 		projForce = projSpeeds [starGrade - 1];
 		reloadTime = projRegen [starGrade - 1];
-
+		GetComponent<Shooting_Controls_edit> ().preset = 1;
+		if (starPointNum < 4) {
+			GetComponent<Shooting_Controls_edit> ().presetMax = 2;
+		} else if (starPointNum > 5) {
+			GetComponent<Shooting_Controls_edit> ().presetMax = 4;
+		} else {
+			GetComponent<Shooting_Controls_edit> ().presetMax = 3;
+		}
 	}
 
 	[PunRPC]

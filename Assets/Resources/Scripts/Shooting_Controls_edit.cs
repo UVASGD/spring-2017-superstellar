@@ -117,17 +117,22 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private List<float> pointAngles2 = new List<float>(12);
 	// the angles at which starpoints are regenerated
 
-//	void OnEnable()
-//	{
-//		Debug.Log ("Shooting Controls");
-//		if (this.photonView != null && !this.photonView.isMine) {
-//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
-//			this.enabled = false;
-//			return;
-//		} else {
-//			Debug.Log("I am player "+ this.photonView.ownerId);
-//		}
-//	}
+
+	public int preset;
+	public int presetMax;
+
+
+	void OnEnable()
+	{
+		Debug.Log ("Shooting Controls");
+		if (this.photonView != null && !this.photonView.isMine) {
+			Debug.Log ("disabled controls : " + this.photonView.ownerId);
+			this.enabled = false;
+			return;
+		} else {
+			Debug.Log("I am player "+ this.photonView.ownerId);
+		}
+	}
 
 	void Start() {
 		Debug.Log (this.photonView.viewID);
@@ -161,15 +166,19 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		starBodyRegen = new List<float>{ 0.1f, 0.2f, 0.05f, 0.03f, 0.3f, 0.02f, 0.3f, 0.01f, 0.4f, 0.4f, 0.3f, 0.2f, 0.5f };
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 
-		Debug.Log ("SHOOTING CONTROLS");
-		if (this.photonView != null && !this.photonView.isMine) {
-			//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
-			this.enabled = false;
-			return;
-		} else {
-			//			Debug.Log("I am player "+ this.photonView.ownerId);
-		}
-			
+//		Debug.Log ("SHOOTING CONTROLS");
+//		if (this.photonView != null && !this.photonView.isMine) {
+//			//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
+//			this.enabled = false;
+//			return;
+//		} else {
+//			//			Debug.Log("I am player "+ this.photonView.ownerId);
+//		}
+//
+//		if (this.GetComponent<Movement_Norm_Star> ().enabled == false) {
+//			this.enabled = false;
+////			
+//		}
 		ScenePhotonView = this.GetComponent<PhotonView>();
 		// set initial shooting conditions
 
@@ -178,6 +187,17 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 	void Update( )
 	{
+//		Debug.Log (preset);
+		starpoints = GetComponent<StarManager>().starpoints;
+		starSizes = GetComponent<StarManager>().starSizes;
+		starType = GetComponent<StarManager>().starType;
+//		shootOnMouse = GetComponent<StarManager>().shootOnMouse;
+		canShoot = GetComponent<StarManager>().canShoot;
+//		autoShoot = GetComponent<StarManager>().autoShoot;
+		starPointNum = GetComponent<StarManager>().starPointNum;
+		lifetime = GetComponent<StarManager>().lifetime;
+		projForce = GetComponent<StarManager>().projForce;
+		reloadTime = GetComponent<StarManager>().reloadTime;
 
 		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
 		// calculate the directions to shoot projectiles at that instant
@@ -195,11 +215,38 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		// toggle autoshooting for all points
 		if (Input.GetKeyDown (KeyCode.F))
 		{
+			preset = -1;
 			if (autoShootAll)
 				autoShootAll = false;
 			else {
 				autoShootAll = true;
 			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.E))
+		{
+			preset = -1;
+			for (int i = 0; i < 12; i++) {
+				if (starPointNum > i) {
+					shootOnMouse [i] = 1;
+				} else {
+					shootOnMouse [i] = 0;
+				}
+			}
+		}
+
+		if (Input.GetKeyDown (KeyCode.R))
+		{
+			if (preset == -1) {
+				preset = 1;
+			} else {
+				preset = preset + 1;
+				if (preset > presetMax) {
+					preset = 1;
+				}
+			}
+			Debug.Log (preset);
+			Debug.Log (presetMax);
 		}
 
 		// check to see if stars can be shot
@@ -208,29 +255,76 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			// checks to see if starpoints exist
 			if (starPointNum > i) {
 
-				// set autoshooting for individual starpoints
-				if (Input.GetKeyDown (shootKeys [i]) && Input.GetKey (KeyCode.E)) {
-					if (autoShoot [i] == 0)
-						autoShoot [i] = 1;
-					else if (autoShoot [i] == 1) {
-						autoShoot [i] = 0;
-					}
+				float currAngle = (360 / starPointNum) * i;
+				switch (preset) {
+					case 1:
+						if (i == 0) {
+							shootOnMouse [i] = 1;
+						} else {
+							shootOnMouse [i] = 0;
+						}
+						break;
+					case 2:
+						if (i == 0) {
+							if (starPointNum < 5) {
+								shootOnMouse [i] = 0;
+							} else {
+								shootOnMouse [i] = 1;
+							}
+						} else {
+							if (currAngle > 90 && currAngle < 270) {
+								shootOnMouse [i] = 1;
+							} else {
+								shootOnMouse [i] = 0;
+							}
+						}
+						break;
+					case 3:
+						if (i == 0 || i == Mathf.FloorToInt ((float)starPointNum / 2) || i == Mathf.CeilToInt ((float)starPointNum / 2)) {
+							shootOnMouse [i] = 0;
+						} else {
+							shootOnMouse [i] = 1;
+						}
+						break;
+					case 4:
+					if (currAngle > 90 && currAngle < 270 || i == 0) {
+							shootOnMouse [i] = 0;
+						} else {
+							shootOnMouse [i] = 1;
+						}
+						break;
 				}
 
-				// set shooting by mouse/spacebar for individual starpoints
-				if (Input.GetKeyDown (shootKeys [i]) && Input.GetKey (KeyCode.Q)) {
-					if (shootOnMouse [i] == 0)
-						shootOnMouse [i] = 1;
-					else if (shootOnMouse [i] == 1) {
-						shootOnMouse [i] = 0;
-					}
-				}
 
 				// check conditions to see if starpoint can be shot
-				if (((Input.GetKeyDown (shootKeys [i]) || autoShoot [i] == 1 || autoShootAll || Input.GetKey (KeyCode.R)) || ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.Space)) && shootOnMouse [i] == 1)) && canShoot [i] == 1) {
+
+				Debug.Log (shootOnMouse [i]);
+				if (((Input.GetKeyDown (shootKeys [i]) || autoShoot [i] == 1 || autoShootAll) || ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.Space)) && shootOnMouse [i] == 1)) && canShoot [i] == 1) {
 //					Debug.Log ("starSizes: " + starSizes.Count);
+					Debug.Log(i);
 					ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i + 1);
 				}
+
+
+				//				// set autoshooting for individual starpoints
+				//				if (Input.GetKeyDown (shootKeys [i]) && Input.GetKey (KeyCode.E)) {
+				//					if (autoShoot [i] == 0)
+				//						autoShoot [i] = 1;
+				//					else if (autoShoot [i] == 1) {
+				//						autoShoot [i] = 0;
+				//					}
+				//				}
+				//
+				//				// set shooting by mouse/spacebar for individual starpoints
+				//				if (Input.GetKeyDown (shootKeys [i]) && Input.GetKey (KeyCode.Q)) {
+				//					if (shootOnMouse [i] == 0)
+				//						shootOnMouse [i] = 1;
+				//					else if (shootOnMouse [i] == 1) {
+				//						shootOnMouse [i] = 0;
+				//					}
+				//				}
+
+
 			} 
 
 			// non-existant starpoints can't be shot
@@ -239,6 +333,10 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 				autoShoot [i] = -1;
 				shootOnMouse [i] = -1;
 			}
+
+
+
+
 
 		}
 			

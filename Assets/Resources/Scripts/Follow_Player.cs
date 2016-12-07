@@ -30,7 +30,9 @@ public class Follow_Player : MonoBehaviour {
 		transform.localScale = player.transform.localScale;
 
 		float currentHealth = (int)player.GetComponent<Health_Management> ().Health;
-		float maxHealth = (int)player.GetComponent<Shooting_Controls_edit> ().maxPlayerHealth;
+		float maxHealth = (int)player.GetComponent<StarManager> ().maxPlayerHealth;
+
+		Debug.Log (currentHealth - maxHealth);
 
 		bar.fillAmount = currentHealth / maxHealth;
 	}
