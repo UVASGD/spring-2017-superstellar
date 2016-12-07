@@ -103,7 +103,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private List<int> starBodyDam = new List<int> (13);
 	// holds the values for the damage inflicted by the player starbody for each star class
 		
-	public int starType = 1;
+	public int starType;
 	// the class of the star
 
 
@@ -350,6 +350,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
 
+		starPointNum = GetComponent<StarManager>().starPointNum;
+		Debug.Log (starPointNum);
 
 		Debug.Log (this.photonView.ownerId);
 
@@ -372,8 +374,12 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		Debug.Log ("starSizes: " + starSizes.Count);
 		proj.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
-		proj.GetComponent<Renderer> ().material = starMats [starType - 1];
+//		proj.GetComponent<Renderer> ().material = starMats [starType - 1];
+		proj.GetComponent<Renderer> ().material = this.GetComponent<Renderer> ().material;
 
+
+		Debug.Log (ScenePhotonView.ownerId);
+		Debug.Log (starType);
 		Debug.Log ("MATERIAL " + starMats [starType - 1]);
 
 		proj.GetComponent<Health_Management> ().Health = maxPointHealth;
