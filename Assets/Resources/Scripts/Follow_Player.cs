@@ -32,7 +32,7 @@ public class Follow_Player : MonoBehaviour {
 		float currentHealth = (int)player.GetComponent<Health_Management> ().Health;
 		float maxHealth = (int)player.GetComponent<StarManager> ().maxPlayerHealth;
 
-		Debug.Log (currentHealth - maxHealth);
+//		Debug.Log (currentHealth - maxHealth);
 
 		bar.fillAmount = currentHealth / maxHealth;
 	}

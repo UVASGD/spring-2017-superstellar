@@ -55,16 +55,16 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 
 	//shooting conditions
-	private List<int> canShoot = new List<int> (12);
+	public List<int> canShoot = new List<int> (12);
 	// determines whether a starpoint can be shot
 
-	private List<int> autoShoot = new List<int> (12);
+	public List<int> autoShoot = new List<int> (12);
 	// determines whether an individual starpoint will automatically fire after regenerating
 
 	private bool autoShootAll = false;
 	// determines whether all starpoints will automatically fire all at once after they regenerate
 
-	private List<int> shootOnMouse = new List<int> (12);
+	public List<int> shootOnMouse = new List<int> (12);
 	// determines whether an individual starpoint will fire on mouse click or spacebar
 
 
@@ -144,7 +144,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 
 		this.tag = this.GetComponent<PhotonView> ().viewID.ToString();
+		Debug.Log (this.tag);
 		playerTag = this.tag;
+		Debug.Log (playerTag);
 
 		starpoints = GetComponent<StarManager>().starpoints;
 		starSizes = GetComponent<StarManager>().starSizes;
@@ -199,11 +201,11 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		projForce = GetComponent<StarManager>().projForce;
 		reloadTime = GetComponent<StarManager>().reloadTime;
 
-		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
+//		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
 		// calculate the directions to shoot projectiles at that instant
 //		redrawStar(transform.rotation, starPointNum);
 
-		ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
+//		ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
 		// regenerate player health
 //		healthRegen (playerRegen);
 
@@ -354,12 +356,26 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
 
-		proj.tag = playerTag;
+		Debug.Log (this.tag);
+		proj.tag = this.tag;
 
 		// sets projectile size, material, health, damage, and accesses its rigidbody and spriterenderer
+		starMats = GetComponent<StarManager> ().starMats;
+		starType = GetComponent<StarManager> ().starType;
+		starSizes = GetComponent<StarManager> ().starSizes;
+		starpoints = GetComponent<StarManager> ().starpoints;
+		canShoot = GetComponent<StarManager> ().canShoot;
+		projForce = GetComponent<StarManager> ().projForce;
+		pointAngles = GetComponent<StarManager> ().pointAngles;
+		pointVectList = GetComponent<StarManager> ().pointVectList;
+
+
 		Debug.Log ("starSizes: " + starSizes.Count);
 		proj.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
 		proj.GetComponent<Renderer> ().material = starMats [starType - 1];
+
+		Debug.Log ("MATERIAL " + starMats [starType - 1]);
+
 		proj.GetComponent<Health_Management> ().Health = maxPointHealth;
 		proj.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 		SpriteRenderer sr = proj.GetComponent<SpriteRenderer> ();
@@ -378,10 +394,13 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		sr.sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White60");
 
 		// shoots projectile at proper rotation, direction, and speed, and gives recoil to player
+
+		Debug.Log (pointAngles.Count);
+
 		proj.transform.RotateAround(transform.position,Vector3.forward, (pointAngles [point-1] + 90));
-		Debug.Log (projForce);
-		rb.AddForce (pointVectList[point - 1]*projForce);
-		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] * projForce/10f);
+		Debug.Log ( GetComponent<StarManager> ().projForce);
+		rb.AddForce (pointVectList[point - 1]* GetComponent<StarManager> ().projForce);
+		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] *  GetComponent<StarManager> ().projForce/10f);
 
 		// tells starpoint regeneration function to run
 

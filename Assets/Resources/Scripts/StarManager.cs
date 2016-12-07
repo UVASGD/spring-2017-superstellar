@@ -70,7 +70,7 @@ public class StarManager: Photon.MonoBehaviour
 
 
 	//class variables
-	private List<Material> starMats = new List<Material> (13);
+	public List<Material> starMats = new List<Material> (13);
 	// holds the materials of each star class
 
 	private List<float> projSpeeds = new List<float> (13);
@@ -108,14 +108,14 @@ public class StarManager: Photon.MonoBehaviour
 
 
 	//Direction Vectors for projectiles
-	private List<Vector2> pointVectList = new List<Vector2>(12);
+	public List<Vector2> pointVectList = new List<Vector2>(12);
 	// the direction vectors for projectiles
 
-	private List<float> pointAngles = new List<float>(12);
+	public List<float> pointAngles = new List<float>(12);
 	// the angles at which starpoints are shot
 
-	private List<float> pointAngles2 = new List<float>(12);
-	// the angles at which starpoints are regenerated
+	public List<float> pointAngles2 = new List<float>(12);
+//	 the angles at which starpoints are regenerated
 
 
 	void Start() {
@@ -156,45 +156,42 @@ public class StarManager: Photon.MonoBehaviour
 
 		Debug.Log ("starSizes: " + starSizes.Count);
 
-		if (this.GetComponent<Movement_Norm_Star> ().enabled == false) {
-			this.enabled = false;
-		}
+
 	}
 
 
 	void Update( )
 	{
+		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
+			ScenePhotonView = this.GetComponent<PhotonView>();
+			Debug.Log (ScenePhotonView.ownerId);
+
+			ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
+			//		// calculate the directions to shoot projectiles at that instant
+			//		//		redrawStar(transform.rotation, starPointNum);
+			//
+			ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
+			//		// regenerate player health
+			//		//		healthRegen (playerRegen);
 
 
-		ScenePhotonView = this.GetComponent<PhotonView>();
-		Debug.Log (ScenePhotonView.ownerId);
 
-		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
-//		// calculate the directions to shoot projectiles at that instant
-//		//		redrawStar(transform.rotation, starPointNum);
-//
-		ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
-//		// regenerate player health
-//		//		healthRegen (playerRegen);
+			//		 downgrade star class (testing purposes)
+			if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
+			{
+				starType = starType - 1;
+				//	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
+			}
 
-
-
-//		 downgrade star class (testing purposes)
-//		if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
-//		{
-//			starType = starType - 1;
-//			//	upgradeStar(starType);
-//			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
-//		}
-//
-//		// upgrade star class (testing purposes)
-//		if (Input.GetKeyDown (KeyCode.U) && starType < 13)
-//		{
-//			starType = starType + 1;
-//			//	upgradeStar(starType);
-//			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
-//		}
-
+			// upgrade star class (testing purposes)
+			if (Input.GetKeyDown (KeyCode.U) && starType < 13)
+			{
+				starType = starType + 1;
+				//	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
+			}
+		}
 	}
 		
 
@@ -224,8 +221,9 @@ public class StarManager: Photon.MonoBehaviour
 
 	[PunRPC]
 	// redraws the star with a particular number of points
-	void resetShooting(Quaternion q, int numPoints){
+	void resetShooting(Quaternion q, int numPoints, int starGrade){
 
+		Debug.Log (ScenePhotonView.ownerId);
 		// turns shooting off and clears the reload to-do list
 		autoShootAll = false;
 		spri.Clear ();
@@ -254,8 +252,12 @@ public class StarManager: Photon.MonoBehaviour
 
 			newPt.tag = playerTag;
 
-			newPt.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
-			newPt.GetComponent<Renderer> ().material = starMats [starType - 1];
+			newPt.transform.localScale = new Vector3(starSizes [starGrade - 1]*0.6f,starSizes [starGrade - 1]*1f,starSizes [starGrade - 1]*0.5f);
+			newPt.GetComponent<Renderer> ().material = starMats [starGrade - 1];
+
+			Debug.Log (ScenePhotonView.ownerId);
+			Debug.Log (starMats [starGrade - 1]);
+
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
 			newPt.transform.parent = transform;
 			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
@@ -265,6 +267,10 @@ public class StarManager: Photon.MonoBehaviour
 			autoShoot [i] = 0;
 			shootOnMouse [i] = 1;
 		}
+
+		GetComponent<Shooting_Controls_edit> ().canShoot = canShoot;
+		GetComponent<Shooting_Controls_edit> ().autoShoot = autoShoot;
+		GetComponent<Shooting_Controls_edit> ().shootOnMouse = shootOnMouse;
 	}
 
 	[PunRPC]
@@ -281,7 +287,9 @@ public class StarManager: Photon.MonoBehaviour
 		playerRegen = starBodyRegen [starGrade - 1];
 		GetComponent<Health_Management> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
-		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum);
+		Debug.Log (ScenePhotonView.ownerId);
+		ScenePhotonView = this.GetComponent<PhotonView> ();
+		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum, starGrade);
 //		resetShooting (transform.rotation, starPointNum);
 		lifetime = projLife [starGrade - 1];
 		projForce = projSpeeds [starGrade - 1];
@@ -301,5 +309,37 @@ public class StarManager: Photon.MonoBehaviour
 	public void AddMass(int points){
 		starMass += points;
 	}
+
+	[PunRPC]
+	// tells the health manager to regenerate player health over time
+	public void healthRegen(float starRegen){
+		GetComponent<Health_Management> ().Health = Mathf.MoveTowards (GetComponent<Health_Management> ().Health, maxPlayerHealth, starRegen * Time.deltaTime);
+	}
+
+	[PunRPC]
+	// calculates the angles and direction vectors for projectiles
+	void redrawStar(Quaternion q, int numPoints) {
+
+		float angle = q.eulerAngles.z;
+		float topAngle = angle + 90;
+
+		// clears the lists
+		pointAngles.Clear ();
+		pointVectList.Clear ();
+
+		// adds values to the angle and direction vector lists
+		pointAngles.Add(topAngle);
+		for(int i = 1; i < starPointNum; i++)
+		{
+			pointAngles.Add(topAngle - i * (360 / numPoints));
+		}
+
+		for(int i = 0; i < starPointNum; i++)
+		{
+			pointVectList.Add(new Vector2(Mathf.Sin (pointAngles [i] * Mathf.Deg2Rad),  -Mathf.Cos (pointAngles [i] * Mathf.Deg2Rad)));
+		}
+	}
+
+
 
 }
