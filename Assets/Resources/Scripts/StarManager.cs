@@ -129,7 +129,7 @@ public class StarManager: Photon.MonoBehaviour
 		Debug.Log(this.photonView.ownerId.ToString());
 		Debug.Log(this.tag);
 
-		this.tag = this.photonView.ownerId.ToString();
+		this.tag = this.GetComponent<PhotonView> ().viewID.ToString();
 		playerTag = this.tag;
 
 
@@ -202,7 +202,7 @@ public class StarManager: Photon.MonoBehaviour
 			spri.Remove (sprIndex);
 
 			// gives the regenerated point max health and damage
-			strPont.GetComponent<CollisionHandler> ().Health = maxPointHealth;
+			strPont.GetComponent<Health_Management> ().Health = maxPointHealth;
 			strPont.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 
 			// sets the starpoint as able to be shot and able to collide with objects
@@ -247,7 +247,7 @@ public class StarManager: Photon.MonoBehaviour
 			newPt.GetComponent<Renderer> ().material = starMats [starType - 1];
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
 			newPt.transform.parent = transform;
-			newPt.GetComponent<CollisionHandler> ().Health = maxPointHealth;
+			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
 			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 			starpoints.Add (newPt);
 			canShoot [i] = 1;
@@ -268,7 +268,7 @@ public class StarManager: Photon.MonoBehaviour
 		maxPlayerHealth = starBodyHealth [starGrade - 1];
 		maxPlayerDam = starBodyDam [starGrade - 1];
 		playerRegen = starBodyRegen [starGrade - 1];
-		GetComponent<CollisionHandler> ().Health = maxPlayerHealth;
+		GetComponent<Health_Management> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
 		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum);
 //		resetShooting (transform.rotation, starPointNum);

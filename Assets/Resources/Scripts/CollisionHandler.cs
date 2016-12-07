@@ -8,10 +8,11 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	public int damage_to_give;
 	private static PhotonView p;
 	// amount of health object has
-	public float Health;
 
 	// amount of points to give when object dies
 	public int pointsToGive;
+	public GameObject killer;
+	public bool check = false;
 
 	public GameObject[] playerTags;
 	void Start(){
@@ -30,91 +31,89 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		}
 		
 	void OnCollisionStay2D(Collision2D other)
-		{
+	{
+
+		string targetID;
+
+		if (other.gameObject.GetComponent<PhotonView> () != null) {
+			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
+			targetID = pv.viewID.ToString();
+		} else {
+			other.gameObject.name = "target";
+			targetID = other.gameObject.name;
+		}
+
+				int pvID = int.Parse(gameObject.tag);
+				Debug.Log (pvID);
+				PhotonView starpv = PhotonView.Find (pvID);
+				Debug.Log (starpv);
+				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID, gameObject.tag);
+				Debug.Log ("new score: "+starpv.gameObject.GetComponent<Score_Manager> ().score);
 
 
+	}
 
+	public GameObject findStar(){
+		Debug.Log (gameObject.tag);
 
-//			other.GetComponent<Tag_Manager>().tag.GetComponent<PhotonView>();
-//		Debug.Log(p);
+		GameObject[] starproj = GameObject.FindGameObjectsWithTag (gameObject.tag);
+		GameObject star = starproj[0];
+		Debug.Log ("length"+starproj.Length);
+		Debug.Log ("first thing: "+starproj[0]);
 
-			// give damage to background stars
-			if (other.gameObject.tag == "BG_Stars") {
-				if (gameObject.tag != "BG_Stars") {
-				//p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
-				Debug.Log(findStar());
+		for (int i = 0; i < starproj.Length; i++) {
+			Debug.Log ("star[i]: "+starproj[i].name);
 
-				}
+			if (starproj [i].name == "Star") {
+				p = starproj [i].GetComponent<PhotonView> ();
+				Debug.Log (p);
+				star= starproj [i];
+			
 
 			}
 
-//			// give damage to starpoints (shot and un-shot)
-//			if (other.gameObject.tag == "Star_Proj" || other.gameObject.tag == "Star_Point") {
-//			Debug.Log(findStar());
-//
-//			//p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
-//			}
-//
-//			// give damage to players and add recoil force
-//			if (other.gameObject.tag == "Player_Star") {
-//			Debug.Log(findStar());
-//
-//				//p.RPC ("giveDamage", PhotonTargets.All, damage_to_give, gameObject);
-//				other.gameObject.GetComponent<Rigidbody2D> ().AddForce (other.gameObject.GetComponent<Rigidbody2D> ().velocity.normalized * -100);
-//
-//			}
-
 		}
-
-
-	public PhotonView findStar(){
-		Debug.Log (gameObject.tag);
-//		GameObject[] starproj = GameObject.FindGameObjectsWithTag (gameObject.tag);
-//		for (int i = 0; i < starproj.Length; i++) {
-//			if (starproj [i].name == "Star") {
-//
-//				p = starproj [i].GetComponent<PhotonView> ();
-//			}
-//
-//		}
-		return p;
+		check = true;
+		Debug.Log ("Set star to: " + star+"which is of type: "+ star.name);
+		return star;
 
 	}
 
 
 	[PunRPC]
-	public void giveDamage(int damage, GameObject killer){
-		Health -= damage;
+	public void giveDamage(int damage, string targetID, string starTag){
+
+		GameObject target;
+		if (targetID == "target") { 
+			target = GameObject.Find (targetID);
+		} else {
+			PhotonView targetpv = PhotonView.Find(int.Parse(targetID));
+			target = targetpv.gameObject;
+		}
+
+		GameObject star = PhotonView.Find(int.Parse(starTag)).gameObject;
+
+		Debug.Log ("starTag: "+starTag);
+
+
+		target.GetComponent<Health_Management> ().Health -= damage;
+
 
 		// kill the object when its health is depleted
-		if (Health <= 0) {
+		if (target.GetComponent<Health_Management> ().Health <= 0) {
 
 			// if the object is an un-shot starpoint, destroy it using the shooting controls script
-			if (gameObject.tag == "Star_Point") {
-				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (gameObject);
+			if (target.tag == "Star_Point") {
+				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
 
 				// if the object is a player, kill it (not yet...)
-			} else if (gameObject.tag == "Player_Star") {
+			} else if (target.tag == "Player_Star") {
 
 				// if the object is anything else, destroy it and give the player points
 			} else {
-				Destroy (gameObject);
-
-				// player to give points to
-				string killerTag = killer.tag;
-
-				//if (playerTags == null){
-				//playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
-				//}
-				playerTags = GameObject.FindGameObjectsWithTag ("Player_Star");
-
-				for (int i = 0; i < playerTags.GetLength (0); i++) {
-					if (playerTags [i].tag == killerTag) {
-
-
-						playerTags[i].GetComponent<StarManager> ().AddMass (pointsToGive);
-					}
-				}
+				Destroy (target);
+				Debug.Log ("enter");
+				star.GetComponent<Score_Manager> ().score += 5;
 			}
 		}
 	}
