@@ -13,7 +13,6 @@ public class Health_Management : Photon.MonoBehaviour {
 
 	void Start () {
 
-		Debug.Log ("HEALTH MULTI");
 		if (this.photonView != null && !this.photonView.isMine) {
 			this.enabled = false;
 			return;

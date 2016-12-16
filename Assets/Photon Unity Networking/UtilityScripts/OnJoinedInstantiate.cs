@@ -27,8 +27,6 @@ public class OnJoinedInstantiate : MonoBehaviour
                 Vector3 itempos = spawnPos + this.PositionOffset * random;
 
                 PhotonNetwork.Instantiate(o.name, itempos, Quaternion.identity, 0);
-
-//				Debug.Log (o.GetComponentsInChildren<Transform> ().Length);
             }
         }
     }

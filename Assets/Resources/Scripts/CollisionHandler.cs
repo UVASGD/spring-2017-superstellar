@@ -15,20 +15,19 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	public bool check = false;
 
 	public GameObject[] playerTags;
+
+
 	void Start(){
 		if (this.photonView != null && !this.photonView.isMine) {
 			this.enabled = false;
 			return;
 		} 
-
-
 	}
-
-
-	void OnTriggerEnter2D(Collider2D coll)
-		{
-			Debug.Log(coll.gameObject.name);
-		}
+		
+//	void OnTriggerEnter2D(Collider2D coll)
+//	{
+//		Debug.Log(coll.gameObject.name);
+//	}
 		
 	void OnCollisionStay2D(Collision2D other)
 	{
@@ -44,11 +43,8 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		}
 
 				int pvID = int.Parse(gameObject.tag);
-				Debug.Log (pvID);
 				PhotonView starpv = PhotonView.Find (pvID);
-				Debug.Log (starpv);
 				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID, gameObject.tag);
-				Debug.Log ("new score: "+starpv.gameObject.GetComponent<Score_Manager> ().score);
 
 
 	}
@@ -58,23 +54,16 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 		GameObject[] starproj = GameObject.FindGameObjectsWithTag (gameObject.tag);
 		GameObject star = starproj[0];
-		Debug.Log ("length"+starproj.Length);
-		Debug.Log ("first thing: "+starproj[0]);
 
 		for (int i = 0; i < starproj.Length; i++) {
-			Debug.Log ("star[i]: "+starproj[i].name);
 
 			if (starproj [i].name == "Star") {
 				p = starproj [i].GetComponent<PhotonView> ();
-				Debug.Log (p);
 				star= starproj [i];
-			
-
 			}
 
 		}
 		check = true;
-		Debug.Log ("Set star to: " + star+"which is of type: "+ star.name);
 		return star;
 
 	}
@@ -93,11 +82,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 		GameObject star = PhotonView.Find(int.Parse(starTag)).gameObject;
 
-		Debug.Log ("starTag: "+starTag);
-
-
 		target.GetComponent<Health_Management> ().Health -= damage;
-
 
 		// kill the object when its health is depleted
 		if (target.GetComponent<Health_Management> ().Health <= 0) {
@@ -112,7 +97,6 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				// if the object is anything else, destroy it and give the player points
 			} else {
 				Destroy (target);
-				Debug.Log ("enter");
 				star.GetComponent<Score_Manager> ().score += 5;
 			}
 		}

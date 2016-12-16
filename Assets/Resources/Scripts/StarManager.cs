@@ -11,129 +11,67 @@ public class StarManager: Photon.MonoBehaviour
 	public GameObject projectile;
 	public GameObject starPointSprite;
 
+
 	//variables
-	public float lifetime = 2.0f;
-	// how long projectiles stay on screen
 
-	public float projForce = 500.0f;
-	// how much force the projectiles are given when shot
-
-	public int starPointNum = 5;
-	// how many points the star has
-
-	public int starMass = 0;
-	// the mass of the star (the score in this game)
-
-	public int maxPointHealth = 10;
-	// how much health the projectiles have
-
-	public int maxPointDam = 10;
-	// how much damage the projectiles give when they collide with something
-
-	public int maxPlayerHealth = 100;
-	// how much health the player has at full health
-
-	public int maxPlayerDam = 100;
-	// how much damage the player gives when they collide with something
-
-	public float playerRegen = 1;
-	// how quickly the player regenerates their health
-
-	public float reloadTime = 2.0f;
-	//time to regen point
-
+	public float lifetime = 2.0f; // how long projectiles stay on screen
+	public float projForce = 500.0f; // how much force the projectiles are given when shot
+	public int starPointNum = 5; // how many points the star has
+	public int starMass = 0; // the mass of the star (the score in this game)
+	public int maxPointHealth = 10; // how much health the projectiles have
+	public int maxPointDam = 10; // how much damage the projectiles give when they collide with something
+	public int maxPlayerHealth = 100; // how much health the player has at full health
+	public int maxPlayerDam = 100; // how much damage the player gives when they collide with something
+	public float playerRegen = 1; // how quickly the player regenerates their health
+	public float reloadTime = 2.0f; //time to regen point
 	public string playerTag;
 
 
-
-	public List<GameObject> starpoints = new List<GameObject>();
-	//holds the non-projected points
-
-	private List<SpriteRenderer> spri = new List<SpriteRenderer>();
-	//holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)
-
+	public List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
+	private List<SpriteRenderer> spri = new List<SpriteRenderer>(); //holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)
 
 
 	//shooting conditions
-	public List<int> canShoot = new List<int> (12);
-	// determines whether a starpoint can be shot
-
-	public List<int> autoShoot = new List<int> (12);
-	// determines whether an individual starpoint will automatically fire after regenerating
-
-	private bool autoShootAll = false;
-	// determines whether all starpoints will automatically fire all at once after they regenerate
-
-	public List<int> shootOnMouse = new List<int> (12);
-	// determines whether an individual starpoint will fire on mouse click or spacebar
+	public List<int> canShoot = new List<int> (12); // determines whether a starpoint can be shot
+	public List<int> autoShoot = new List<int> (12); // determines whether an individual starpoint will automatically fire after regenerating
+	private bool autoShootAll = false; // determines whether all starpoints will automatically fire all at once after they regenerate
+	public List<int> shootOnMouse = new List<int> (12); // determines whether an individual starpoint will fire on mouse click or spacebar
 
 
 
-	//class variables
-	public List<Material> starMats = new List<Material> (13);
-	// holds the materials of each star class
-
-	private List<float> projSpeeds = new List<float> (13);
-	// holds the values for the speed of shot starpoints for each star class
-
-	private List<float> projLife = new List<float> (13);
-	// holds the values for lifetime of shot starpoints for each star class
-
-	private List<float> projRegen = new List<float> (13);
-	// holds the values for how fast starpoints regenerate for each star class
-
-	private List<int> starPtClass = new List<int> (13);
-	// holds the values for the number of starpoints for each star class
-
-	public List<float> starSizes = new List<float> (13);
-	// holds the values for the localscale size for each star class
-
-	private List<int> starPtHealth = new List<int> (13);
-	// holds the values for the health of starpoints for each star class
-
-	private List<int> starPtDam = new List<int> (13);
-	// holds the values for the damage inflicted by starpoints for each star class
-
-	private List<int> starBodyHealth = new List<int> (13);
-	// holds the values for the max health of the player for each star class
-
-	private List<float> starBodyRegen = new List<float> (13);
-	// holds the values for the health regeneration of the player for each star class
-
-	private List<int> starBodyDam = new List<int> (13);
-	// holds the values for the damage inflicted by the player starbody for each star class
-
-	public int starType = 1;
-	// the class of the star
+	//class variables (Initialized in Start for readability)
+	public List<Material> starMats = new List<Material> (13); // holds the materials of each star class
+	private List<float> projSpeeds = new List<float> (13); // holds the values for the speed of shot starpoints for each star class
+	private List<float> projLife = new List<float> (13); // holds the values for lifetime of shot starpoints for each star class
+	private List<float> projRegen = new List<float> (13); // holds the values for how fast starpoints regenerate for each star class
+	private List<int> starPtClass = new List<int> (13); // holds the values for the number of starpoints for each star class
+	public List<float> starSizes = new List<float> (13); // holds the values for the localscale size for each star class
+	private List<int> starPtHealth = new List<int> (13); // holds the values for the health of starpoints for each star class
+	private List<int> starPtDam = new List<int> (13); // holds the values for the damage inflicted by starpoints for each star class
+	private List<int> starBodyHealth = new List<int> (13); // holds the values for the max health of the player for each star class
+	private List<float> starBodyRegen = new List<float> (13); // holds the values for the health regeneration of the player for each star class
+	private List<int> starBodyDam = new List<int> (13); // holds the values for the damage inflicted by the player starbody for each star class
+	public int starType = 1; // the class of the star
 
 
 	//Direction Vectors for projectiles
-	public List<Vector2> pointVectList = new List<Vector2>(12);
-	// the direction vectors for projectiles
-
-	public List<float> pointAngles = new List<float>(12);
-	// the angles at which starpoints are shot
-
-	public List<float> pointAngles2 = new List<float>(12);
-//	 the angles at which starpoints are regenerated
+	public List<Vector2> pointVectList = new List<Vector2>(12); // the direction vectors for projectiles
+	public List<float> pointAngles = new List<float>(12); // the angles at which starpoints are shot
+	public List<float> pointAngles2 = new List<float>(12); // the angles at which starpoints are regenerated
 
 
 	void Start() {
-		Debug.Log ("STAR MANAGER");
 
 		ScenePhotonView = this.GetComponent<PhotonView>();
 		// set initial shooting conditions
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-		Debug.Log(this.photonView.ownerId.ToString());
-		Debug.Log(this.tag);
 
 		this.tag = this.GetComponent<PhotonView> ().viewID.ToString();
 		playerTag = this.tag;
 
-
-		// set class values
+		// set class variable values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
 			Resources.Load<Material> ("Materials/Star_G_Red"),Resources.Load<Material> ("Materials/Star_SG_Red"),Resources.Load<Material> ("Materials/Star_D_White"),
 			Resources.Load<Material> ("Materials/Star_SG_Blue"),Resources.Load<Material> ("Materials/Star_S_Nova"),Resources.Load<Material> ("Materials/Star_HG_Blue"),
@@ -151,11 +89,7 @@ public class StarManager: Photon.MonoBehaviour
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 
 		// initialize star to class 1
-		ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1);
-		//		upgradeStar (1);
-
-		Debug.Log ("starSizes: " + starSizes.Count);
-
+		ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1); // upgradeStar (1);
 
 	}
 
@@ -164,33 +98,30 @@ public class StarManager: Photon.MonoBehaviour
 	{
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
 			ScenePhotonView = this.GetComponent<PhotonView>();
-			Debug.Log (ScenePhotonView.ownerId);
 
-			ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum);
-			//		// calculate the directions to shoot projectiles at that instant
-			//		//		redrawStar(transform.rotation, starPointNum);
-			//
-			ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen);
-			//		// regenerate player health
-			//		//		healthRegen (playerRegen);
+			// calculate the directions to shoot projectiles at that instant
+			ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // redrawStar(transform.rotation, starPointNum);
 
+			// regenerate player health					
+			ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen); // healthRegen (playerRegen);
+					
+					
 
-
-			//		 downgrade star class (testing purposes)
+			// REPLACE WITH CLASS PROGRESSION. BASE ON 'starMass' (equivalent to score)
+			// downgrade star class (testing purposes)
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
 			{
 				starType = starType - 1;
-				//	upgradeStar(starType);
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType); //	upgradeStar(starType);
 			}
 
 			// upgrade star class (testing purposes)
 			if (Input.GetKeyDown (KeyCode.U) && starType < 13)
 			{
 				starType = starType + 1;
-				//	upgradeStar(starType);
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType); //	upgradeStar(starType);
 			}
+
 		}
 	}
 		
@@ -223,9 +154,8 @@ public class StarManager: Photon.MonoBehaviour
 	// redraws the star with a particular number of points
 	void resetShooting(Quaternion q, int numPoints, int starGrade){
 
-		Debug.Log (ScenePhotonView.ownerId);
 		// turns shooting off and clears the reload to-do list
-		autoShootAll = false;
+		GetComponent<Shooting_Controls_edit> ().autoShootAll = false;
 		spri.Clear ();
 
 		// destroys all the old starpoints and clears the starpoint list
@@ -233,13 +163,16 @@ public class StarManager: Photon.MonoBehaviour
 		for (int i = 0; i < oldPt; i++) {
 			Destroy (starpoints [i]);
 		}
+
 		starpoints.Clear ();
 
 		// calculates the angles to draw the new starpoints at
 		float angle2 = q.eulerAngles.z;
 		float topAngle2 = angle2 + 90;
+
 		pointAngles2.Clear ();
 		pointAngles2.Add(topAngle2);
+
 		for(int i = 1; i < numPoints; i++)
 		{
 			pointAngles2.Add(topAngle2 - i * (360 / numPoints));
@@ -249,25 +182,21 @@ public class StarManager: Photon.MonoBehaviour
 		for(int i = 0; i < numPoints; i++)
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
-
 			newPt.tag = playerTag;
-
 			newPt.transform.localScale = new Vector3(starSizes [starGrade - 1]*0.6f,starSizes [starGrade - 1]*1f,starSizes [starGrade - 1]*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMats [starGrade - 1];
-
-			Debug.Log (ScenePhotonView.ownerId);
-			Debug.Log (starMats [starGrade - 1]);
-
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
 			newPt.transform.parent = transform;
 			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
 			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 			starpoints.Add (newPt);
+
 			canShoot [i] = 1;
 			autoShoot [i] = 0;
 			shootOnMouse [i] = 1;
 		}
 
+		// Update Shooting Script with new shooting array values
 		GetComponent<Shooting_Controls_edit> ().canShoot = canShoot;
 		GetComponent<Shooting_Controls_edit> ().autoShoot = autoShoot;
 		GetComponent<Shooting_Controls_edit> ().shootOnMouse = shootOnMouse;
@@ -279,21 +208,24 @@ public class StarManager: Photon.MonoBehaviour
 
 		transform.localScale = new Vector3(starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f);
 		GetComponent<Renderer> ().material = starMats [starGrade - 1];
+
 		starPointNum = starPtClass [starGrade - 1];
 		maxPointHealth = starPtHealth [starGrade - 1];
 		maxPointDam = starPtDam [starGrade - 1];
 		maxPlayerHealth = starBodyHealth [starGrade - 1];
 		maxPlayerDam = starBodyDam [starGrade - 1];
 		playerRegen = starBodyRegen [starGrade - 1];
+
 		GetComponent<Health_Management> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
-		Debug.Log (ScenePhotonView.ownerId);
+		
 		ScenePhotonView = this.GetComponent<PhotonView> ();
-		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum, starGrade);
-//		resetShooting (transform.rotation, starPointNum);
+		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum, starGrade); // resetShooting (transform.rotation, starPointNum);
+
 		lifetime = projLife [starGrade - 1];
 		projForce = projSpeeds [starGrade - 1];
 		reloadTime = projRegen [starGrade - 1];
+
 		GetComponent<Shooting_Controls_edit> ().preset = 1;
 		if (starPointNum < 4) {
 			GetComponent<Shooting_Controls_edit> ().presetMax = 2;

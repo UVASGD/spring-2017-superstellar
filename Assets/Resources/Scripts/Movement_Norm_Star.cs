@@ -4,22 +4,12 @@ using System.Collections;
 public class Movement_Norm_Star : Photon.MonoBehaviour {
 	
 	//Inspector Variables
-	private float playerSpeed = 2f; 
-	//speed player moves
+	private float playerSpeed = 2f; //speed player moves
 
-	private Vector2 movTarget;
-	// where the player is to move towards
-
-	private Vector2 dampSpeed = Vector2.zero;
-	// the dampspeed for smoothdamping player movement
-
-	private float smoothTime = 0.5f;
-	// the smoothdamping delay
-
-	private Vector2 velTarget;
-	// the target velocity based on the differenct between player position and movTarget
-
-//	private Camera camera = 
+	private Vector2 movTarget;// where the player is to move towards
+	private Vector2 dampSpeed = Vector2.zero; // the dampspeed for smoothdamping player movement
+	private float smoothTime = 0.5f; // the smoothdamping delay
+	private Vector2 velTarget; // the target velocity based on the differenct between player position and movTarget
 
 	public bool isControllable = false;
 	public bool AssignAsTagObject = true;
@@ -35,10 +25,6 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 			return;
 		}
 //		Debug.Log(this.photonView.ownerId);
-	}
-
-	void Start() {
-		Debug.Log ("MOVEMENT NORM");
 	}
 
 
