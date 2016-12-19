@@ -42,9 +42,9 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			targetID = other.gameObject.name;
 		}
 
-				int pvID = int.Parse(gameObject.tag);
-				PhotonView starpv = PhotonView.Find (pvID);
-				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID, gameObject.tag);
+		int pvID = int.Parse(gameObject.tag);
+		PhotonView starpv = PhotonView.Find (pvID);
+		starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID, gameObject.tag);
 
 
 	}
