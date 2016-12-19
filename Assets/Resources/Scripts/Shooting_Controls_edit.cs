@@ -105,7 +105,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		projForce = GetComponent<StarManager>().projForce;
 		reloadTime = GetComponent<StarManager>().reloadTime;
 
-		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
+		//ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
 																								// redrawStar(transform.rotation, starPointNum);
 
 		// ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen); // regenerate player health

@@ -44,6 +44,7 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 	void moveFunct()
 	{
+		float diag = 1 - Mathf.Sqrt (2) / 2;
 		// add to movTarget based on key input
 		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {//Press up arrow key to move forward on the Y AXIS
 
@@ -72,6 +73,13 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 				movTarget += new Vector2 (-playerSpeed * Time.deltaTime / (transform.localScale.x), 0f);
 			}
 		} 
+
+		//if player is moving diagonally, dampen vector so that it isn't faster than orthogonal motion
+		if (movTarget.x != transform.position.x && movTarget.y != transform.position.y) {
+			movTarget.x -= diag * (movTarget.x - transform.position.x);
+			movTarget.y -= diag * (movTarget.y - transform.position.y);
+		}
+
 
 		// if no movement input, set velocity target to zero
 		if (! Input.GetKey(KeyCode.UpArrow) && ! Input.GetKey(KeyCode.DownArrow) && ! Input.GetKey(KeyCode.RightArrow) && ! Input.GetKey(KeyCode.LeftArrow)
