@@ -50,8 +50,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	}
 
 	public GameObject findStar(){
-		Debug.Log (gameObject.tag);
-
+		
 		GameObject[] starproj = GameObject.FindGameObjectsWithTag (gameObject.tag);
 		GameObject star = starproj[0];
 
