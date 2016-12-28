@@ -28,7 +28,7 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     {
         if (ConnectInUpdate && AutoConnect && !PhotonNetwork.connected)
         {
-            Debug.Log("Update() was called by Unity. Scene is loaded. Let's connect to the Photon Master Server. Calling: PhotonNetwork.ConnectUsingSettings();");
+//            Debug.Log("Update() was called by Unity. Scene is loaded. Let's connect to the Photon Master Server. Calling: PhotonNetwork.ConnectUsingSettings();");
 
             ConnectInUpdate = false;
             PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
@@ -42,20 +42,20 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 
     public virtual void OnConnectedToMaster()
     {
-        Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
+//        Debug.Log("OnConnectedToMaster() was called by PUN. Now this client is connected and could join a room. Calling: PhotonNetwork.JoinRandomRoom();");
         PhotonNetwork.JoinRandomRoom();
     }
 
     public virtual void OnJoinedLobby()
     {
-        Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
+//        Debug.Log("OnJoinedLobby(). This client is connected and does get a room-list, which gets stored as PhotonNetwork.GetRoomList(). This script now calls: PhotonNetwork.JoinRandomRoom();");
         PhotonNetwork.JoinRandomRoom();
     }
 
     public virtual void OnPhotonRandomJoinFailed()
 	{
 		byte numPlayers = 10;
-		Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = "+ numPlayers + "}, null);");
+//		Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = "+ numPlayers + "}, null);");
 
 		PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = numPlayers }, null);
 		firstPlayer = true;
@@ -65,16 +65,17 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 
     public virtual void OnFailedToConnectToPhoton(DisconnectCause cause)
     {
-        Debug.LogError("Cause: " + cause);
+//        Debug.LogError("Cause: " + cause);
     }
 
     public void OnJoinedRoom()
     {
 		if (firstPlayer) {
+			Debug.Log ("star spawner");
 			PhotonNetwork.Instantiate ("Star_Spawner", Vector3.zero, Quaternion.identity, 0);
 		}
 
-        Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
+//        Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");
 //		Application.LoadLevel("SuperStellar");
 	}
 }

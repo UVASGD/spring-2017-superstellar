@@ -234,6 +234,9 @@ public class StarManager: Photon.MonoBehaviour
 		} else {
 			GetComponent<Shooting_Controls_edit> ().presetMax = 3;
 		}
+
+		
+
 	}
 
 	[PunRPC]

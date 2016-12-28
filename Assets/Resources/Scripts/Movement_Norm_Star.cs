@@ -24,7 +24,6 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 			this.enabled = false;
 			return;
 		}
-//		Debug.Log(this.photonView.ownerId);
 	}
 
 

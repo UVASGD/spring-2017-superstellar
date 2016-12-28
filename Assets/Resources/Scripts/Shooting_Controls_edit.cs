@@ -76,9 +76,6 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			this.enabled = false;
 			return;
 		} 
-//		else {
-//			Debug.Log("I am player "+ this.photonView.ownerId);
-//		}
 	}
 
 	void Start() {

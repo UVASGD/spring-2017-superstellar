@@ -34,6 +34,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 		string targetID;
 
+
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
 			targetID = pv.viewID.ToString();
@@ -78,6 +79,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			PhotonView targetpv = PhotonView.Find(int.Parse(targetID));
 			target = targetpv.gameObject;
 		}
+
 
 		GameObject star = PhotonView.Find(int.Parse(starTag)).gameObject;
 

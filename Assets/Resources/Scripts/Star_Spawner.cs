@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Star_Spawner : MonoBehaviour {
+public class Star_Spawner : Photon.MonoBehaviour {
 
 	private GameObject container;
 	public GameObject starSpawn; // item to spawn
@@ -21,6 +21,13 @@ public class Star_Spawner : MonoBehaviour {
 	private List<GameObject> spawnedStuff = new List<GameObject>(); // holds all the spawned items
 
 
+	private float nextActionTime = 0.0f;
+	public float period = 0.1f;
+
+	private PhotonView ScenePhotonView;
+	private GameObject BG_Stars;
+
+
 	void Start () {
 
 		container = GameObject.Find("BG Stars");
@@ -32,12 +39,21 @@ public class Star_Spawner : MonoBehaviour {
 		maxX = (int) mapX / 2;
 		maxY = (int) mapY / 2;
 
-		InvokeRepeating ("Generate", 0, speed);
-	
+//		InvokeRepeating ("Generate", 0, speed);
+
+		BG_Stars = GameObject.Find ("BG_Stars");
+		ScenePhotonView = BG_Stars.GetComponent<PhotonView> ();
+	}
+
+	void Update() {
+		if (Time.time > nextActionTime ) {
+			nextActionTime += period;
+			ScenePhotonView.RPC ("Generate", PhotonTargets.All);
+		}
 	}
 	
 
-
+//	[PunRPC]
 	void Generate (){
 
 		// check to see if max spawn is reached
