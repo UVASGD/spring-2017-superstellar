@@ -25,7 +25,6 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	public float period = 0.1f;
 
 	private PhotonView ScenePhotonView;
-	private GameObject BG_Stars;
 
 
 	void Start () {
@@ -39,10 +38,12 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		maxX = (int) mapX / 2;
 		maxY = (int) mapY / 2;
 
+
+		Random.seed = 80;
+
 //		InvokeRepeating ("Generate", 0, speed);
 
-		BG_Stars = GameObject.Find ("BG_Stars");
-		ScenePhotonView = BG_Stars.GetComponent<PhotonView> ();
+		ScenePhotonView = this.GetComponent<PhotonView> ();
 	}
 
 	void Update() {
@@ -53,7 +54,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	}
 	
 
-//	[PunRPC]
+	[PunRPC]
 	void Generate (){
 
 		// check to see if max spawn is reached
@@ -65,7 +66,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 			Vector3 target = new Vector3 (x, y, 0);
 
 			// spawn star and give it random rotation, torque, and force, then add it to the list
-			GameObject spawnedStar = Instantiate (starSpawn, target, Quaternion.identity) as GameObject;
+			GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity,0,null);
 			spawnedStar.transform.SetParent(container.transform);
 
 			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));

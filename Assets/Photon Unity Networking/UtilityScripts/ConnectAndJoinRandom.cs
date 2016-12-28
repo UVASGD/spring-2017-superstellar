@@ -71,6 +71,7 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     public void OnJoinedRoom()
     {
 		if (firstPlayer) {
+			Debug.Log (PhotonNetwork.isMasterClient);
 			Debug.Log ("star spawner");
 			PhotonNetwork.Instantiate ("Star_Spawner", Vector3.zero, Quaternion.identity, 0);
 		}
