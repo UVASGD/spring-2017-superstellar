@@ -47,7 +47,7 @@ public class StarManager: Photon.MonoBehaviour
 	private List<int> starPtClass = new List<int> (13); // holds the values for the number of starpoints for each star class
 	public List<float> starSizes = new List<float> (13); // holds the values for the localscale size for each star class
 	private List<int> starPtHealth = new List<int> (13); // holds the values for the health of starpoints for each star class
-	private List<int> starPtDam = new List<int> (13); // holds the values for the damage inflicted by starpoints for each star class
+	public List<int> starPtDam = new List<int> (13); // holds the values for the damage inflicted by starpoints for each star class
 	private List<int> starBodyHealth = new List<int> (13); // holds the values for the max health of the player for each star class
 	private List<float> starBodyRegen = new List<float> (13); // holds the values for the health regeneration of the player for each star class
 	private List<int> starBodyDam = new List<int> (13); // holds the values for the damage inflicted by the player starbody for each star class
@@ -89,8 +89,9 @@ public class StarManager: Photon.MonoBehaviour
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 
 		// initialize star to class 1
-		ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1); // upgradeStar (1);
-
+		if (ScenePhotonView.isMine) {
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1); // upgradeStar (1);
+		}
 	}
 
 
@@ -112,14 +113,14 @@ public class StarManager: Photon.MonoBehaviour
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
 			{
 				starType = starType - 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType); //	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBuffered, starType); //	upgradeStar(starType);
 			}
 
 			// upgrade star class (testing purposes)
 			if (Input.GetKeyDown (KeyCode.U) && starType < 13)
 			{
 				starType = starType + 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, starType); //	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBuffered, starType); //	upgradeStar(starType);
 			}
 
 		}
@@ -185,11 +186,12 @@ public class StarManager: Photon.MonoBehaviour
 			newPt.tag = playerTag;
 			newPt.transform.localScale = new Vector3(starSizes [starGrade - 1]*0.6f,starSizes [starGrade - 1]*1f,starSizes [starGrade - 1]*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMats [starGrade - 1];
-			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
+			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i]+90));
 			newPt.transform.parent = transform;
 			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
 			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 			starpoints.Add (newPt);
+
 
 			canShoot [i] = 1;
 			autoShoot [i] = 0;

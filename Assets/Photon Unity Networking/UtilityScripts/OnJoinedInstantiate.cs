@@ -9,6 +9,8 @@ public class OnJoinedInstantiate : MonoBehaviour
 
     public void OnJoinedRoom()
     {
+//		Debug.Log (PhotonNetwork.playerList.Length);
+
         if (this.PrefabsToInstantiate != null)
         {
             foreach (GameObject o in this.PrefabsToInstantiate)

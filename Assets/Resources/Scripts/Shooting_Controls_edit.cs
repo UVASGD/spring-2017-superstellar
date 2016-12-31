@@ -76,6 +76,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			this.enabled = false;
 			return;
 		} 
+//		else {
+//			Debug.Log("I am player "+ this.photonView.ownerId);
+//		}
 	}
 
 	void Start() {
@@ -101,6 +104,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		lifetime = GetComponent<StarManager>().lifetime;
 		projForce = GetComponent<StarManager>().projForce;
 		reloadTime = GetComponent<StarManager>().reloadTime;
+		starPtDam = GetComponent<StarManager>().starPtDam;
 
 		//ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
 																								// redrawStar(transform.rotation, starPointNum);
@@ -248,7 +252,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		proj.GetComponent<Renderer> ().material = this.GetComponent<Renderer> ().material;
 
 		proj.GetComponent<Health_Management> ().Health = maxPointHealth;
-		proj.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
+		proj.GetComponent<CollisionHandler> ().damage_to_give = starPtDam[starType - 1];
 		SpriteRenderer sr = proj.GetComponent<SpriteRenderer> ();
 		Rigidbody2D rb = proj.GetComponent<Rigidbody2D> ();
 

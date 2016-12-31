@@ -6,15 +6,9 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	// damage that the object gives to objects that collide with it
 	public int damage_to_give;
-	private static PhotonView p;
-	// amount of health object has
 
 	// amount of points to give when object dies
-	public int pointsToGive;
-	public GameObject killer;
-	public bool check = false;
-
-	public GameObject[] playerTags;
+//	public int pointsToGive;
 
 
 	void Start(){
@@ -24,16 +18,10 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		} 
 	}
 		
-//	void OnTriggerEnter2D(Collider2D coll)
-//	{
-//		Debug.Log(coll.gameObject.name);
-//	}
-		
-	void OnCollisionStay2D(Collision2D other)
+	void OnCollisionEnter2D(Collision2D other)
 	{
 
 		string targetID;
-
 
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
@@ -43,65 +31,59 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			targetID = other.gameObject.name;
 		}
 
+
 		int pvID = int.Parse(gameObject.tag);
 		PhotonView starpv = PhotonView.Find (pvID);
-		starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID, gameObject.tag);
 
 
-	}
 
-	public GameObject findStar(){
-		
-		GameObject[] starproj = GameObject.FindGameObjectsWithTag (gameObject.tag);
-		GameObject star = starproj[0];
+		starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
 
-		for (int i = 0; i < starproj.Length; i++) {
-
-			if (starproj [i].name == "Star") {
-				p = starproj [i].GetComponent<PhotonView> ();
-				star= starproj [i];
-			}
-
+		if (this.gameObject.name != "Projectile(Clone)") {
+			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID.ToString ());
 		}
-		check = true;
-		return star;
 
 	}
 
 
 	[PunRPC]
-	public void giveDamage(int damage, string targetID, string starTag){
+	public void giveDamage(int damage, string targetID){
 
 		GameObject target;
-		if (targetID == "target") { 
+		if (targetID == "target") {
 			target = GameObject.Find (targetID);
 		} else {
 			PhotonView targetpv = PhotonView.Find(int.Parse(targetID));
 			target = targetpv.gameObject;
 		}
+			
+	
 
-
-		GameObject star = PhotonView.Find(int.Parse(starTag)).gameObject;
 
 		target.GetComponent<Health_Management> ().Health -= damage;
+
+
+
+
 
 		// kill the object when its health is depleted
 		if (target.GetComponent<Health_Management> ().Health <= 0) {
 
-			// if the object is an un-shot starpoint, destroy it using the shooting controls script
-			if (target.tag == "Star_Point") {
+			if (target.name == "Star_Point") { // if the object is an un-shot starpoint, destroy it using the shooting controls script
 				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
 
-				// if the object is a player, kill it (not yet...)
-			} else if (target.tag == "Player_Star") {
+			} else if (target.name == "Player(Clone)"){	// if the object is a player, kill it (not yet...)
 
-				// if the object is anything else, destroy it and give the player points
-			} else {
+
+			} else if (target.name == "BG_Star(Clone)") { // if the object is anything else, destroy it and give the player points
 				Destroy (target);
+				GameObject star = PhotonView.Find(int.Parse(gameObject.tag)).gameObject;
 				star.GetComponent<Score_Manager> ().score += 5;
 			}
 		}
 	}
-		
-	
+
+
+
+
 }

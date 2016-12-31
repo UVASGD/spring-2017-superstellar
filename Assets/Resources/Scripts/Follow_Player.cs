@@ -12,7 +12,7 @@ public class Follow_Player : MonoBehaviour {
 
 		player = this.gameObject.transform.parent.FindChild("Star").gameObject;
 		Transform barParent = this.gameObject.transform.Find("Health Bar");
-		bar = barParent.FindChild ("Health_Bar_BG").GetComponent<Image>();
+		bar = barParent.FindChild ("Health_Bar").GetComponent<Image>();
 
 	}
 	
@@ -25,8 +25,8 @@ public class Follow_Player : MonoBehaviour {
 		transform.position = new Vector3 (x, y, 0);
 		transform.localScale = player.transform.localScale;
 
-		float currentHealth = (int)player.GetComponent<Health_Management> ().Health;
-		float maxHealth = (int)player.GetComponent<StarManager> ().maxPlayerHealth;
+		float currentHealth = player.GetComponent<Health_Management> ().Health;
+		float maxHealth = player.GetComponent<StarManager> ().maxPlayerHealth;
 
 		bar.fillAmount = currentHealth / maxHealth;
 

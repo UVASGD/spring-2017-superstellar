@@ -19,8 +19,6 @@ public class Health_Management : Photon.MonoBehaviour {
 		} 
 
 		ScenePhotonView = this.GetComponent<PhotonView>();
-
-
 	}
 	
 
