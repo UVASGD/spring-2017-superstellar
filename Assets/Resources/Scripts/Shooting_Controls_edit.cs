@@ -247,6 +247,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		projForce = GetComponent<StarManager> ().projForce;
 		pointAngles = GetComponent<StarManager> ().pointAngles;
 		pointVectList = GetComponent<StarManager> ().pointVectList;
+		starPtDam = GetComponent<StarManager> ().starPtDam;
 
 		proj.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
 		proj.GetComponent<Renderer> ().material = this.GetComponent<Renderer> ().material;
@@ -284,7 +285,6 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		// destroys projectile
 		Destroy(proj, lifetime);
-
 
 	}
 

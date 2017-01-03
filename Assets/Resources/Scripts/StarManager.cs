@@ -89,15 +89,17 @@ public class StarManager: Photon.MonoBehaviour
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 
 		// initialize star to class 1
-		if (ScenePhotonView.isMine) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.All, 1); // upgradeStar (1);
+		if (starSizes.Count > 0) {
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 1); // upgradeStar (1);
 		}
+
 	}
 
 
 	void Update( )
 	{
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
+			
 			ScenePhotonView = this.GetComponent<PhotonView>();
 
 			// calculate the directions to shoot projectiles at that instant
@@ -105,27 +107,26 @@ public class StarManager: Photon.MonoBehaviour
 
 			// regenerate player health					
 			ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen); // healthRegen (playerRegen);
-					
-					
+
 
 			// REPLACE WITH CLASS PROGRESSION. BASE ON 'starMass' (equivalent to score)
 			// downgrade star class (testing purposes)
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
 			{
 				starType = starType - 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBuffered, starType); //	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
 			}
 
 			// upgrade star class (testing purposes)
 			if (Input.GetKeyDown (KeyCode.U) && starType < 13)
 			{
 				starType = starType + 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBuffered, starType); //	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
 			}
 
 		}
 	}
-		
+
 
 
 	[PunRPC]
@@ -136,7 +137,6 @@ public class StarManager: Photon.MonoBehaviour
 
 		// checks to make sure the star class is still the same
 		if (strClassN == starType) {
-
 			// reloads the un-shot starpoint into the proper spriterenderer, and then removes it from the to-do list of spriterenderers
 			spri [spri.FindIndex (d => d == sprIndex)].sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White");
 			spri.Remove (sprIndex);
@@ -186,12 +186,11 @@ public class StarManager: Photon.MonoBehaviour
 			newPt.tag = playerTag;
 			newPt.transform.localScale = new Vector3(starSizes [starGrade - 1]*0.6f,starSizes [starGrade - 1]*1f,starSizes [starGrade - 1]*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMats [starGrade - 1];
-			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i]+90));
+			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
 			newPt.transform.parent = transform;
 			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
 			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
 			starpoints.Add (newPt);
-
 
 			canShoot [i] = 1;
 			autoShoot [i] = 0;
@@ -220,7 +219,7 @@ public class StarManager: Photon.MonoBehaviour
 
 		GetComponent<Health_Management> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
-		
+
 		ScenePhotonView = this.GetComponent<PhotonView> ();
 		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum, starGrade); // resetShooting (transform.rotation, starPointNum);
 
@@ -237,7 +236,7 @@ public class StarManager: Photon.MonoBehaviour
 			GetComponent<Shooting_Controls_edit> ().presetMax = 3;
 		}
 
-		
+
 
 	}
 
