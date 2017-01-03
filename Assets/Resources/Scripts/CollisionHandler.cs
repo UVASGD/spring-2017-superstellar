@@ -44,45 +44,50 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		}
 
 	}
+		
 
 
 	[PunRPC]
 	public void giveDamage(int damage, string targetID){
 
 		GameObject target;
-		if (targetID == "target") {
+		if (targetID == "target") { 
 			target = GameObject.Find (targetID);
 		} else {
 			PhotonView targetpv = PhotonView.Find(int.Parse(targetID));
 			target = targetpv.gameObject;
 		}
-			
-	
 
+
+		GameObject star = PhotonView.Find(int.Parse(gameObject.tag)).gameObject;
 
 		target.GetComponent<Health_Management> ().Health -= damage;
+		//		Debug.Log (type);
 
-
-
-
+		if (gameObject.name == "Star_Point(Clone)") {
+			star.GetComponent<Health_Management> ().Health -= damage;
+			if (star.GetComponent<Health_Management> ().Health <= 10) {
+				Debug.Log ("S2S! You a ded ghost boi~");
+			}
+		}
 
 		// kill the object when its health is depleted
 		if (target.GetComponent<Health_Management> ().Health <= 0) {
 
-			if (target.name == "Star_Point") { // if the object is an un-shot starpoint, destroy it using the shooting controls script
+			// if the object is an un-shot starpoint, destroy it using the shooting controls script
+			if (target.tag == "Star_Point") {
 				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
+				// if the object is a player, kill it (not yet...)
+			} else if (target.tag == "Player_Star") {
 
-			} else if (target.name == "Player(Clone)"){	// if the object is a player, kill it (not yet...)
-
-
-			} else if (target.name == "BG_Star(Clone)") { // if the object is anything else, destroy it and give the player points
+				// if the object is anything else, destroy it and give the player points
+			} else {
 				Destroy (target);
-				GameObject star = PhotonView.Find(int.Parse(gameObject.tag)).gameObject;
 				star.GetComponent<Score_Manager> ().score += 5;
+
 			}
 		}
 	}
-
 
 
 
