@@ -9,10 +9,10 @@ public class Follow_Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		player = this.gameObject.transform.parent.FindChild("Star").gameObject;
-		Transform barParent = this.gameObject.transform.Find("Health Bar");
-		bar = barParent.FindChild ("Health_Bar").GetComponent<Image>();
+		
+		player = this.gameObject.transform.parent.FindChild ("Star").gameObject;
+		Transform barParent = this.gameObject.transform.Find ("Health Bar");
+		bar = barParent.FindChild ("Health_Bar").GetComponent<Image> ();
 
 	}
 	
@@ -20,7 +20,7 @@ public class Follow_Player : MonoBehaviour {
 	void Update () {
 
 		float x = player.transform.position.x;
-		float y = player.transform.position.y - 1.5f*player.transform.localScale.x;
+		float y = player.transform.position.y - 1.5f * player.transform.localScale.x;
 
 		transform.position = new Vector3 (x, y, 0);
 		transform.localScale = player.transform.localScale;

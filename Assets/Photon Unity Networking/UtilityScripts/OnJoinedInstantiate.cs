@@ -3,7 +3,7 @@ using System.Collections;
 
 public class OnJoinedInstantiate : MonoBehaviour
 {
-    public Transform SpawnPosition;
+	public Transform SpawnPosition;
     public float PositionOffset = 2.0f;
     public GameObject[] PrefabsToInstantiate;   // set in inspector
 
@@ -17,7 +17,7 @@ public class OnJoinedInstantiate : MonoBehaviour
             {
                 Debug.Log("Instantiating: " + o.name);
 
-                Vector3 spawnPos = Vector3.up;
+				Vector3 spawnPos = Vector3.zero;
                 if (this.SpawnPosition != null)
                 {
                     spawnPos = this.SpawnPosition.position;

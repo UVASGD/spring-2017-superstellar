@@ -14,12 +14,8 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	public bool isControllable = false;
 	public bool AssignAsTagObject = true;
 
-	private GameObject parent;
-
 	void OnEnable()
 	{
-		parent = this.transform.parent.gameObject;
-
 		if (this.photonView != null && !this.photonView.isMine) {
 			this.enabled = false;
 			return;
