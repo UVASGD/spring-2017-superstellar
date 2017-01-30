@@ -150,8 +150,7 @@ public class StarManager: Photon.MonoBehaviour
 			strPont.GetComponent<Collider2D>().enabled = true;
 		}
 	}
-
-	[PunRPC]
+		
 	// redraws the star with a particular number of points
 	void resetShooting(Quaternion q, int numPoints, int starGrade){
 
@@ -171,6 +170,7 @@ public class StarManager: Photon.MonoBehaviour
 		float angle2 = q.eulerAngles.z;
 		float topAngle2 = angle2 + 90;
 
+
 		pointAngles2.Clear ();
 		pointAngles2.Add(topAngle2);
 
@@ -178,7 +178,7 @@ public class StarManager: Photon.MonoBehaviour
 		{
 			pointAngles2.Add(topAngle2 - i * (360 / numPoints));
 		}
-
+			
 		// instantiates the new starpoints and gives them size, health, and damage, then adds them to the list and makes them shootable
 		for(int i = 0; i < numPoints; i++)
 		{
@@ -221,8 +221,7 @@ public class StarManager: Photon.MonoBehaviour
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
 
 		ScenePhotonView = this.GetComponent<PhotonView> ();
-		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum, starGrade); // resetShooting (transform.rotation, starPointNum);
-
+		resetShooting (transform.rotation, starPointNum, starGrade);
 		lifetime = projLife [starGrade - 1];
 		projForce = projSpeeds [starGrade - 1];
 		reloadTime = projRegen [starGrade - 1];
@@ -235,8 +234,6 @@ public class StarManager: Photon.MonoBehaviour
 		} else {
 			GetComponent<Shooting_Controls_edit> ().presetMax = 3;
 		}
-
-
 
 	}
 
@@ -255,7 +252,6 @@ public class StarManager: Photon.MonoBehaviour
 	[PunRPC]
 	// calculates the angles and direction vectors for projectiles
 	void redrawStar(Quaternion q, int numPoints) {
-
 		float angle = q.eulerAngles.z;
 		float topAngle = angle + 90;
 

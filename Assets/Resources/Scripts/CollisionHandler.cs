@@ -10,18 +10,8 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	// amount of points to give when object dies
 //	public int pointsToGive;
 
-
-//	void Start(){
-//		if (this.photonView != null && !this.photonView.isMine) {
-//			this.enabled = false;
-//			return;
-//		} 
-//	}
-		
-
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		
 		string targetID;
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
@@ -40,7 +30,6 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
 			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID.ToString ());
 		}
-
 	}
 
 	void OnCollisionEnter2D(Collision2D other)
@@ -59,7 +48,6 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 		int pvID = int.Parse(gameObject.tag);
 		PhotonView starpv = PhotonView.Find (pvID);
-
 
 		if (!targetID.Equals(pvID.ToString())) {
 			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
@@ -83,35 +71,18 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			PhotonView targetpv = PhotonView.Find(int.Parse(targetID));
 			target = targetpv.gameObject;
 		}
-			
-		GameObject star = PhotonView.Find(int.Parse(gameObject.tag)).gameObject;
 
 		target.GetComponent<Health_Management> ().Health -= damage;
 
-		Debug.Log (gameObject.name);
-		Debug.Log (target.gameObject.name);
-
-//		if (gameObject.name == "Star_Point(Clone)") {
-//			star.GetComponent<Health_Management> ().Health -= damage;
-//			if (star.GetComponent<Health_Management> ().Health <= 10) {
-//				Debug.Log ("S2S! You a ded ghost boi~");
-//			}
-//		} 
-
 		// kill the object when its health is depleted
 		if (target.GetComponent<Health_Management> ().Health <= 0) {
-
-			Debug.Log (target.tag);
 			// if the object is an un-shot starpoint, destroy it using the shooting controls script
 			if (target.tag == "Star_Point") {
 				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
-				// if the object is a player, kill it (not yet...)
-			} else if (target.tag == "Star") {
-
 				// if the object is anything else, destroy it and give the player points
 			} else {
 				Destroy (target);
-				star.GetComponent<Score_Manager> ().score += 5;
+				gameObject.GetComponent<Score_Manager> ().score += 5;
 			}
 		}
 	}
