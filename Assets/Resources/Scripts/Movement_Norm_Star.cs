@@ -4,12 +4,13 @@ using System.Collections;
 public class Movement_Norm_Star : Photon.MonoBehaviour {
 	
 	//Inspector Variables
-	private float playerSpeed = 2f; //speed player moves
+	private float playerSpeed = 20f; //speed player moves
 
 	private Vector2 movTarget;// where the player is to move towards
 	private Vector2 dampSpeed = Vector2.zero; // the dampspeed for smoothdamping player movement
 	private float smoothTime = 0.5f; // the smoothdamping delay
-	private Vector2 velTarget; // the target velocity based on the differenct between player position and movTarget
+	private Vector2 velTarget; // the target velocity based on the difference between player position and movTarget
+	private Vector3 velocity = Vector3.zero;
 
 	public bool isControllable = false;
 	public bool AssignAsTagObject = true;
@@ -42,7 +43,6 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 		float diag = 1 - Mathf.Sqrt (2) / 2;
 		// add to movTarget based on key input
 		if (Input.GetKey (KeyCode.UpArrow) || Input.GetKey (KeyCode.W)) {//Press up arrow key to move forward on the Y AXIS
-
 			if (movTarget.y < 100) {
 				movTarget += new Vector2 (0f, playerSpeed * Time.deltaTime / (transform.localScale.x));
 			}
@@ -82,12 +82,15 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 			velTarget = new Vector2 (0f, 0f);
 		}
 
-		// set target velocity
+//		// set target velocity
 		velTarget.x = (movTarget.x - transform.position.x)/Time.deltaTime;
 		velTarget.y = (movTarget.y - transform.position.y)/Time.deltaTime;
 
+		Vector2 velCurrent = Vector2.zero;
+
 		// accelerate the player to the target velocity with smoothdamp
-//		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
+		// NEED TO FIX! SmoothDamp method updated and does not work as it did in previous version of Unity (changed playerSpeed manually to "fix")
+		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref velCurrent, smoothTime, 17f, Time.deltaTime);
 
 	}
 
