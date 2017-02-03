@@ -26,6 +26,8 @@ public class LoadingGUI : MonoBehaviour
 		if( PhotonNetwork.inRoom )
 		{
 			enabled = false;
+			Renderer bg = GameObject.Find ("Background").GetComponent<Renderer> ();
+			bg.material.mainTextureScale = new Vector2 (20,20);
 		}
 	}
 
