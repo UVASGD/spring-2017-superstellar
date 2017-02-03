@@ -9,118 +9,40 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 	public GameObject projectile;
 	public GameObject starPointSprite;
 
-	//public GameObject player;
-
 	//variables
-	private float lifetime = 2.0f;
-	// how long projectiles stay on screen
+	private float lifetime = 2.0f; // how long projectiles stay on screen
+	private float projForce = 300.0f; // how much force the projectiles are given when shot
+	private int starPointNum = 4; // how many points the star has
+	private int maxPointHealth = 50; // how much health the projectiles have
+	private int maxPointDam = 70; // how much damage the projectiles give when they collide with something
+	public int maxPlayerHealth = 5000; // how much health the player has at full health
+	private int maxPlayerDam = 300; // how much damage the player gives when they collide with something
+	private float playerRegen = 1f; // how quickly the player regenerates their health
+	private Material starMat; // the material of the star
+	private float starSize = 3f; // how quickly the player regenerates their health
+	private float reloadTime = 2f; //time to regen point
 
-	private float projForce = 300.0f;
-	// how much force the projectiles are given when shot
-
-	private int starPointNum = 4;
-	// how many points the star has
-
-	private int maxPointHealth = 50;
-	// how much health the projectiles have
-
-	private int maxPointDam = 70;
-	// how much damage the projectiles give when they collide with something
-
-	public int maxPlayerHealth = 5000;
-	// how much health the player has at full health
-
-	private int maxPlayerDam = 300;
-	// how much damage the player gives when they collide with something
-
-	private float playerRegen = 1f;
-	// how quickly the player regenerates their health
-
-	private Material starMat;
-	// the material of the star
-
-	private float starSize = 3f;
-	// how quickly the player regenerates their health
-
-	private float reloadTime = 2f;
-	//time to regen point
-
-
-
-	private List<GameObject> starpoints = new List<GameObject>();
-	//holds the non-projected points
-
-	private List<SpriteRenderer> spri = new List<SpriteRenderer>();
-	//holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)
-
-
+	private List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
+	private List<SpriteRenderer> spri = new List<SpriteRenderer>(); //holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)
 
 	//shooting conditions
-	private List<int> canShoot = new List<int> (4);
-	// determines whether a starpoint can be shot
-
-	public bool autoShootAll = true;
-	// determines whether all starpoints will automatically fire all at once after they regenerate
-
-
+	private List<int> canShoot = new List<int> (4); // determines whether a starpoint can be shot
+	public bool autoShootAll = true; // determines whether all starpoints will automatically fire all at once after they regenerate
 
 	//Direction Vectors for projectiles
-	private List<Vector2> pointVectList = new List<Vector2>(4);
-	// the direction vectors for projectiles
-
-	private List<float> pointAngles = new List<float>(4);
-	// the angles at which starpoints are shot
-
-	private List<float> pointAngles2 = new List<float>(4);
-	// the angles at which starpoints are regenerated
-
-	private float playerSpeed = 2f; 
-	//speed player moves
-
-	private Vector2 movTarget;
-	// where the player is to move towards
-
-	private Vector2 dampSpeed = Vector2.zero;
-	// the dampspeed for smoothdamping player movement
-
-	private float smoothTime = 0.5f;
-	// the smoothdamping delay
-
-	private Vector2 velTarget;
-	// the target velocity based on the differenct between player position and movTarget
-
-
-	//	void OnEnable()
-	//	{
-	//		Debug.Log ("Shooting Controls");
-	//		if (this.photonView != null && !this.photonView.isMine) {
-	//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
-	//			this.enabled = false;
-	//			return;
-	//		} else {
-	//			Debug.Log("I am player "+ this.photonView.ownerId);
-	//		}
-	//	}
+	private List<Vector2> pointVectList = new List<Vector2>(4); // the direction vectors for projectiles
+	private List<float> pointAngles = new List<float>(4); // the angles at which starpoints are shot
+	private List<float> pointAngles2 = new List<float>(4); // the angles at which starpoints are regenerated
+	private float playerSpeed = 2f; //speed player moves
+	private Vector2 movTarget; // where the player is to move towards
+	private Vector2 dampSpeed = Vector2.zero; // the dampspeed for smoothdamping player movement
+	private float smoothTime = 0.5f; // the smoothdamping delay
+	private Vector2 velTarget; // the target velocity based on the differenct between player position and movTarget
 
 	void Start() {
 
-
-		canShoot = new List<int>{ 1, 1,1,1};
-
+		canShoot = new List<int>{1,1,1,1};
 		starMat = Resources.Load<Material> ("Materials/AI_Blazar");
-
-		/*Debug.Log ("SHOOTING CONTROLS");
-		if (this.photonView != null && !this.photonView.isMine) {
-			//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
-			this.enabled = false;
-			return;
-		} else {
-			//			Debug.Log("I am player "+ this.photonView.ownerId);
-		}
-
-		ScenePhotonView = this.GetComponent<PhotonView>();
-		// set initial shooting conditions
-		*/
 
 		// initialize star to class 1
 		//ScenePhotonView.RPC("upgradeStar", PhotonTargets.All);
@@ -147,6 +69,7 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 		healthRegen (playerRegen);
 
 
+
 		// toggle autoshooting for all points
 		/* if (player within range)
 		{
@@ -155,17 +78,16 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 			autoShootAll = false;
 		}*/
 
+
+
 		// check to see if stars can be shot
 		for (int i = 0; i < 4; i++) {
-
 			// check conditions to see if starpoint can be shot
 			if (autoShootAll && canShoot [i] == 1) {
-				//					Debug.Log ("starSizes: " + starSizes.Count);
 				//ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i + 1);
 				Shoot(i+1);
 			}
 		} 
-
 
 	}
 
@@ -174,10 +96,7 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 	//[PunRPC]
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
-
-
-		//Debug.Log (this.photonView.ownerId);
-
+		
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
 
