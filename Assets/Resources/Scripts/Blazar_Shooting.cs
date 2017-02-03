@@ -388,7 +388,8 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 		velTarget.y = (movTarget.y - transform.position.y)/Time.deltaTime;
 
 		// accelerate the player to the target velocity with smoothdamp
-		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
+		GetComponent<Rigidbody2D> ().AddForce(velTarget);
+//		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
 
 	}
 

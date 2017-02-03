@@ -4,7 +4,7 @@ using System.Collections;
 public class Movement_Norm_Star : Photon.MonoBehaviour {
 	
 	//Inspector Variables
-	private float playerSpeed = 20f; //speed player moves
+	private float playerSpeed = 2f; //speed player moves
 
 	private Vector2 movTarget;// where the player is to move towards
 	private Vector2 dampSpeed = Vector2.zero; // the dampspeed for smoothdamping player movement
@@ -88,10 +88,11 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 		Vector2 velCurrent = Vector2.zero;
 
-		// accelerate the player to the target velocity with smoothdamp
-		// NEED TO FIX! SmoothDamp method updated and does not work as it did in previous version of Unity (changed playerSpeed manually to "fix")
-		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref velCurrent, smoothTime, 17f, Time.deltaTime);
+		// OUTDATED: accelerate the player to the target velocity with smoothdamp
+		//		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
 
+		// accelerate the player by adding velTarget Force
+		GetComponent<Rigidbody2D> ().AddForce(velTarget);
 	}
 
 	void rotate() {

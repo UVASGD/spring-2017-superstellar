@@ -385,9 +385,11 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		velTarget.x = (movTarget.x - transform.position.x)/Time.deltaTime;
 		velTarget.y = (movTarget.y - transform.position.y)/Time.deltaTime;
 
-		// accelerate the player to the target velocity with smoothdamp
-		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
+		// OUTDATED: accelerate the player to the target velocity with smoothdamp
+		//		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
 
+		// accelerate the player by adding velTarget Force
+		GetComponent<Rigidbody2D> ().AddForce(velTarget);
 	}
 
 
