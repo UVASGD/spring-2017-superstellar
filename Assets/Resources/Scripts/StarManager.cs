@@ -206,7 +206,7 @@ public class StarManager: Photon.MonoBehaviour
 	[PunRPC]
 	// reloads star under a particular class -> establishes stats and redraws the star
 	void upgradeStar(int starGrade){
-
+		
 		transform.localScale = new Vector3(starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f);
 		GetComponent<Renderer> ().material = starMats [starGrade - 1];
 
