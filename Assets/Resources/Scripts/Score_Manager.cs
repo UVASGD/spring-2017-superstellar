@@ -24,6 +24,7 @@ public class Score_Manager : MonoBehaviour {
 		text2 = word2.GetComponent<Text>();
 		text3 = word3.GetComponent<Text>();
 		text3.text = PlayerPrefs.GetString ("PlayerName");
+		PlayerPrefs.DeleteKey ("PlayerName");
 		score = 0;
 
 	}
