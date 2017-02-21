@@ -38,7 +38,6 @@ public class StarManager: Photon.MonoBehaviour
 	public List<int> shootOnMouse = new List<int> (12); // determines whether an individual starpoint will fire on mouse click or spacebar
 
 
-
 	//class variables (Initialized in Start for readability)
 	public List<Material> starMats = new List<Material> (13); // holds the materials of each star class
 	private List<float> projSpeeds = new List<float> (13); // holds the values for the speed of shot starpoints for each star class
@@ -53,6 +52,15 @@ public class StarManager: Photon.MonoBehaviour
 	private List<int> starBodyDam = new List<int> (13); // holds the values for the damage inflicted by the player starbody for each star class
 	public int starType = 1; // the class of the star
 
+	/*Plan:
+	    -list of available classes
+		-list of available classes
+		-method run every frame to see what classes player is eligible for
+		-method to update upgrade GUI based on this
+		-GUIs to call UpgradeStar*/
+	//Player Stats
+	//public int playersKilled = 0;
+	//public List<bool> availableClasses = new List<bool> (true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//Direction Vectors for projectiles
 	public List<Vector2> pointVectList = new List<Vector2>(12); // the direction vectors for projectiles
