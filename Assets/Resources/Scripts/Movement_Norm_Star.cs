@@ -88,11 +88,9 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 
 		Vector2 velCurrent = Vector2.zero;
 
-		// OUTDATED: accelerate the player to the target velocity with smoothdamp
-		//		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
+		// accelerate the player to the target velocity with smoothdamp
+		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime, 10.0f, Time.deltaTime);
 
-		// accelerate the player by adding velTarget Force
-		GetComponent<Rigidbody2D> ().AddForce(velTarget);
 	}
 
 	void rotate() {

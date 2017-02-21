@@ -209,7 +209,6 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 				}
 
 			} 
-
 			// non-existant starpoints can't be shot
 			else {
 				canShoot [i] = -1;
