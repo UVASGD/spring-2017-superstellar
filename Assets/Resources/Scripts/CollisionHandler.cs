@@ -12,6 +12,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		Debug.Log ("OnTriggerEnter2D");
 		string targetID;
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
@@ -34,6 +35,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
+		Debug.Log ("OnCollisionEnter2D");
 		string targetID;
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();

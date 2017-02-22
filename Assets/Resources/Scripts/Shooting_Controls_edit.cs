@@ -229,7 +229,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	[PunRPC]
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
-		Debug.Log(PlayerPrefs.GetString("PlayerName"));
+//		Debug.Log(PlayerPrefs.GetString("PlayerName"));
 		starPointNum = GetComponent<StarManager>().starPointNum;
 
 		//clones existing projectile gameobject

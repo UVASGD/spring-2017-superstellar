@@ -57,6 +57,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	[PunRPC]
 	void Generate (){
 		if (PhotonNetwork.isMasterClient) {
+			Debug.Log ("generating bg stars");
 			// check to see if max spawn is reached
 			if (spawnedStuff.Count < numSpawn) {
 
