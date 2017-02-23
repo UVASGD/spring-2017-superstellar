@@ -49,15 +49,14 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	void Update() {
 			if (Time.time > nextActionTime) {
 				nextActionTime += period;
-				ScenePhotonView.RPC ("Generate", PhotonTargets.All);
+				ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
 			}
 	}
 	
 
 	[PunRPC]
-	void Generate (){
+	void GenerateBGStar () {
 		if (PhotonNetwork.isMasterClient) {
-			Debug.Log ("generating bg stars");
 			// check to see if max spawn is reached
 			if (spawnedStuff.Count < numSpawn) {
 
