@@ -12,6 +12,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	//sprites -> projectile and non-projected point
 	public GameObject projectile;
 	public GameObject starPointSprite;
+	public AudioClip shootSound;
+	private AudioSource source;
 
 	//variables
 	private float lifetime = 2.0f;
@@ -82,7 +84,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	}
 
 	void Start() {
-		
+
+		source = GetComponent<AudioSource> ();
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
@@ -215,11 +218,6 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 				autoShoot [i] = -1;
 				shootOnMouse [i] = -1;
 			}
-
-
-
-
-
 		}
 			
 	}
@@ -274,6 +272,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		rb.AddForce (pointVectList[point - 1]* GetComponent<StarManager> ().projForce);
 		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] *  GetComponent<StarManager> ().projForce/10f);
 
+		//sound effect
+		source.PlayOneShot(shootSound,0.75f);
 		// tells starpoint regeneration function to run
 		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1, starType));
 
