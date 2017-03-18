@@ -98,9 +98,9 @@ public class StarManager: Photon.MonoBehaviour
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 		starClassNames = new List<string>{"Main Sequence","Red Dwarf","Red Giant","Red Supergiant","White Dwarf","Blue Supergiant","Supernova","Blue Hypergiant","Neutron","Hypernova","Black Hole","Quasar","Pulsar"};
 
-		// initialize star to class 1
+		// initialize star to class 0
 		if (starSizes.Count > 0) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 1); // upgradeStar (1);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0); // upgradeStar (0);
 		}
 
 	}
@@ -137,7 +137,7 @@ public class StarManager: Photon.MonoBehaviour
 		}
 	}
 
-
+	/*
 
 	[PunRPC]
 	// regenerate starpoints after they were shot off or destroyed
@@ -146,7 +146,7 @@ public class StarManager: Photon.MonoBehaviour
 		yield return new WaitForSeconds (delayTime);
 
 		// checks to make sure the star class is still the same
-		if (strClassN == starType + 1) {
+		if (strClassN == starType) {
 			// reloads the un-shot starpoint into the proper spriterenderer, and then removes it from the to-do list of spriterenderers
 			spri [spri.FindIndex (d => d == sprIndex)].sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White");
 			spri.Remove (sprIndex);
@@ -160,7 +160,7 @@ public class StarManager: Photon.MonoBehaviour
 			strPont.GetComponent<Collider2D>().enabled = true;
 		}
 	}
-		
+		*/
 	// redraws the star with a particular number of points
 	void resetShooting(Quaternion q, int numPoints, int starGrade){
 

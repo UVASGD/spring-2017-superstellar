@@ -292,6 +292,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strClassN)
 	{
 		yield return new WaitForSeconds (delayTime);
+		Debug.Log ("Delay Time: " + delayTime);
 
 		// checks to make sure the star class is still the same
 		if (strClassN == starType) {
