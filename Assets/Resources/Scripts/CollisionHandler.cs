@@ -80,7 +80,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
 				// if the object is anything else, destroy it and give the player points
 			} else {
-				Destroy (target);
+				//Destroy (target);
 				gameObject.GetComponent<Score_Manager> ().score += 5;
 			}
 		}

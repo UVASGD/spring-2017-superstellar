@@ -17,10 +17,22 @@ public class Health_Management : Photon.MonoBehaviour {
 			this.enabled = false;
 			return;
 		} 
-
+		Debug.Log (this.gameObject.name);
 		ScenePhotonView = this.GetComponent<PhotonView>();
 	}
-	
+
+	void Update () {
+		if (Health <= 0) {
+
+			if (this.gameObject.name == "Star") {
+				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
+				PhotonNetwork.LeaveRoom ();
+			} else {
+				Debug.Log ("Destroyed gameobject");
+				Destroy (this.gameObject);
+			}
+		}
+	}
 
 
 }
