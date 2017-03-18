@@ -7,8 +7,10 @@ public class MinimapManagement : MonoBehaviour {
 	public GameObject PlayerPosIcon;
 	List<GameObject> playerList = new List<GameObject>();
 	List<GameObject> iconList = new List<GameObject>();
-	float mapX;
-	float mapY;
+
+	float scaledX;
+	float scaledY;
+
 	Vector3 origin;
 
 	void OnEnable()
@@ -35,8 +37,17 @@ public class MinimapManagement : MonoBehaviour {
 //			Debug.Log (sm.gameObject.name);
 		}
 
-		mapX = GameObject.Find ("Background").transform.localScale.x;
-		mapY = GameObject.Find ("Background").transform.localScale.y;
+		float mapX = GameObject.Find ("Background").transform.localScale.x;
+		float mapY = GameObject.Find ("Background").transform.localScale.y;
+
+		float minimapX = GameObject.Find ("minimap_gui").transform.localScale.x;
+		float minimapY = GameObject.Find("minimap_gui").transform.localScale.y;
+
+//		scaledX = mapX / minimapX;
+//		scaledY = mapY / minimapY;
+
+		scaledX = mapX;
+		scaledY = mapY;
 
 	}
 	
@@ -56,8 +67,8 @@ public class MinimapManagement : MonoBehaviour {
 		
 
 	Vector3 scaledPosition(Vector3 original) {
-		float x = (original.x/mapX) + origin.x;
-		float y = (original.y/mapY) + origin.y;
+		float x = (original.x/scaledX) + origin.x;
+		float y = (original.y/scaledY) + origin.y;
 		Vector3 res = new Vector3 (x,y,0);
 		return res;
 	}
