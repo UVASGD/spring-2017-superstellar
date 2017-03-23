@@ -26,7 +26,7 @@ public class Health_Management : Photon.MonoBehaviour {
 
 			if (this.gameObject.name == "Star") {
 				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
-				PhotonNetwork.LeaveRoom ();
+				PhotonNetwork.Disconnect();
 			} else {
 				Debug.Log ("Destroyed gameobject");
 				Destroy (this.gameObject);

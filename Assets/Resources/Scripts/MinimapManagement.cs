@@ -35,7 +35,7 @@ public class MinimapManagement : MonoBehaviour {
 			icon.transform.SetParent (this.transform);
 			icon.transform.position = scaledPosition (sm.gameObject.transform.position);
 			if (sm.gameObject.GetPhotonView ().isMine) { 
-				icon.GetComponent<SpriteRenderer> ().material = Resources.Load<Material> ("Materials/Enemy_Player_Icon");
+				icon.GetComponent<SpriteRenderer> ().material = Resources.Load<Material> ("Materials/Local_Player_Icon");
 			}
 			iconList.Add (icon);
 		}
@@ -57,6 +57,8 @@ public class MinimapManagement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Debug.Log (GameObject.FindObjectsOfType<StarManager> ().Length);
+		Debug.Log (playerList.Count);
 		if (GameObject.FindObjectsOfType<StarManager> ().Length > playerList.Count) {
 			StarManager[] smList = GameObject.FindObjectsOfType<StarManager> ();
 			foreach (StarManager sm in smList) {

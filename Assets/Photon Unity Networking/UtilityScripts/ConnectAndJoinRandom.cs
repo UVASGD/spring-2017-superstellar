@@ -21,17 +21,18 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 
     public virtual void Start()
     {
-        PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
+		PhotonNetwork.autoJoinLobby = false;    // we join randomly. always. no need to join a lobby to get the list of rooms.
     }
 
     public virtual void Update()
     {
         if (ConnectInUpdate && AutoConnect && !PhotonNetwork.connected)
         {
-//            Debug.Log("Update() was called by Unity. Scene is loaded. Let's connect to the Photon Master Server. Calling: PhotonNetwork.ConnectUsingSettings();");
-
+            Debug.Log("Update() was called by Unity. Scene is loaded. Let's connect to the Photon Master Server. Calling: PhotonNetwork.ConnectUsingSettings();");
             ConnectInUpdate = false;
-            PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
+//			Debug.Log (Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
+//            PhotonNetwork.ConnectUsingSettings(Version + "." + SceneManagerHelper.ActiveSceneBuildIndex);
+			PhotonNetwork.ConnectUsingSettings("1.1");
         }
     }
 
