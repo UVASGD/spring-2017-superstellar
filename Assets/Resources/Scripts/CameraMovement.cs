@@ -8,8 +8,8 @@ public class CameraMovement : Photon.MonoBehaviour {
 	public GameObject bg;			//sets reference to game map
 
 	// map dimensions
-	float mapX;
-	float mapY;
+	public float mapX;
+	public float mapY;
 
 	// bounds that camera is limited to
 	private float minX;

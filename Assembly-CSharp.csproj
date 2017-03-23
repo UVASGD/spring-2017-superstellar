@@ -153,6 +153,7 @@
      <Compile Include="Assets\Resources\Scripts\Health_Management.cs" />
      <Compile Include="Assets\Resources\Scripts\LoadingGUI.cs" />
      <Compile Include="Assets\Resources\Scripts\Magnetar_Shooting.cs" />
+     <Compile Include="Assets\Resources\Scripts\MinimapManagement.cs" />
      <Compile Include="Assets\Resources\Scripts\Movement_Norm_Star.cs" />
      <Compile Include="Assets\Resources\Scripts\Name_Holder.cs" />
      <Compile Include="Assets\Resources\Scripts\Rogue_Shooting.cs" />

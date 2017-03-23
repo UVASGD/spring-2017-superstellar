@@ -120,7 +120,10 @@ public class StarManager: Photon.MonoBehaviour
 			checkClasses();
 
 			// REPLACE WITH CLASS PROGRESSION. BASE ON 'starMass' (equivalent to score)
+
+		
 			// downgrade star class (testing purposes)
+
 			/*
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
 			{
@@ -135,6 +138,7 @@ public class StarManager: Photon.MonoBehaviour
 				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
 			}
 			*/
+
 
 		}
 	}
