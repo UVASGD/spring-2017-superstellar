@@ -6,6 +6,7 @@ public class Score_Manager : MonoBehaviour {
 	
 	private GameObject player;
 	public int score;
+	public string playerNameForDeath;
 
 	public GameObject word1;
 	public GameObject word2;
@@ -24,6 +25,7 @@ public class Score_Manager : MonoBehaviour {
 		text2 = word2.GetComponent<Text>();
 		text3 = word3.GetComponent<Text>();
 		text3.text = PlayerPrefs.GetString ("PlayerName");
+		playerNameForDeath = PlayerPrefs.GetString ("PlayerName");
 		PlayerPrefs.DeleteKey ("PlayerName");
 		score = 0;
 

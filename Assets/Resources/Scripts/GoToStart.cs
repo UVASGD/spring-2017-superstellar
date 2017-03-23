@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GoToStart : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("hello entered the start");
+		
 
 	}
 
 	public void OnStartGame () {
-		Debug.Log ("hello entered the thing");
 		UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
 	}
 
