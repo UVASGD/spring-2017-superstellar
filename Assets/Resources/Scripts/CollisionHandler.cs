@@ -81,7 +81,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				// if the object is anything else, destroy it and give the player points
 			} else {
 				Destroy (target);
-				gameObject.GetComponent<Score_Manager> ().score += 50;
+				gameObject.GetComponent<Score_Manager> ().score += 5;
 			}
 		}
 	}

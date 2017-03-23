@@ -28,7 +28,7 @@ public class StarManager: Photon.MonoBehaviour
 	public string className = "Main Sequence";
 	public string playerTag;
 
-	private int advanceNum = 50;
+	private int advanceNum = 25;
 
 
 	public List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
@@ -121,6 +121,7 @@ public class StarManager: Photon.MonoBehaviour
 
 			// REPLACE WITH CLASS PROGRESSION. BASE ON 'starMass' (equivalent to score)
 			// downgrade star class (testing purposes)
+			/*
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
 			{
 				starType = starType - 1;
@@ -133,34 +134,11 @@ public class StarManager: Photon.MonoBehaviour
 				starType = starType + 1;
 				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
 			}
+			*/
 
 		}
 	}
-
-	/*
-
-	[PunRPC]
-	// regenerate starpoints after they were shot off or destroyed
-	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strClassN)
-	{
-		yield return new WaitForSeconds (delayTime);
-
-		// checks to make sure the star class is still the same
-		if (strClassN == starType) {
-			// reloads the un-shot starpoint into the proper spriterenderer, and then removes it from the to-do list of spriterenderers
-			spri [spri.FindIndex (d => d == sprIndex)].sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White");
-			spri.Remove (sprIndex);
-
-			// gives the regenerated point max health and damage
-			strPont.GetComponent<Health_Management> ().Health = maxPointHealth;
-			strPont.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
-
-			// sets the starpoint as able to be shot and able to collide with objects
-			canShoot [strPt] = 1;
-			strPont.GetComponent<Collider2D>().enabled = true;
-		}
-	}
-		*/
+		
 	// redraws the star with a particular number of points
 	void resetShooting(Quaternion q, int numPoints, int starGrade){
 

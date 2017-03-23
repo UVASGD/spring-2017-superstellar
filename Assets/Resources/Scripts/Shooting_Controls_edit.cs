@@ -208,7 +208,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 				// check conditions to see if starpoint can be shot
 				if (((autoShoot [i] == 1 || autoShootAll) || ((Input.GetMouseButton (0) || Input.GetKey (KeyCode.Space)) && shootOnMouse [i] == 1)) && canShoot [i] == 1) {
-					ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i + 1);
+					ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i+1);
 				}
 
 			} 
@@ -245,11 +245,11 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		pointVectList = GetComponent<StarManager> ().pointVectList;
 		starPtDam = GetComponent<StarManager> ().starPtDam;
 
-		proj.transform.localScale = new Vector3(starSizes [starType - 1]*0.6f,starSizes [starType - 1]*1f,starSizes [starType - 1]*0.5f);
+		proj.transform.localScale = new Vector3(starSizes [starType]*0.6f,starSizes [starType]*1f,starSizes [starType]*0.5f);
 		proj.GetComponent<Renderer> ().material = this.GetComponent<Renderer> ().material;
 
 		proj.GetComponent<Health_Management> ().Health = maxPointHealth;
-		proj.GetComponent<CollisionHandler> ().damage_to_give = starPtDam[starType - 1];
+		proj.GetComponent<CollisionHandler> ().damage_to_give = starPtDam[starType];
 		SpriteRenderer sr = proj.GetComponent<SpriteRenderer> ();
 		Rigidbody2D rb = proj.GetComponent<Rigidbody2D> ();
 
