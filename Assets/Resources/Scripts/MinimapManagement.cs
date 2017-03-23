@@ -8,6 +8,8 @@ public class MinimapManagement : MonoBehaviour {
 	List<GameObject> playerList = new List<GameObject>();
 	List<GameObject> iconList = new List<GameObject>();
 
+	List<GameObject> bgStarList = new List<GameObject>();
+
 	float scaledX;
 	float scaledY;
 
@@ -18,9 +20,8 @@ public class MinimapManagement : MonoBehaviour {
 		PhotonView pv = this.transform.parent.gameObject.GetPhotonView ();
 		if (pv != null && !pv.isMine) {
 			this.enabled = false;
-			for( int i = 0; i < this.transform.childCount; ++i )
-			{
-				this.transform.GetChild(i).gameObject.SetActiveRecursively(false);
+			for (int i = 0; i < this.transform.childCount; ++i) {
+				this.transform.GetChild (i).gameObject.SetActiveRecursively (false);
 			}
 		} 
 	}
@@ -33,8 +34,10 @@ public class MinimapManagement : MonoBehaviour {
 			GameObject icon = Instantiate (PlayerPosIcon, scaledPosition (sm.gameObject.transform.position), Quaternion.identity);
 			icon.transform.SetParent (this.transform);
 			icon.transform.position = scaledPosition (sm.gameObject.transform.position);
+			if (sm.gameObject.GetPhotonView ().isMine) { 
+				icon.GetComponent<SpriteRenderer> ().material = Resources.Load<Material> ("Materials/Enemy_Player_Icon");
+			}
 			iconList.Add (icon);
-//			Debug.Log (sm.gameObject.name);
 		}
 
 		float mapX = GameObject.Find ("Background").transform.localScale.x;
@@ -53,18 +56,59 @@ public class MinimapManagement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (GameObject.FindObjectsOfType<StarManager> ().Length > playerList.Count) {
+			StarManager[] smList = GameObject.FindObjectsOfType<StarManager> ();
+			foreach (StarManager sm in smList) {
+				bool oldplayer = false;
+				foreach (GameObject g in playerList) {
+					if (g.GetPhotonView ().ownerId == sm.photonView.ownerId) {
+						oldplayer = true;
+					}
+				}
+				if (!oldplayer) {
+					playerList.Add (sm.gameObject);
+					GameObject icon = Instantiate (PlayerPosIcon, scaledPosition (sm.gameObject.transform.position), Quaternion.identity);
+					icon.transform.SetParent (this.transform);
+					icon.transform.position = scaledPosition (sm.gameObject.transform.position);
+					if (sm.gameObject.GetPhotonView ().isMine) {
+						icon.GetComponent<SpriteRenderer> ().material = Resources.Load<Material> ("Materials/Local_Player_Icon");
+					}
+					iconList.Add (icon);
+				}
+
+			}
+		}
+			
 		origin = GameObject.Find("minimap_gui").transform.position;
-		Debug.Log (origin);
+//		Debug.Log (origin);
 
 		foreach (GameObject p in playerList) {
-			Debug.Log (p.name + ": " +p.transform.position);
+//			Debug.Log (p.name + ": " +p.transform.position);
 			GameObject icon = iconList [playerList.IndexOf (p)];
 			icon.transform.position = scaledPosition (p.transform.position);
-			Debug.Log (icon.transform.position);
+//			Debug.Log (icon.transform.position);
 		}
+
+//		displayBGStars ();
 
 	}
 		
+
+
+	void displayBGStars() {
+
+
+		GameObject[] bgsList = GameObject.FindGameObjectsWithTag ("BG_Stars");
+		foreach (GameObject bgs in bgsList) {
+			GameObject icon = Instantiate (PlayerPosIcon, scaledPosition (bgs.gameObject.transform.position), Quaternion.identity);
+			icon.transform.SetParent (this.transform);
+			icon.transform.position = scaledPosition (bgs.gameObject.transform.position);
+			icon.GetComponent<SpriteRenderer> ().material = Resources.Load<Material> ("Materials/BG_Star_Icon");
+			bgStarList.Add (icon);
+		}
+
+	}
 
 	Vector3 scaledPosition(Vector3 original) {
 		float x = (original.x/scaledX) + origin.x;

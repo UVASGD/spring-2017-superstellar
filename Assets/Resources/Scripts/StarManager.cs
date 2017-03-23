@@ -12,7 +12,6 @@ public class StarManager: Photon.MonoBehaviour
 	public GameObject starPointSprite;
 
 
-
 	//variables
 
 	public float lifetime = 2.0f; // how long projectiles stay on screen
@@ -25,10 +24,7 @@ public class StarManager: Photon.MonoBehaviour
 	public int maxPlayerDam = 100; // how much damage the player gives when they collide with something
 	public float playerRegen = 1; // how quickly the player regenerates their health
 	public float reloadTime = 2.0f; //time to regen point
-	public string className = "Main Sequence";
 	public string playerTag;
-
-	private int advanceNum = 25;
 
 
 	public List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
@@ -54,14 +50,17 @@ public class StarManager: Photon.MonoBehaviour
 	private List<int> starBodyHealth = new List<int> (13); // holds the values for the max health of the player for each star class
 	private List<float> starBodyRegen = new List<float> (13); // holds the values for the health regeneration of the player for each star class
 	private List<int> starBodyDam = new List<int> (13); // holds the values for the damage inflicted by the player starbody for each star class
-	private List<string> starClassNames = new List<string>(13);
-	public int starType = 0;
+	public int starType = 1; // the class of the star
+
 	/*Plan:
 	    -list of available classes
 		-list of available classes
 		-method run every frame to see what classes player is eligible for
 		-method to update upgrade GUI based on this
 		-GUIs to call UpgradeStar*/
+	//Player Stats
+	//public int playersKilled = 0;
+	//public List<bool> availableClasses = new List<bool> (true, false, false, false, false, false, false, false, false, false, false, false, false, false);
 
 	//Direction Vectors for projectiles
 	public List<Vector2> pointVectList = new List<Vector2>(12); // the direction vectors for projectiles
@@ -96,11 +95,10 @@ public class StarManager: Photon.MonoBehaviour
 		starBodyHealth = new List<int>{ 100, 150, 200, 300, 100, 350, 75, 500, 100, 50, 150, 200, 50 };
 		starBodyRegen = new List<float>{ 0.1f, 0.2f, 0.05f, 0.03f, 0.3f, 0.02f, 0.3f, 0.01f, 0.4f, 0.4f, 0.3f, 0.2f, 0.5f };
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
-		starClassNames = new List<string>{"Main Sequence","Red Dwarf","Red Giant","Red Supergiant","White Dwarf","Blue Supergiant","Supernova","Blue Hypergiant","Neutron","Hypernova","Black Hole","Quasar","Pulsar"};
 
-		// initialize star to class 0
+		// initialize star to class 1
 		if (starSizes.Count > 0) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0); // upgradeStar (0);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 1); // upgradeStar (1);
 		}
 
 	}
@@ -117,29 +115,49 @@ public class StarManager: Photon.MonoBehaviour
 
 			// regenerate player health					
 			ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen); // healthRegen (playerRegen);
-			checkClasses();
+
 
 			// REPLACE WITH CLASS PROGRESSION. BASE ON 'starMass' (equivalent to score)
 
 		
 			// downgrade star class (testing purposes)
+//			if (Input.GetKeyDown (KeyCode.Y) && starType > 1)
+//			{
+//				starType = starType - 1;
+//				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
+//			}
+//
+//			// upgrade star class (testing purposes)
+//			if (Input.GetKeyDown (KeyCode.U) && starType < 13)
+//			{
+//				starType = starType + 1;
+//				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
+//			}
 
-			/*
-			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
-			{
-				starType = starType - 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
-			}
-
-			// upgrade star class (testing purposes)
-			if (Input.GetKeyDown (KeyCode.U) && starType < 12)
-			{
-				starType = starType + 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
-			}
-			*/
+		}
+	}
 
 
+
+	[PunRPC]
+	// regenerate starpoints after they were shot off or destroyed
+	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strClassN)
+	{
+		yield return new WaitForSeconds (delayTime);
+
+		// checks to make sure the star class is still the same
+		if (strClassN == starType) {
+			// reloads the un-shot starpoint into the proper spriterenderer, and then removes it from the to-do list of spriterenderers
+			spri [spri.FindIndex (d => d == sprIndex)].sprite = Resources.Load<Sprite> ("Sprites/Point_Attached_White");
+			spri.Remove (sprIndex);
+
+			// gives the regenerated point max health and damage
+			strPont.GetComponent<Health_Management> ().Health = maxPointHealth;
+			strPont.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
+
+			// sets the starpoint as able to be shot and able to collide with objects
+			canShoot [strPt] = 1;
+			strPont.GetComponent<Collider2D>().enabled = true;
 		}
 	}
 		
@@ -176,8 +194,8 @@ public class StarManager: Photon.MonoBehaviour
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
 			newPt.tag = playerTag;
-			newPt.transform.localScale = new Vector3(starSizes [starGrade]*0.6f,starSizes [starGrade]*1f,starSizes [starGrade]*0.5f);
-			newPt.GetComponent<Renderer> ().material = starMats [starGrade];
+			newPt.transform.localScale = new Vector3(starSizes [starGrade - 1]*0.6f,starSizes [starGrade - 1]*1f,starSizes [starGrade - 1]*0.5f);
+			newPt.GetComponent<Renderer> ().material = starMats [starGrade - 1];
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));
 			newPt.transform.parent = transform;
 			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
@@ -199,27 +217,24 @@ public class StarManager: Photon.MonoBehaviour
 	// reloads star under a particular class -> establishes stats and redraws the star
 	void upgradeStar(int starGrade){
 		
-		transform.localScale = new Vector3(starSizes [starGrade]*0.5f,starSizes [starGrade]*0.5f,starSizes [starGrade]*0.5f);
-		GetComponent<Renderer> ().material = starMats [starGrade];
+		transform.localScale = new Vector3(starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f);
+		GetComponent<Renderer> ().material = starMats [starGrade - 1];
 
-		starPointNum = starPtClass [starGrade];
-		maxPointHealth = starPtHealth [starGrade];
-		maxPointDam = starPtDam [starGrade];
-		maxPlayerHealth = starBodyHealth [starGrade];
-		maxPlayerDam = starBodyDam [starGrade];
-		playerRegen = starBodyRegen [starGrade];
-		className = starClassNames [starGrade];
-		Debug.Log ("Changed class to " + className);
-
+		starPointNum = starPtClass [starGrade - 1];
+		maxPointHealth = starPtHealth [starGrade - 1];
+		maxPointDam = starPtDam [starGrade - 1];
+		maxPlayerHealth = starBodyHealth [starGrade - 1];
+		maxPlayerDam = starBodyDam [starGrade - 1];
+		playerRegen = starBodyRegen [starGrade - 1];
 
 		GetComponent<Health_Management> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
 
 		ScenePhotonView = this.GetComponent<PhotonView> ();
 		resetShooting (transform.rotation, starPointNum, starGrade);
-		lifetime = projLife [starGrade];
-		projForce = projSpeeds [starGrade];
-		reloadTime = projRegen [starGrade];
+		lifetime = projLife [starGrade - 1];
+		projForce = projSpeeds [starGrade - 1];
+		reloadTime = projRegen [starGrade - 1];
 
 		GetComponent<Shooting_Controls_edit> ().preset = 1;
 		if (starPointNum < 4) {
@@ -229,8 +244,8 @@ public class StarManager: Photon.MonoBehaviour
 		} else {
 			GetComponent<Shooting_Controls_edit> ().presetMax = 3;
 		}
-
-		starType = starGrade;
+			
+//		GameObject.Find ("Minimap").GetComponent<RectTransform> ().sizeDelta = new Vector2 (Camera.main.pixelWidth, Camera.main.pixelHeight);
 	}
 
 	[PunRPC]
@@ -265,55 +280,6 @@ public class StarManager: Photon.MonoBehaviour
 		for(int i = 0; i < starPointNum; i++)
 		{
 			pointVectList.Add(new Vector2(Mathf.Sin (pointAngles [i] * Mathf.Deg2Rad),  -Mathf.Cos (pointAngles [i] * Mathf.Deg2Rad)));
-		}
-	}
-
-	void checkClasses()
-	{
-		int skore = this.GetComponent<Score_Manager> ().score;
-		int random2 = Random.Range (0, 3);
-		if (skore >= advanceNum && starType == 0) {
-			int random = Random.Range (0, 2);
-			if (random == 0) {
-				upgradeStar (1);
-			} else {
-				upgradeStar (9);
-			}
-			//TODO display GUI for choice between Red Dwarf and Blue Dwarf. until then pick randomly.
-		}
-		if (skore >= 2 * advanceNum && starType == 1) {
-			upgradeStar (2);
-		}
-		if (skore >= 3 * advanceNum && starType == 2) {
-			upgradeStar (3);
-		}
-		if (skore >= 2 * advanceNum && starType == 9) {
-			upgradeStar (5);
-		}
-		if (skore >= 3 * advanceNum && starType == 5) {
-			upgradeStar (7);
-		}
-		if (skore >= 4 * advanceNum && (starType == 7 || starType == 3)) {
-			//TODO display GUI for upgrading to Supernova. until then upgrade immediately.
-			upgradeStar (6);
-		}
-		if (skore >= 5 * advanceNum && starType == 6) {
-			//display GUI for upgrading from Supernova to black hole, neutron star, or white dwarf. until then pick randomly.
-			int random = Random.Range(0,3);
-			if (random == 0) {
-				upgradeStar (10);
-			} else if (random == 1) {
-				upgradeStar (8);
-			} else {
-				upgradeStar (4);
-			}
-
-		}
-		if (skore >= 6 * advanceNum && starType == 10) {
-			upgradeStar (11);
-		}
-		if (skore >= 6 * advanceNum && starType == 8) {
-			upgradeStar (12);
 		}
 	}
 
