@@ -109,7 +109,7 @@ public class CameraMovement : Photon.MonoBehaviour {
 		//Zoom when star changes size
 		int starClass = shootScript.starType;
 
-		targetOrtho = starSize[starClass - 1]*5f;
+		targetOrtho = starSize[starClass]*5f;
 
 		this.GetComponent<Camera>().orthographicSize = Mathf.MoveTowards (this.GetComponent<Camera>().orthographicSize, targetOrtho, smoothSpeed * Time.deltaTime);
 	}
