@@ -62,7 +62,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 	private List<Vector2> pointVectList = new List<Vector2>(12); // the direction vectors for projectiles
 	private List<float> pointAngles = new List<float>(12); // the angles at which starpoints are shot
-//	private List<float> pointAngles2 = new List<float>(12); // the angles at which starpoints are regenerated
+	//	private List<float> pointAngles2 = new List<float>(12); // the angles at which starpoints are regenerated
 
 
 
@@ -78,9 +78,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			this.enabled = false;
 			return;
 		} 
-//		else {
-//			Debug.Log("I am player "+ this.photonView.ownerId);
-//		}
+		//		else {
+		//			Debug.Log("I am player "+ this.photonView.ownerId);
+		//		}
 	}
 
 	void Start() {
@@ -110,10 +110,10 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		starPtDam = GetComponent<StarManager>().starPtDam;
 
 		//ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
-																								// redrawStar(transform.rotation, starPointNum);
+		// redrawStar(transform.rotation, starPointNum);
 
 		// ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen); // regenerate player health
-																			   // healthRegen (playerRegen);
+		// healthRegen (playerRegen);
 
 
 
@@ -167,42 +167,42 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 				float currAngle = (360 / starPointNum) * i;
 				switch (preset) {
-					case 1:
-						if (i == 0) {
-							shootOnMouse [i] = 1;
-						} else {
-							shootOnMouse [i] = 0;
-						}
-						break;
-					case 2:
-						if (i == 0) {
-							if (starPointNum < 5) {
-								shootOnMouse [i] = 0;
-							} else {
-								shootOnMouse [i] = 1;
-							}
-						} else {
-							if (currAngle > 90 && currAngle < 270) {
-								shootOnMouse [i] = 1;
-							} else {
-								shootOnMouse [i] = 0;
-							}
-						}
-						break;
-					case 3:
-						if (i == 0 || i == Mathf.FloorToInt ((float)starPointNum / 2) || i == Mathf.CeilToInt ((float)starPointNum / 2)) {
+				case 1:
+					if (i == 0) {
+						shootOnMouse [i] = 1;
+					} else {
+						shootOnMouse [i] = 0;
+					}
+					break;
+				case 2:
+					if (i == 0) {
+						if (starPointNum < 5) {
 							shootOnMouse [i] = 0;
 						} else {
 							shootOnMouse [i] = 1;
 						}
-						break;
-					case 4:
+					} else {
+						if (currAngle > 90 && currAngle < 270) {
+							shootOnMouse [i] = 1;
+						} else {
+							shootOnMouse [i] = 0;
+						}
+					}
+					break;
+				case 3:
+					if (i == 0 || i == Mathf.FloorToInt ((float)starPointNum / 2) || i == Mathf.CeilToInt ((float)starPointNum / 2)) {
+						shootOnMouse [i] = 0;
+					} else {
+						shootOnMouse [i] = 1;
+					}
+					break;
+				case 4:
 					if (currAngle > 90 && currAngle < 270 || i == 0) {
-							shootOnMouse [i] = 0;
-						} else {
-							shootOnMouse [i] = 1;
-						}
-						break;
+						shootOnMouse [i] = 0;
+					} else {
+						shootOnMouse [i] = 1;
+					}
+					break;
 				}
 
 
@@ -219,7 +219,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 				shootOnMouse [i] = -1;
 			}
 		}
-			
+
 	}
 
 
@@ -227,7 +227,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	[PunRPC]
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
-//		Debug.Log(PlayerPrefs.GetString("PlayerName"));
+		//		Debug.Log(PlayerPrefs.GetString("PlayerName"));
 		starPointNum = GetComponent<StarManager>().starPointNum;
 
 		//clones existing projectile gameobject
@@ -326,7 +326,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 			// tells the point to regenerate
 			StartCoroutine(reload(starIndex,starIndex.GetComponent<SpriteRenderer>(),reloadTime, starpoints.FindIndex(d => d == starIndex), starType));
-	
+
 		}
 	}
 
