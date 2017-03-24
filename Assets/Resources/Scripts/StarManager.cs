@@ -82,7 +82,7 @@ public class StarManager: Photon.MonoBehaviour
 
 		// set class variable values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
-			Resources.Load<Material> ("Materials/Star_G_Red"),Resources.Load<Material> ("Materials/Star_SG_Red"),Resources.Load<Material> ("Materials/Star_D_White"),
+			Resources.Load<Material> ("Materials/Star_G_Red"),Resources.Load<Material> ("Materials/Star_SG_Red"),Resources.Load<Material> ("Materials/Star_H_Nova"),
 			Resources.Load<Material> ("Materials/Star_SG_Blue"),Resources.Load<Material> ("Materials/Star_S_Nova"),Resources.Load<Material> ("Materials/Star_HG_Blue"),
 			Resources.Load<Material> ("Materials/Star_Neutron"),Resources.Load<Material> ("Materials/Star_H_Nova"),Resources.Load<Material> ("Materials/Star_B_Hole"),
 			Resources.Load<Material> ("Materials/Star_Quasar"),Resources.Load<Material> ("Materials/Star_Pulsar")};
@@ -270,13 +270,13 @@ public class StarManager: Photon.MonoBehaviour
 	void checkClasses()
 	{
 		int skore = this.GetComponent<Score_Manager> ().score;
-		int random2 = Random.Range (0, 3);
 		if (skore >= advanceNum && starType == 0) {
 			int random = Random.Range (0, 2);
+			//int random = 1;
 			if (random == 0) {
 				upgradeStar (1);
 			} else {
-				upgradeStar (9);
+				upgradeStar (4);
 			}
 			//TODO display GUI for choice between Red Dwarf and Blue Dwarf. until then pick randomly.
 		}
@@ -286,7 +286,7 @@ public class StarManager: Photon.MonoBehaviour
 		if (skore >= 3 * advanceNum && starType == 2) {
 			upgradeStar (3);
 		}
-		if (skore >= 2 * advanceNum && starType == 9) {
+		if (skore >= 2 * advanceNum && starType == 4) {
 			upgradeStar (5);
 		}
 		if (skore >= 3 * advanceNum && starType == 5) {
@@ -298,14 +298,12 @@ public class StarManager: Photon.MonoBehaviour
 		}
 		if (skore >= 5 * advanceNum && starType == 6) {
 			//display GUI for upgrading from Supernova to black hole, neutron star, or white dwarf. until then pick randomly.
-			int random = Random.Range(0,3);
+			int random = Random.Range(0,2);
 			if (random == 0) {
 				upgradeStar (10);
-			} else if (random == 1) {
-				upgradeStar (8);
 			} else {
-				upgradeStar (4);
-			}
+				upgradeStar (8);
+			} 
 
 		}
 		if (skore >= 6 * advanceNum && starType == 10) {

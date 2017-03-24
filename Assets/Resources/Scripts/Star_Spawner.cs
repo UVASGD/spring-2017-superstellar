@@ -29,15 +29,15 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private List<GameObject> spawnedBlazars = new List<GameObject>(); // holds all the spawned items
 
 	public float magnetarSpeed  = 10f; // frequency that item is spawned
-	public int numMagnetarSpawn = 2; // max number of item to exist at once
+	public int numMagnetarSpawn = 1; // max number of item to exist at once
 	private List<GameObject> spawnedMagnetars = new List<GameObject>(); // holds all the spawned items
 
 	public float cometSpeed  = 20f; // frequency that item is spawned
-	public int numCometSpawn = 2; // max number of item to exist at once
+	public int numCometSpawn = 1; // max number of item to exist at once
 	private List<GameObject> spawnedComets = new List<GameObject>(); // holds all the spawned items
 
 	public float rogueSpeed  = 15f; // frequency that item is spawned
-	public int numRogueSpawn = 2; // max number of item to exist at once
+	public int numRogueSpawn = 1; // max number of item to exist at once
 	private List<GameObject> spawnedRogues = new List<GameObject>(); // holds all the spawned items
 
 
@@ -46,11 +46,11 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private float nextMagnetarTime = 0.0f;
 	private float nextCometTime = 0.0f;
 	private float nextRogueTime = 0.0f;
-	public float periodBG = 0.5f;
-	public float periodBlazar = 25f;
-	public float periodMagnetar = 10f;
-	public float periodComet = 20f;
-	public float periodRogue = 15f;
+	private float periodBG = 0.5f;
+	private float periodBlazar = 25f;
+	private float periodMagnetar = 10f;
+	private float periodComet = 20f;
+	private float periodRogue = 15f;
 
 	private PhotonView ScenePhotonView;
 
@@ -78,22 +78,22 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		if (Time.time > nextActionTime) {
 			nextActionTime += periodBG;
 			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
-//			if (Time.time > nextBlazarTime) {
-//				nextBlazarTime += periodBlazar;
-//				ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
-//			}
-//			if (Time.time > nextMagnetarTime) {
-//				nextMagnetarTime += periodMagnetar;
-//				ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
-//			}
-//			if (Time.time > nextCometTime) {
-//				nextCometTime += periodComet;
-//				ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
-//			}
-//			if (Time.time > nextRogueTime) {
-//				nextRogueTime += periodRogue;
-//				ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
-//			}
+			if (Time.time > nextBlazarTime) {
+				nextBlazarTime += periodBlazar;
+				ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
+			}
+			if (Time.time > nextMagnetarTime) {
+				nextMagnetarTime += periodMagnetar;
+				ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
+			}
+			if (Time.time > nextCometTime) {
+				nextCometTime += periodComet;
+				ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
+			}
+			if (Time.time > nextRogueTime) {
+				nextRogueTime += periodRogue;
+				ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
+			}
 		}
 	}
 

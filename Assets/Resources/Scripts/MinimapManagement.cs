@@ -5,6 +5,7 @@ using UnityEngine;
 public class MinimapManagement : MonoBehaviour {
 
 	public GameObject PlayerPosIcon;
+	private GameObject miniMap;
 	List<GameObject> playerList = new List<GameObject>();
 	List<GameObject> iconList = new List<GameObject>();
 
@@ -31,7 +32,8 @@ public class MinimapManagement : MonoBehaviour {
 		StarManager[] smList = GameObject.FindObjectsOfType<StarManager> ();
 		foreach (StarManager sm in smList) {
 			playerList.Add(sm.gameObject);
-			GameObject icon = Instantiate (PlayerPosIcon, scaledPosition (sm.gameObject.transform.position), Quaternion.identity);
+			Vector3 playerPosition = scaledPosition (sm.gameObject.transform.position);
+			GameObject icon = Instantiate (PlayerPosIcon, playerPosition , Quaternion.identity) as GameObject;
 			icon.transform.SetParent (this.transform);
 			icon.transform.position = scaledPosition (sm.gameObject.transform.position);
 			if (sm.gameObject.GetPhotonView ().isMine) { 
@@ -40,6 +42,8 @@ public class MinimapManagement : MonoBehaviour {
 			iconList.Add (icon);
 		}
 
+		miniMap = GameObject.Find("minimap_gui");
+		miniMap.GetComponent<SpriteRenderer> ().sortingLayerName = "UI";
 		float mapX = GameObject.Find ("Background").transform.localScale.x;
 		float mapY = GameObject.Find ("Background").transform.localScale.y;
 
@@ -113,8 +117,8 @@ public class MinimapManagement : MonoBehaviour {
 	}
 
 	Vector3 scaledPosition(Vector3 original) {
-		float x = (original.x/scaledX) + origin.x;
-		float y = (original.y/scaledY) + origin.y;
+		float x = (3*original.x/scaledX) + origin.x;
+		float y = (3*original.y/scaledY) + origin.y;
 		Vector3 res = new Vector3 (x,y,0);
 		return res;
 	}

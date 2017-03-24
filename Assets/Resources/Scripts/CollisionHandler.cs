@@ -13,22 +13,37 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		string targetID;
+		//bool isSelf = false;
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
 			targetID = pv.viewID.ToString ();
 		} else if (other.gameObject.name == "Star_Point(Clone)" || other.gameObject.name == "Projectile(Clone)") {
-			targetID = gameObject.tag;
+			targetID = other.gameObject.tag;
+			/*string myID = gameObject.tag;
+			if (myID == targetID) {
+				isSelf = true;
+			}*/
 		} else {
 			other.gameObject.name = "target";
 			targetID = other.gameObject.name;
 		}
+
+		int damage_to_receive = other.gameObject.GetComponent<CollisionHandler> ().damage_to_give;
 
 		int pvID = int.Parse(gameObject.tag);
 		PhotonView starpv = PhotonView.Find (pvID);
 
 		if (!targetID.Equals(pvID.ToString())) {
 			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
-			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID.ToString ());
+			if (this.gameObject.name == "Star_Point(Clone)") {
+				this.GetComponent<Health_Management> ().Health -= damage_to_receive;
+				/*if (this.GetComponent<Health_Management> ().Health <= 0) {
+					this.GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (this.gameObject);
+				}*/
+			}
+			else if (this.gameObject.name != "Projectile(Clone)") {
+				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_receive, pvID.ToString ());
+			}
 		}
 	}
 
@@ -39,11 +54,13 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
 			targetID = pv.viewID.ToString();
 		} else if (other.gameObject.name == "Star_Point(Clone)" || other.gameObject.name == "Projectile(Clone)") {
-			targetID = gameObject.tag;
+			targetID = other.gameObject.tag;
 		} else {
 			other.gameObject.name = "target";
 			targetID = other.gameObject.name;
 		}
+
+		int damage_to_receive = other.gameObject.GetComponent<CollisionHandler> ().damage_to_give;
 
 		int pvID = int.Parse(gameObject.tag);
 		PhotonView starpv = PhotonView.Find (pvID);
@@ -51,7 +68,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		if (!targetID.Equals(pvID.ToString())) {
 			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
 			if (this.gameObject.name != "Projectile(Clone)") {
-				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID.ToString ());
+				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_receive, pvID.ToString ());
 			} else {
 				Destroy (this.gameObject);
 			}
@@ -76,13 +93,14 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		// kill the object when its health is depleted
 		if (target.GetComponent<Health_Management> ().Health <= 0) {
 			// if the object is an un-shot starpoint, destroy it using the shooting controls script
-			if (target.tag == "Star_Point") {
+			/*if (target.name == "Star_Point(Clone)") {
 				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
 				// if the object is anything else, destroy it and give the player points
-			} else {
+			} else {*/
 				//Destroy (target);
-				gameObject.GetComponent<Score_Manager> ().score += 5;
-			}
+				int scoreGive = target.GetComponent<Health_Management>().scoreToGive;
+				gameObject.GetComponent<Score_Manager> ().score += scoreGive;
+			//}
 		}
 	}
 

@@ -26,6 +26,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private int maxPlayerDam = 100;
 	private float playerRegen = 1;
 	private float reloadTime = 2.0f; //time to regen point
+	private float colReload = 0.1f;
 	public string playerTag;
 
 
@@ -40,6 +41,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	public List<int> shootOnMouse = new List<int> (12); // determines whether an individual starpoint will fire on mouse click or spacebar
 	public int preset; // current preset value
 	public int presetMax; // maximum preset for current star type
+	private int oldPreset; //previous preset value
 
 	//class variables (Refer to Star Manager for details)
 	private List<Material> starMats = new List<Material> (13);
@@ -127,11 +129,14 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		// toggle autoshooting for all points
 		if (Input.GetKeyDown (KeyCode.F))
 		{
-			preset = -1;
-			if (autoShootAll)
+			
+			if (autoShootAll) {
 				autoShootAll = false;
-			else {
+				oldPreset = preset;
+				preset = -1;
+			} else {
 				autoShootAll = true;
+				preset = oldPreset;
 			}
 		}
 
@@ -257,6 +262,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		SpriteRenderer spr = starpoints [point - 1].GetComponent<SpriteRenderer> (); 
 		spri.Add(spr);
 		spr.GetComponent<Collider2D> ().enabled = false;
+		Collider2D projCol = proj.GetComponent<Collider2D> ();
+		projCol.enabled = false;
 
 		// makes it so that the projectile can't immediately shoot again
 		canShoot [point - 1] = 0;
@@ -276,6 +283,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		source.PlayOneShot(shootSound,0.75f);
 		// tells starpoint regeneration function to run
 		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1, starType));
+		StartCoroutine (collideEnable (proj, colReload, projCol));
+
 
 		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
 		pc.density = 0;
@@ -286,6 +295,15 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 	}
 
+
+	[PunRPC]
+	// re-enable collider on shot starpoints since they initially collide
+	IEnumerator collideEnable(GameObject projctl, float timeDelay, Collider2D colliderThing)
+	{
+		yield return new WaitForSeconds (timeDelay);
+		colliderThing.enabled = true;
+		//projctl.GetComponent<Renderer> ().material = Resources.Load<Material> ("Materials/Star_Pulsar");
+	}
 
 	[PunRPC]
 	// regenerate starpoints after they were shot off or destroyed

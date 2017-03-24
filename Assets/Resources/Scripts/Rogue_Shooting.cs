@@ -59,7 +59,7 @@ public class Rogue_Shooting : Photon.MonoBehaviour {
 	private List<int> canShoot = new List<int> (3);
 	// determines whether a starpoint can be shot
 
-	public bool autoShootAll = true;
+	public bool autoShootAll = false;
 	// determines whether all starpoints will automatically fire all at once after they regenerate
 
 
@@ -387,10 +387,10 @@ public class Rogue_Shooting : Photon.MonoBehaviour {
 		velTarget.y = (movTarget.y - transform.position.y)/Time.deltaTime;
 
 		// OUTDATED: accelerate the player to the target velocity with smoothdamp
-		//		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
+		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime,playerSpeed,Time.deltaTime);
 
 		// accelerate the player by adding velTarget Force
-		GetComponent<Rigidbody2D> ().AddForce(velTarget);
+		//GetComponent<Rigidbody2D> ().AddForce(velTarget);
 	}
 
 

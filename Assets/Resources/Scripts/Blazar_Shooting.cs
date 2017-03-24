@@ -8,6 +8,8 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 	//sprites -> projectile and non-projected point
 	public GameObject projectile;
 	public GameObject starPointSprite;
+	//private GameObject parentThing;
+	public Collider2D enemyCheck;
 
 	//variables
 	private float lifetime = 2.0f; // how long projectiles stay on screen
@@ -27,7 +29,7 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 
 	//shooting conditions
 	private List<int> canShoot = new List<int> (4); // determines whether a starpoint can be shot
-	public bool autoShootAll = true; // determines whether all starpoints will automatically fire all at once after they regenerate
+	public bool autoShootAll = false; // determines whether all starpoints will automatically fire all at once after they regenerate
 
 	//Direction Vectors for projectiles
 	private List<Vector2> pointVectList = new List<Vector2>(4); // the direction vectors for projectiles
@@ -42,7 +44,7 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 	void Start() {
 
 		canShoot = new List<int>{1,1,1,1};
-		starMat = Resources.Load<Material> ("Materials/AI_Blazar");
+		starMat = Resources.Load<Material> ("Materials/AI_Blazar"); 
 
 		// initialize star to class 1
 		//ScenePhotonView.RPC("upgradeStar", PhotonTargets.All);
@@ -305,8 +307,8 @@ public class Blazar_Shooting : Photon.MonoBehaviour {
 		velTarget.y = (movTarget.y - transform.position.y)/Time.deltaTime;
 
 		// accelerate the player to the target velocity with smoothdamp
-		GetComponent<Rigidbody2D> ().AddForce(velTarget);
-//		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime);
+		//GetComponent<Rigidbody2D> ().AddForce(velTarget);
+		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime,playerSpeed,Time.deltaTime);
 
 	}
 

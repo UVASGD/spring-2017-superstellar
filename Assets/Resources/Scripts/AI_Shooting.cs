@@ -2,125 +2,60 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Magnetar_Shooting : Photon.MonoBehaviour {
+public class AI_Shooting : Photon.MonoBehaviour {
 	private static PhotonView ScenePhotonView;
 
 	//sprites -> projectile and non-projected point
 	public GameObject projectile;
 	public GameObject starPointSprite;
-
-	//public GameObject player;
+	public Collider2D enemyCheck;
 
 	//variables
-	private float lifetime = 2.0f;
-	// how long projectiles stay on screen
+	public float lifetime = 2.0f; // how long projectiles stay on screen
+	public float projForce = 300.0f; // how much force the projectiles are given when shot
+	public int starPointNum = 4; // how many points the star has
+	public int maxPointHealth = 50; // how much health the projectiles have
+	public int maxPointDam = 70; // how much damage the projectiles give when they collide with something
+	public int maxPlayerHealth = 5000; // how much health the player has at full health
+	public int maxPlayerDam = 300; // how much damage the player gives when they collide with something
+	public float playerRegen = 1f; // how quickly the player regenerates their health
+	public Material starMat; // the material of the star
+	public float starSize = 3f; // how quickly the player regenerates their health
+	public float reloadTime = 2f; //time to regen point
+	public float colReload = 0.1f;
 
-	private float projForce = 800.0f;
-	// how much force the projectiles are given when shot
-
-	private int starPointNum = 2;
-	// how many points the star has
-
-	private int maxPointHealth = 5;
-	// how much health the projectiles have
-
-	private int maxPointDam = 5;
-	// how much damage the projectiles give when they collide with something
-
-	public int maxPlayerHealth = 3500;
-	// how much health the player has at full health
-
-	private int maxPlayerDam = 200;
-	// how much damage the player gives when they collide with something
-
-	private float playerRegen = 0.5f;
-	// how quickly the player regenerates their health
-
-	private Material starMat;
-	// the material of the star
-
-	private float starSize = 0.8f;
-	// how quickly the player regenerates their health
-
-	private float reloadTime = 0.0625f;
-	//time to regen point
-
-
-
-	private List<GameObject> starpoints = new List<GameObject>();
-	//holds the non-projected points
-
-	private List<SpriteRenderer> spri = new List<SpriteRenderer>();
-	//holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)
-
-
+	private List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
+	private List<SpriteRenderer> spri = new List<SpriteRenderer>(); //holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)
 
 	//shooting conditions
-	private List<int> canShoot = new List<int> (2);
-	// determines whether a starpoint can be shot
-
-	public bool autoShootAll = false;
-	// determines whether all starpoints will automatically fire all at once after they regenerate
-
-
+	public List<int> canShoot = new List<int> (); // determines whether a starpoint can be shot
+	public bool autoShootAll = false; // determines whether all starpoints will automatically fire all at once after they regenerate
 
 	//Direction Vectors for projectiles
-	private List<Vector2> pointVectList = new List<Vector2>(2);
-	// the direction vectors for projectiles
+	private List<Vector2> pointVectList = new List<Vector2>(); // the direction vectors for projectiles
+	private List<float> pointAngles = new List<float>(); // the angles at which starpoints are shot
+	private List<float> pointAngles2 = new List<float>(); // the angles at which starpoints are regenerated
+	private float playerSpeed = 2f; //speed player moves
+	private Vector2 movTarget; // where the player is to move towards
+	private Vector2 dampSpeed = Vector2.zero; // the dampspeed for smoothdamping player movement
+	private float smoothTime = 0.5f; // the smoothdamping delay
+	private Vector2 velTarget; // the target velocity based on the differenct between player position and movTarget
 
-	private List<float> pointAngles = new List<float>(2);
-	// the angles at which starpoints are shot
-
-	private List<float> pointAngles2 = new List<float>(2);
-	// the angles at which starpoints are regenerated
-
-	private float playerSpeed = 2f; 
-	//speed player moves
-
-	private Vector2 movTarget;
-	// where the player is to move towards
-
-	private Vector2 dampSpeed = Vector2.zero;
-	// the dampspeed for smoothdamping player movement
-
-	private float smoothTime = 0.5f;
-	// the smoothdamping delay
-
-	private Vector2 velTarget;
-	// the target velocity based on the differenct between player position and movTarget
-
-
-	//	void OnEnable()
-	//	{
-	//		Debug.Log ("Shooting Controls");
-	//		if (this.photonView != null && !this.photonView.isMine) {
-	//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
-	//			this.enabled = false;
-	//			return;
-	//		} else {
-	//			Debug.Log("I am player "+ this.photonView.ownerId);
-	//		}
-	//	}
+	private float targetX;
+	private float targetY;
+	private Vector2 myTarget;
+	private Vector3 myTarget3D;
+	private bool targeting = false;
+	private GameObject targetPlayer;
+	private bool randoSelected = false;
 
 	void Start() {
 
-
-		canShoot = new List<int>{ 1, 1};
-
-		starMat = Resources.Load<Material> ("Materials/AI_Magnetar");
-
-		/*Debug.Log ("SHOOTING CONTROLS");
-		if (this.photonView != null && !this.photonView.isMine) {
-			//			Debug.Log ("disabled controls : " + this.photonView.ownerId);
-			this.enabled = false;
-			return;
-		} else {
-			//			Debug.Log("I am player "+ this.photonView.ownerId);
+		canShoot = new List<int>{ 0, 0, 0, 0 };
+		for (int i = 0; i < starPointNum; i++) {
+			canShoot [i] = 1;
 		}
 
-		ScenePhotonView = this.GetComponent<PhotonView>();
-		// set initial shooting conditions
-		*/
 
 		// initialize star to class 1
 		//ScenePhotonView.RPC("upgradeStar", PhotonTargets.All);
@@ -134,6 +69,7 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		// calibrate movTarget with player position
 		movTarget.x = transform.position.x;
 		movTarget.y = transform.position.y;
+		selectTarget (targetPlayer);
 
 		moveFunct ();
 		rotate ();
@@ -147,6 +83,7 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		healthRegen (playerRegen);
 
 
+
 		// toggle autoshooting for all points
 		/* if (player within range)
 		{
@@ -155,17 +92,16 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 			autoShootAll = false;
 		}*/
 
-		// check to see if stars can be shot
-		for (int i = 0; i < 2; i++) {
 
+
+		// check to see if stars can be shot
+		for (int i = 0; i < starPointNum; i++) {
 			// check conditions to see if starpoint can be shot
 			if (autoShootAll && canShoot [i] == 1) {
-				//					Debug.Log ("starSizes: " + starSizes.Count);
 				//ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i + 1);
 				Shoot(i+1);
 			}
 		} 
-			
 
 	}
 
@@ -174,9 +110,6 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 	//[PunRPC]
 	//Creates projectile and shoots it in appropriate direction
 	void Shoot(int point) {
-
-
-		//Debug.Log (this.photonView.ownerId);
 
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
@@ -193,6 +126,8 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		SpriteRenderer spr = starpoints [point - 1].GetComponent<SpriteRenderer> (); 
 		spri.Add(spr);
 		spr.GetComponent<Collider2D> ().enabled = false;
+		Collider2D projCol = proj.GetComponent<Collider2D> ();
+		projCol.enabled = false;
 
 		// makes it so that the projectile can't immediately shoot again
 		canShoot [point - 1] = 0;
@@ -207,11 +142,12 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		rb.AddForce (pointVectList[point - 1]*projForce);
 		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] * projForce/10f);
 
+
 		// tells starpoint regeneration function to run
 
 		//		ScenePhotonView.RPC("reload", PhotonTargets.All, starpoints [point - 1],spr,reloadTime, point - 1, starType);
 		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1));
-
+		StartCoroutine (collideEnable (proj, colReload, projCol));
 		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
 		pc.density = 0;
 		pc.isTrigger = true;
@@ -222,6 +158,13 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 
 	}
 
+	// re-enable collider on shot starpoints since they initially collide
+	IEnumerator collideEnable(GameObject projctl, float timeDelay, Collider2D colliderThing)
+	{
+		yield return new WaitForSeconds (timeDelay);
+		colliderThing.enabled = true;
+		//projctl.GetComponent<Renderer> ().material = Resources.Load<Material> ("Materials/Star_Pulsar");
+	}
 
 	//[PunRPC]
 	// regenerate starpoints after they were shot off or destroyed
@@ -293,7 +236,7 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 			pointVectList.Add(new Vector2(Mathf.Sin (pointAngles [i] * Mathf.Deg2Rad),  -Mathf.Cos (pointAngles [i] * Mathf.Deg2Rad)));
 		}
 	}
-		
+
 
 
 	//[PunRPC]
@@ -305,14 +248,15 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		float topAngle2 = angle2 + 90;
 		pointAngles2.Clear ();
 		pointAngles2.Add (topAngle2);
-		pointAngles2.Add (topAngle2 + 180);
+		for(int i = 1; i < numPoints; i++)
+		{
+			pointAngles2.Add(topAngle2 - i * (360 / numPoints));
+		}
 
 		// instantiates the new starpoints and gives them size, health, and damage, then adds them to the list and makes them shootable
 		for(int i = 0; i < numPoints; i++)
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
-
-
 
 			newPt.transform.localScale = new Vector3(starSize*0.6f,starSize*1f,starSize*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMat;
@@ -326,6 +270,7 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		}
 	}
 
+
 	//[PunRPC]
 	// reloads star under a particular class -> establishes stats and redraws the star
 	void upgradeStar(){
@@ -334,12 +279,33 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		GetComponent<Renderer> ().material = starMat;
 		GetComponent<Health_Management> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
-		//ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, 2);
-		resetShooting (transform.rotation, 2);
+		//ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, 4);
+		resetShooting (transform.rotation, starPointNum);
 
 
 	}
 
+
+	public void selectTarget(GameObject enemyPl) {
+		if (enemyPl != null) {
+			if (randoSelected) {
+				targetPlayer = enemyPl;
+			}
+			targetX = enemyPl.transform.position.x;
+			targetY = enemyPl.transform.position.y;
+			autoShootAll = true;
+			randoSelected = false;
+
+		} else if (!randoSelected) {
+			targetX = Random.Range (-100f, 100f);
+			targetY = Random.Range (-100f, 100f);
+			autoShootAll = false;
+			randoSelected = true;
+			enemyCheck.GetComponent<AI_Detect_Player> ().inPursuit = false;
+		}
+		myTarget = new Vector2 (targetX, targetY);
+		myTarget3D = new Vector3 (targetX, targetY, 0f);
+	}
 
 	//you will need to change this to point towards the player
 	void rotate() {
@@ -347,7 +313,7 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		//Vector3 dir = pos - transform.position;
 
 		//Test position to point at
-		Vector3 pos = new Vector3(20f,20f,0f);
+		Vector3 pos = myTarget3D;
 		Vector3 dir = pos - transform.position;
 
 
@@ -377,7 +343,7 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		}*/
 
 		//Test position to go to
-		Vector2 playerPosition = new Vector2(20f,20f);
+		Vector2 playerPosition = myTarget; // NEED TO MAKE VARIABLE!!!
 		Vector2 deltaPosition = playerPosition - movTarget; 
 		movTarget += deltaPosition.normalized * (playerSpeed * Time.deltaTime / (transform.localScale.x));
 
@@ -385,11 +351,10 @@ public class Magnetar_Shooting : Photon.MonoBehaviour {
 		velTarget.x = (movTarget.x - transform.position.x)/Time.deltaTime;
 		velTarget.y = (movTarget.y - transform.position.y)/Time.deltaTime;
 
-		// OUTDATED: accelerate the player to the target velocity with smoothdamp
+		// accelerate the player to the target velocity with smoothdamp
+		//GetComponent<Rigidbody2D> ().AddForce(velTarget);
 		GetComponent<Rigidbody2D> ().velocity = Vector2.SmoothDamp (GetComponent<Rigidbody2D> ().velocity, velTarget, ref dampSpeed, smoothTime,playerSpeed,Time.deltaTime);
 
-		// accelerate the player by adding velTarget Force
-		//GetComponent<Rigidbody2D> ().AddForce(velTarget);
 	}
 
 
