@@ -166,6 +166,7 @@
      <Compile Include="Assets\Resources\Scripts\Star_Spawner.cs" />
      <Compile Include="Assets\Resources\Scripts\StartScript.cs" />
      <Compile Include="Assets\Resources\Scripts\Statistics.cs" />
+     <Compile Include="Assets\Resources\Scripts\Tag_Manager.cs" />
      <None Include="Assets\Photon Unity Networking\link.xml" />
      <None Include="Assets\Plugins\Photon3Unity3D.xml" />
      <None Include="Assets\Plugins\release_history.txt" />

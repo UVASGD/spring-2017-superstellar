@@ -8,6 +8,10 @@ public class AI_Detect_Player : MonoBehaviour {
 	public GameObject body;
 	public bool inPursuit = false;
 
+	void Start() {
+		this.tag = body.tag;
+	}
+
 	void OnTriggerEnter2D(Collider2D other)
 	{
 		GameObject player;

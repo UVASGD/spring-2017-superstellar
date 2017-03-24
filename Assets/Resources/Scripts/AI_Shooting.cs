@@ -48,8 +48,16 @@ public class AI_Shooting : Photon.MonoBehaviour {
 	private bool targeting = false;
 	private GameObject targetPlayer;
 	private bool randoSelected = false;
+	private string playerTag;
+
+	private Tag_Manager daTagMan;
 
 	void Start() {
+
+		daTagMan = FindObjectOfType<Tag_Manager> ();
+		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
+		daTagMan.addTag (playerTag);
+		this.tag = playerTag;
 
 		canShoot = new List<int>{ 0, 0, 0, 0 };
 		for (int i = 0; i < starPointNum; i++) {
@@ -113,6 +121,7 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
+		proj.tag = this.tag;
 
 		// sets projectile size, material, health, damage, and accesses its rigidbody and spriterenderer
 		proj.transform.localScale = new Vector3(starSize*0.6f,starSize*1f,starSize*0.5f);
@@ -258,6 +267,7 @@ public class AI_Shooting : Photon.MonoBehaviour {
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
 
+			newPt.tag = playerTag;
 			newPt.transform.localScale = new Vector3(starSize*0.6f,starSize*1f,starSize*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMat;
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));

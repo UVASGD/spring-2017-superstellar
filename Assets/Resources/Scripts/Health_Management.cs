@@ -32,7 +32,11 @@ public class Health_Management : Photon.MonoBehaviour {
 				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
 				PhotonNetwork.Disconnect();
 			} else if(this.gameObject.name == "Star_Point(Clone)"){
-				this.GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (this.gameObject);
+				if (this.GetComponentInParent<Shooting_Controls_edit> () != null) {
+					this.GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (this.gameObject);
+				} else if (this.GetComponentInParent<AI_Shooting> () != null) {
+					this.GetComponentInParent<AI_Shooting> ().destroyStarPoint (this.gameObject);
+				}
 			} else {
 				Debug.Log ("Destroyed gameobject");
 				Destroy (this.gameObject);

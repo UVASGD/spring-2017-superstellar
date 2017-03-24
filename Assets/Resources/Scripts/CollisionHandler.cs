@@ -30,7 +30,16 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 		int damage_to_receive = other.gameObject.GetComponent<CollisionHandler> ().damage_to_give;
 
-		int pvID = int.Parse(gameObject.tag);
+		int pvID = 0;
+		if (this.gameObject.GetComponentInParent<StarManager> () != null ||
+			this.gameObject.GetComponentInParent<AI_Shooting> () != null || 
+			this.gameObject.name == "Projectile(Clone)" ||
+			this.gameObject.GetComponent<AI_Detect_Player>() != null) {
+			pvID = int.Parse (gameObject.tag);
+		} else if (this.gameObject.GetComponent<PhotonView>() != null) {
+			pvID = this.gameObject.GetComponent<PhotonView> ().viewID;
+		}
+
 		PhotonView starpv = PhotonView.Find (pvID);
 
 		if (!targetID.Equals(pvID.ToString())) {
@@ -88,19 +97,21 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			target = targetpv.gameObject;
 		}
 
-		target.GetComponent<Health_Management> ().Health -= damage;
+		if (target.GetComponent<Health_Management> () != null) {
+			target.GetComponent<Health_Management> ().Health -= damage;
 
-		// kill the object when its health is depleted
-		if (target.GetComponent<Health_Management> ().Health <= 0) {
-			// if the object is an un-shot starpoint, destroy it using the shooting controls script
-			/*if (target.name == "Star_Point(Clone)") {
-				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
-				// if the object is anything else, destroy it and give the player points
-			} else {*/
+			// kill the object when its health is depleted
+			if (target.GetComponent<Health_Management> ().Health <= 0) {
+				// if the object is an un-shot starpoint, destroy it using the shooting controls script
+				/*if (target.name == "Star_Point(Clone)") {
+					GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
+					// if the object is anything else, destroy it and give the player points
+				} else {*/
 				//Destroy (target);
-				int scoreGive = target.GetComponent<Health_Management>().scoreToGive;
+				int scoreGive = target.GetComponent<Health_Management> ().scoreToGive;
 				gameObject.GetComponent<Score_Manager> ().score += scoreGive;
-			//}
+				//}
+			}
 		}
 	}
 

@@ -77,7 +77,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	void Update() {
 		if (Time.time > nextActionTime) {
 			nextActionTime += periodBG;
-			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
+
 			if (Time.time > nextBlazarTime) {
 				nextBlazarTime += periodBlazar;
 				ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
@@ -94,6 +94,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				nextRogueTime += periodRogue;
 				ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
 			}
+			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
 		}
 	}
 
