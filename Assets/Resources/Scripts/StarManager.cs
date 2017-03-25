@@ -54,7 +54,7 @@ public class StarManager: Photon.MonoBehaviour
 	private List<int> starBodyHealth = new List<int> (13); // holds the values for the max health of the player for each star class
 	private List<float> starBodyRegen = new List<float> (13); // holds the values for the health regeneration of the player for each star class
 	private List<int> starBodyDam = new List<int> (13); // holds the values for the damage inflicted by the player starbody for each star class
-	private List<string> starClassNames = new List<string>(13);
+	public List<string> starClassNames = new List<string>(13);
 	public int starType = 0;
 	/*Plan:
 	    -list of available classes

@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 5a2227ea4161f4a888e4075c8550d3d1
+timeCreated: 1490454600
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Eunomia
+  fontNames:
+  - Eunomia
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 2c464198904224761986d3b73fff5410, type: 3}
+  - {fileID: 12800000, guid: 45b2da9bb5f114a05a83c639bcc423bc, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

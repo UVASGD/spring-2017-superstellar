@@ -13,7 +13,7 @@ public class Score_Manager : MonoBehaviour {
 	public GameObject word3;
 
 	Text text1;
-	Text text2;
+	public Text text2;
 	Text text3;
 
 
@@ -24,9 +24,13 @@ public class Score_Manager : MonoBehaviour {
 		text1 = word1.GetComponent<Text>();
 		text2 = word2.GetComponent<Text>();
 		text3 = word3.GetComponent<Text>();
-		text3.text = PlayerPrefs.GetString ("PlayerName");
-		playerNameForDeath = PlayerPrefs.GetString ("PlayerName");
-		PlayerPrefs.DeleteKey ("PlayerName");
+
+		if (player.GetPhotonView ().isMine) {
+			string name = PlayerPrefs.GetString ("PlayerName");
+			player.GetPhotonView ().RPC("displayName", PhotonTargets.AllBufferedViaServer, name); // displayName(name);
+			playerNameForDeath = PlayerPrefs.GetString ("PlayerName");
+			PlayerPrefs.DeleteKey ("PlayerName");
+		}
 		score = 0;
 
 	}
@@ -34,7 +38,6 @@ public class Score_Manager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 //		score = player.GetComponent<StarManager>().starMass;
-
 		word1.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y, 0);
 		word2.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y, 0);
 		word3.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y + 0.8f, 0);
@@ -43,4 +46,9 @@ public class Score_Manager : MonoBehaviour {
 		text2.text = "" + score;
 	}
 
+
+	[PunRPC]
+	void displayName(string name) {
+		text3.text = name;
+	}
 }

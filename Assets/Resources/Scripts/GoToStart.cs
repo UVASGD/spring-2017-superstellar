@@ -11,8 +11,13 @@ public class GoToStart : MonoBehaviour {
 
 	}
 
-	public void OnStartGame () {
+	public void GoToMain() {
+		PlayerPrefs.DeleteKey ("dname");
 		UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
+	}
+
+	public void ReplayGame () {
+		UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);
 	}
 
 	// Update is called once per frame

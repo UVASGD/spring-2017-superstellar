@@ -57,8 +57,6 @@ public class MinimapManagement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		Debug.Log (GameObject.FindObjectsOfType<StarManager> ().Length);
-		Debug.Log (playerList.Count);
 		if (GameObject.FindObjectsOfType<StarManager> ().Length > playerList.Count) {
 			StarManager[] smList = GameObject.FindObjectsOfType<StarManager> ();
 			foreach (StarManager sm in smList) {
