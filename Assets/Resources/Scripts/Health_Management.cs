@@ -25,6 +25,17 @@ public class Health_Management : Photon.MonoBehaviour {
 		if (Health <= 0) {
 
 			if (this.gameObject.name == "Star") {
+
+				int score = this.GetComponent<Score_Manager> ().score;
+				string name = this.GetComponent<Score_Manager> ().playerNameForDeath;
+				int classNum = this.GetComponent<StarManager>().starType;
+				string className = this.GetComponent<StarManager> ().starClassNames [classNum];
+
+				Debug.Log (score);
+
+				PlayerPrefs.SetInt ("dscore", score);
+				PlayerPrefs.SetString ("dname", name);
+				PlayerPrefs.SetString ("dclass", className);
 				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
 				PhotonNetwork.Disconnect();
 			} else {

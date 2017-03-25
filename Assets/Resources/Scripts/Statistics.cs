@@ -31,16 +31,13 @@ public class Statistics : MonoBehaviour {
 		string dclass = (PlayerPrefs.GetString("dclass")).ToString();
 
 
-		PlayerPrefs.DeleteKey ("dscore");
-		Debug.Log ("score: " + dscore);
 //		this.gameObject.GetComponent<Text>.text="hello";
 		word2.GetComponent<Text>().text = "Score: "+dscore;
 		word3.GetComponent<Text>().text = "Name: "+dname;
 		word1.GetComponent<Text>().text = "Class: "+dclass;
 
 
-//		PlayerPrefs.DeleteKey ("dscore");
-		PlayerPrefs.DeleteKey ("dname");
+		PlayerPrefs.DeleteKey ("dscore");
 		PlayerPrefs.DeleteKey ("dclass");
 	}
 	

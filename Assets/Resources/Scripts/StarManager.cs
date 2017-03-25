@@ -28,7 +28,7 @@ public class StarManager: Photon.MonoBehaviour
 	public string className = "Main Sequence";
 	public string playerTag;
 
-	private int advanceNum = 25;
+	private int advanceNum = 50;
 
 
 	public List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
