@@ -18,7 +18,7 @@ public class Health_Management : Photon.MonoBehaviour {
 			this.enabled = false;
 			return;
 		} 
-		Debug.Log (this.gameObject.name);
+		//Debug.Log (this.gameObject.name);
 		ScenePhotonView = this.GetComponent<PhotonView>();
 	}
 
@@ -37,7 +37,11 @@ public class Health_Management : Photon.MonoBehaviour {
 				} else if (this.GetComponentInParent<AI_Shooting> () != null) {
 					this.GetComponentInParent<AI_Shooting> ().destroyStarPoint (this.gameObject);
 				}
-			} else {
+			} else if (this.gameObject.name == "Body") {
+				Debug.Log ("Destroyed AI");
+				Destroy (this.gameObject.transform.parent.gameObject);
+			}
+			else {
 				Debug.Log ("Destroyed gameobject");
 				Destroy (this.gameObject);
 			}

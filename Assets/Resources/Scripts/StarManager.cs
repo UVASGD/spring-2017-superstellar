@@ -68,6 +68,8 @@ public class StarManager: Photon.MonoBehaviour
 	public List<float> pointAngles = new List<float>(12); // the angles at which starpoints are shot
 	public List<float> pointAngles2 = new List<float>(12); // the angles at which starpoints are regenerated
 
+	private Tag_Manager daTagMan;
+
 
 	void Start() {
 
@@ -77,8 +79,11 @@ public class StarManager: Photon.MonoBehaviour
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-		this.tag = this.GetComponent<PhotonView> ().viewID.ToString();
-		playerTag = this.tag;
+		daTagMan = FindObjectOfType<Tag_Manager> ();
+		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
+		daTagMan.addTag (playerTag);
+		this.tag = playerTag;
+		this.GetComponent<Shooting_Controls_edit> ().playerTag = playerTag;
 
 		// set class variable values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
@@ -98,6 +103,8 @@ public class StarManager: Photon.MonoBehaviour
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 		starClassNames = new List<string>{"Main Sequence","Red Dwarf","Red Giant","Red Supergiant","White Dwarf","Blue Supergiant","Supernova","Blue Hypergiant","Neutron","Hypernova","Black Hole","Quasar","Pulsar"};
 
+
+
 		// initialize star to class 0
 		if (starSizes.Count > 0) {
 			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0); // upgradeStar (0);
@@ -106,9 +113,14 @@ public class StarManager: Photon.MonoBehaviour
 	}
 
 
+
 	void Update( )
 	{
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
+
+			if (this.tag != playerTag) {
+				this.tag = playerTag;
+			}
 
 			ScenePhotonView = this.GetComponent<PhotonView>();
 

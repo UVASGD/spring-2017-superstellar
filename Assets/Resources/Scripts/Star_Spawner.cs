@@ -42,10 +42,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 
 	private float nextActionTime = 0.0f;
-	private float nextBlazarTime = 0.0f;
-	private float nextMagnetarTime = 0.0f;
-	private float nextCometTime = 0.0f;
-	private float nextRogueTime = 0.0f;
+	private float nextBlazarTime = 0.5f;
+	private float nextMagnetarTime = 1.0f;
+	private float nextCometTime = 1.5f;
+	private float nextRogueTime = 2.0f;
 	private float periodBG = 0.5f;
 	private float periodBlazar = 25f;
 	private float periodMagnetar = 10f;
@@ -53,6 +53,12 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private float periodRogue = 15f;
 
 	private PhotonView ScenePhotonView;
+
+	public bool makeStars;
+	public bool makeBlazar;
+	public bool makeMagnetar;
+	public bool makeComet;
+	public bool makeRogue;
 
 
 	void Start () {
@@ -78,23 +84,25 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		if (Time.time > nextActionTime) {
 			nextActionTime += periodBG;
 
-			if (Time.time > nextBlazarTime) {
+			if (Time.time > nextBlazarTime && makeBlazar) {
 				nextBlazarTime += periodBlazar;
 				ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
 			}
-			if (Time.time > nextMagnetarTime) {
+			if (Time.time > nextMagnetarTime && makeMagnetar) {
 				nextMagnetarTime += periodMagnetar;
 				ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
 			}
-			if (Time.time > nextCometTime) {
+			if (Time.time > nextCometTime && makeComet) {
 				nextCometTime += periodComet;
 				ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
 			}
-			if (Time.time > nextRogueTime) {
+			if (Time.time > nextRogueTime && makeRogue) {
 				nextRogueTime += periodRogue;
 				ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
 			}
-			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
+			if (makeStars) {
+				ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
+			}
 		}
 	}
 

@@ -237,7 +237,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
-		proj.tag = this.tag;
+		proj.tag = playerTag;
 
 		// sets projectile size, material, health, damage, and accesses its rigidbody and spriterenderer
 		starMats = GetComponent<StarManager> ().starMats;
