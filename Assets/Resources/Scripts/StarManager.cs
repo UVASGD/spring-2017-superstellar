@@ -28,8 +28,7 @@ public class StarManager: Photon.MonoBehaviour
 	public string className = "Main Sequence";
 	public string playerTag;
 
-	private int advanceNum = 50;
-
+	private int advanceNum = 20;
 
 	public List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
 	private List<SpriteRenderer> spri = new List<SpriteRenderer>(); //holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)

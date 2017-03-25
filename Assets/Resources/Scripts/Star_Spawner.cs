@@ -21,7 +21,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private int maxY;
 
 	public float starSpeed  = 0.5f; // frequency that item is spawned
-	public int numStarSpawn = 50; // max number of item to exist at once
+	private int numStarSpawn = 10; // max number of item to exist at once
 	private List<GameObject> spawnedStars = new List<GameObject>(); // holds all the spawned items
 
 	public float blazarSpeed  = 25f; // frequency that item is spawned
@@ -102,7 +102,6 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	void GenerateBGStar () {
 		if (PhotonNetwork.isMasterClient) {
 			// check to see if max spawn is reached
-			//Debug.Log(spawnedStars.Count);
 			if (spawnedStars.Count < numStarSpawn) {
 
 				// generate random spawn location

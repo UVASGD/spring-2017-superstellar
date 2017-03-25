@@ -17,7 +17,7 @@ public class Health_Management : Photon.MonoBehaviour {
 			this.enabled = false;
 			return;
 		} 
-		Debug.Log (this.gameObject.name);
+//		Debug.Log (this.gameObject.name);
 		ScenePhotonView = this.GetComponent<PhotonView>();
 	}
 

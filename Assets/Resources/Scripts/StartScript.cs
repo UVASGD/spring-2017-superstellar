@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class StartScript : MonoBehaviour {
 
 	public GameObject Instructions;
+	public GameObject nameInputField;
+	public GameObject Controls;
+	public GameObject Play;
+	public GameObject Title;
 
 	void Start() {
 		Instructions.SetActive (false);
@@ -15,9 +20,19 @@ public class StartScript : MonoBehaviour {
 	}
 
 	public void showControls() {
-		GameObject.Find ("Title").SetActive (false);
-		GameObject.Find ("Controls").SetActive (false);
+		Title.SetActive (false);
+		nameInputField.SetActive (false);
+		Controls.GetComponent<Image> ().sprite = Resources.Load<Sprite> ("Sprites/mainmenu");
+		Controls.GetComponent<Button> ().onClick.AddListener (delegate { BackToMain (); });
 		Instructions.SetActive (true);
+	}
+
+	public void BackToMain() {
+		Title.SetActive (true);
+		nameInputField.SetActive (true);
+		Controls.GetComponent<Image> ().sprite = Resources.Load<Sprite> ("Sprites/controls");
+		Controls.GetComponent<Button> ().onClick.AddListener (delegate { showControls(); });
+		Instructions.SetActive (false);
 	}
 
 }
