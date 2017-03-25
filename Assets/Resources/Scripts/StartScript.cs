@@ -7,6 +7,7 @@ public class StartScript : MonoBehaviour {
 
 	void Start() {
 		Instructions.SetActive (false);
+		Debug.Log("change");
 	}
 
 	// Use this for initialization
