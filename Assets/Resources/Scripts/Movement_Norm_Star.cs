@@ -15,6 +15,16 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	public bool isControllable = false;
 	public bool AssignAsTagObject = true;
 
+	// map dimensions
+	public float mapX;
+	public float mapY;
+
+	// bounds that camera is limited to
+	private float minX;
+	private float maxX;
+	private float minY;
+	private float maxY;
+
 	void OnEnable()
 	{
 		if (this.photonView != null && !this.photonView.isMine) {
@@ -24,11 +34,26 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 	}
 
 
+	void Start() {
+		GameObject bg = GameObject.Find ("Background");
+		mapX = bg.transform.localScale.x;
+		mapY = bg.transform.localScale.y;
+
+		float vertExtent = Camera.main.orthographicSize;
+		float horzExtent = vertExtent * Screen.width / Screen.height;
+
+		// Calculations assume map is position at the origin
+		minX = horzExtent - mapX / 2.0f;
+		maxX = mapX / 2.0f - horzExtent;
+		minY = vertExtent - mapY / 2.0f;
+		maxY = mapY / 2.0f - vertExtent;
+	}
+
 	void Update () 
 	{
-		// calibrate movTarget with player position
-		movTarget.x = transform.position.x;
-		movTarget.y = transform.position.y;
+		// calibrate movTarget with player position (clamp for map limits)
+		movTarget.x = Mathf.Clamp (transform.position.x, minX+2, maxX-2);
+		movTarget.y = Mathf.Clamp(transform.position.y,minY+2,maxY-2);
 
 		// Player Movement
 		moveFunct ();

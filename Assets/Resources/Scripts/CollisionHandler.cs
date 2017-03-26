@@ -12,28 +12,35 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		string targetID;
-		if (other.gameObject.GetComponent<PhotonView> () != null) {
-			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
-			targetID = pv.viewID.ToString ();
-		} else if (other.gameObject.name == "Star_Point(Clone)" || other.gameObject.name == "Projectile(Clone)") {
-			targetID = gameObject.tag;
+
+		if (other.gameObject.name == "Background") {
+
+
 		} else {
-			other.gameObject.name = "target";
-			targetID = other.gameObject.name;
-		}
+			string targetID;
+			if (other.gameObject.GetComponent<PhotonView> () != null) {
+				PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
+				targetID = pv.viewID.ToString ();
+			} else if (other.gameObject.name == "Star_Point(Clone)" || other.gameObject.name == "Projectile(Clone)") {
+				targetID = gameObject.tag;
+			} else {
+				other.gameObject.name = "target";
+				targetID = other.gameObject.name;
+			}
 
-		int pvID = int.Parse(gameObject.tag);
-		PhotonView starpv = PhotonView.Find (pvID);
+			int pvID = int.Parse (gameObject.tag);
+			PhotonView starpv = PhotonView.Find (pvID);
 
-		if (!targetID.Equals(pvID.ToString())) {
-			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
-			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID.ToString ());
+			if (!targetID.Equals (pvID.ToString ())) {
+				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
+				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID.ToString ());
+			}
 		}
 	}
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
+		Debug.Log (other.gameObject.name);
 		string targetID;
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();

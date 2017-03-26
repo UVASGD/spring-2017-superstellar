@@ -32,7 +32,6 @@ public class MinimapManagement : MonoBehaviour {
 		} 
 	}
 		
-
 	void Start () {
 
 		// Get all Players in room and initialize on minimap
@@ -49,16 +48,17 @@ public class MinimapManagement : MonoBehaviour {
 		}
 
 		// Actual Map Bounds
-//		float mapX = GameObject.Find ("Background").transform.localScale.x;
-//		float mapY = GameObject.Find ("Background").transform.localScale.y;
+		float mapX = GameObject.Find ("Background").transform.localScale.x;
+		float mapY = GameObject.Find ("Background").transform.localScale.y;
 
 		// MiniMap Bounds
-		float minimapX = MiniMapGUI.GetComponent<RectTransform> ().rect.width;
-		float minimapY = MiniMapGUI.GetComponent<RectTransform> ().rect.height;
+		float minimapX = MiniMapGUI.GetComponent<RectTransform> ().rect.width  *  this.GetComponent<RectTransform>().localScale.x;
+		float minimapY = MiniMapGUI.GetComponent<RectTransform> ().rect.height  *  this.GetComponent<RectTransform>().localScale.y;
+
 
 		// Calculate Scaling Factor (NEED TO CHECK MATH...Maybe don't hardcode it...)
-		scaledX = minimapX + 10;
-		scaledY = minimapY + 10;
+		scaledX = minimapX/mapX;
+		scaledY = minimapY/mapY;
 
 	}
 	
@@ -75,10 +75,8 @@ public class MinimapManagement : MonoBehaviour {
 
 		// 
 		foreach (GameObject p in playerList) {
-//			Debug.Log (p.name + ": " +p.transform.position);
 			GameObject icon = iconList [playerList.IndexOf (p)];
 			icon.transform.position = scaledPosition (p.transform.position);
-//			Debug.Log (icon.transform.position);
 		}
 
 
@@ -104,8 +102,8 @@ public class MinimapManagement : MonoBehaviour {
 	}
 
 	Vector3 scaledPosition(Vector3 original) {
-		float x = (original.x/scaledX) + origin.x;
-		float y = (original.y/scaledY) + origin.y;
+		float x = (original.x*scaledX) + origin.x;
+		float y = (original.y*scaledY) + origin.y;
 		Vector3 res = new Vector3 (x,y,0);
 		return res;
 	}

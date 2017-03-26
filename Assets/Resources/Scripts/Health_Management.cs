@@ -31,8 +31,6 @@ public class Health_Management : Photon.MonoBehaviour {
 				int classNum = this.GetComponent<StarManager>().starType;
 				string className = this.GetComponent<StarManager> ().starClassNames [classNum];
 
-				Debug.Log (score);
-
 				PlayerPrefs.SetInt ("dscore", score);
 				PlayerPrefs.SetString ("dname", name);
 				PlayerPrefs.SetString ("dclass", className);

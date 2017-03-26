@@ -85,7 +85,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 	void Start() {
 
-		source = GetComponent<AudioSource> ();
+		source =  GameObject.FindObjectOfType<AudioSource>();
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 

@@ -101,8 +101,8 @@ public class CameraMovement : Photon.MonoBehaviour {
 		// Set the position of the camera's transform to be the same as the player's, but offset by the calculated offset distance.on;
 		Vector3 v3 = player.transform.position;
 
-		v3.x = Mathf.Clamp(v3.x, minX, maxX);
-		v3.y = Mathf.Clamp(v3.y, minY, maxY);
+		v3.x = Mathf.Clamp(v3.x, minX+5, maxX-5);
+		v3.y = Mathf.Clamp(v3.y, minY+5, maxY-5);
 		
 		transform.position = v3 + offset;
 

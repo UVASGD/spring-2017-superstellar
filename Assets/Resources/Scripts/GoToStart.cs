@@ -12,11 +12,11 @@ public class GoToStart : MonoBehaviour {
 	}
 
 	public void GoToMain() {
-		PlayerPrefs.DeleteKey ("dname");
 		UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(0);
 	}
 
 	public void ReplayGame () {
+		PlayerPrefs.SetString ("PlayerName", GameObject.FindObjectOfType<Statistics> ().replayName);
 		UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);
 	}
 

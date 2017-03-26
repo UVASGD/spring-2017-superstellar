@@ -21,7 +21,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private int maxY;
 
 	public float starSpeed  = 0.5f; // frequency that item is spawned
-	private int numStarSpawn = 10; // max number of item to exist at once
+	private int numStarSpawn = 100; // max number of item to exist at once
 	private List<GameObject> spawnedStars = new List<GameObject>(); // holds all the spawned items
 
 	public float blazarSpeed  = 25f; // frequency that item is spawned
@@ -67,7 +67,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		maxY = (int) mapY / 2;
 
 
-		Random.seed = 80;
+//		Random.seed = 80;
 
 		//		InvokeRepeating ("Generate", 0, speed);
 
@@ -108,6 +108,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				int x = Random.Range (-maxX, maxX);
 				int y = Random.Range (-maxY, maxY);
 				Vector3 target = new Vector3 (x, y, 0);
+//				Debug.Log (x + ", " + y);
 
 				// spawn star and give it random rotation, torque, and force, then add it to the list
 				GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
@@ -152,8 +153,8 @@ public class Star_Spawner : Photon.MonoBehaviour {
 			if (spawnedBlazars.Count < numBlazarSpawn) {
 
 				// generate random spawn location
-				int x = Random.Range (-maxX, maxX);
-				int y = Random.Range (-maxY, maxY);
+				int x = Random.Range (-maxX+5, maxX-5);
+				int y = Random.Range (-maxY+5, maxY-5);
 				Vector3 target = new Vector3 (x, y, 0);
 
 				// spawn star and give it random rotation, torque, and force, then add it to the list
