@@ -48,14 +48,16 @@ public class AI_Shooting : Photon.MonoBehaviour {
 	private bool targeting = false;
 	private GameObject targetPlayer;
 	private bool randoSelected = false;
-	private string playerTag;
+	public string playerTag;
 
 	private Tag_Manager daTagMan;
 
 	void Start() {
 
+
 		daTagMan = FindObjectOfType<Tag_Manager> ();
 		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
+		Debug.Log (playerTag);
 		daTagMan.addTag (playerTag);
 		this.tag = playerTag;
 
@@ -74,6 +76,16 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 	void Update( )
 	{
+		if (this.tag != playerTag) {
+			this.tag = playerTag;
+		}
+
+		foreach (GameObject stPt in starpoints) {
+			if (stPt.tag != playerTag) {
+				stPt.tag = playerTag;
+			}
+		}
+
 		// calibrate movTarget with player position
 		movTarget.x = transform.position.x;
 		movTarget.y = transform.position.y;
@@ -147,7 +159,7 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 		// shoots projectile at proper rotation, direction, and speed, and gives recoil to player
 		proj.transform.RotateAround(transform.position,Vector3.forward, (pointAngles [point-1] + 90));
-		Debug.Log (projForce);
+		//Debug.Log (projForce);
 		rb.AddForce (pointVectList[point - 1]*projForce);
 		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] * projForce/10f);
 
@@ -157,9 +169,9 @@ public class AI_Shooting : Photon.MonoBehaviour {
 		//		ScenePhotonView.RPC("reload", PhotonTargets.All, starpoints [point - 1],spr,reloadTime, point - 1, starType);
 		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1));
 		StartCoroutine (collideEnable (proj, colReload, projCol));
-		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
-		pc.density = 0;
-		pc.isTrigger = true;
+		//PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
+		//pc.density = 0;
+		//pc.isTrigger = true;
 
 		// destroys projectile
 		Destroy(proj, lifetime);
@@ -171,7 +183,9 @@ public class AI_Shooting : Photon.MonoBehaviour {
 	IEnumerator collideEnable(GameObject projctl, float timeDelay, Collider2D colliderThing)
 	{
 		yield return new WaitForSeconds (timeDelay);
-		colliderThing.enabled = true;
+		if (colliderThing != null) {
+			colliderThing.enabled = true;
+		}
 		//projctl.GetComponent<Renderer> ().material = Resources.Load<Material> ("Materials/Star_Pulsar");
 	}
 

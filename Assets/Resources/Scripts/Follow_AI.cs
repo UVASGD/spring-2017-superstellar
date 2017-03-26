@@ -16,7 +16,7 @@ public class Follow_AI : MonoBehaviour {
 		player = this.gameObject.transform.parent.FindChild ("Body").gameObject;
 		//Debug.Log (this.gameObject.transform.parent.GetComponentsInChildren<Transform> ().Length);
 		Transform barParent = this.gameObject.transform.Find("Health Bar");
-		bar = barParent.FindChild ("Health_Bar_BG").GetComponent<Image>();
+		bar = barParent.FindChild ("Health_Bar").GetComponent<Image>();
 		maxHealth = (int)player.GetComponent<AI_Shooting> ().maxPlayerHealth;
 		/*if (transform.parent.gameObject.name == "Blazar") {
 			maxHealth = (int)player.GetComponent<Blazar_Shooting> ().maxPlayerHealth;

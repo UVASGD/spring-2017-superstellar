@@ -122,6 +122,12 @@ public class StarManager: Photon.MonoBehaviour
 				this.tag = playerTag;
 			}
 
+			foreach (GameObject stPt in starpoints) {
+				if (stPt.tag != playerTag) {
+					stPt.tag = playerTag;
+				}
+			}
+
 			ScenePhotonView = this.GetComponent<PhotonView>();
 
 			// calculate the directions to shoot projectiles at that instant

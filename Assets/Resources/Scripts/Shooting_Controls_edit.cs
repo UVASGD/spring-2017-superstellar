@@ -286,9 +286,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		StartCoroutine (collideEnable (proj, colReload, projCol));
 
 
-		PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
-		pc.density = 0;
-		pc.isTrigger = true;
+		//PolygonCollider2D pc = proj.AddComponent<PolygonCollider2D> ();
+		//pc.density = 0;
+		//pc.isTrigger = true;
 
 		// destroys projectile
 		Destroy(proj, lifetime);
@@ -301,7 +301,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	IEnumerator collideEnable(GameObject projctl, float timeDelay, Collider2D colliderThing)
 	{
 		yield return new WaitForSeconds (timeDelay);
-		colliderThing.enabled = true;
+		if (colliderThing != null) {
+			colliderThing.enabled = true;
+		}
 		//projctl.GetComponent<Renderer> ().material = Resources.Load<Material> ("Materials/Star_Pulsar");
 	}
 
@@ -310,7 +312,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strClassN)
 	{
 		yield return new WaitForSeconds (delayTime);
-		Debug.Log ("Delay Time: " + delayTime);
+		//Debug.Log ("Delay Time: " + delayTime);
 
 		// checks to make sure the star class is still the same
 		if (strClassN == starType) {
