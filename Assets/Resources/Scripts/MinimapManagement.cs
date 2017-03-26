@@ -83,7 +83,7 @@ public class MinimapManagement : MonoBehaviour {
 
 
 		// show BG Stars on MiniMap (removed because of lag issues)
-		displayBGStars ();
+//		displayBGStars ();
 
 	}
 		
