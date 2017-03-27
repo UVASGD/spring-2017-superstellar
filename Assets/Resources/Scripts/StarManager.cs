@@ -28,7 +28,12 @@ public class StarManager: Photon.MonoBehaviour
 	public string className = "Main Sequence";
 	public string playerTag;
 
-	private int advanceNum = 50;
+	private int advanceNum = 40;
+	private int advanceNum2 = 100;
+	private int advanceNum3 = 200;
+	private int advanceNum4 = 350;
+	private int advanceNum5 = 600;
+	private int advanceNum6 = 1000;
 
 	public List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
 	private List<SpriteRenderer> spri = new List<SpriteRenderer>(); //holds the non-projected points' spriterenderer after projectiles shot (as a to-do list for the reload function)
@@ -67,6 +72,7 @@ public class StarManager: Photon.MonoBehaviour
 	public List<float> pointAngles = new List<float>(12); // the angles at which starpoints are shot
 	public List<float> pointAngles2 = new List<float>(12); // the angles at which starpoints are regenerated
 
+	private Tag_Manager daTagMan;
 
 	void Start() {
 
@@ -76,12 +82,15 @@ public class StarManager: Photon.MonoBehaviour
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-		this.tag = this.GetComponent<PhotonView> ().viewID.ToString();
-		playerTag = this.tag;
+		daTagMan = FindObjectOfType<Tag_Manager> ();
+		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
+		daTagMan.addTag (playerTag);
+		this.tag = playerTag;
+		this.GetComponent<Shooting_Controls_edit> ().playerTag = playerTag;
 
 		// set class variable values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
-			Resources.Load<Material> ("Materials/Star_G_Red"),Resources.Load<Material> ("Materials/Star_SG_Red"),Resources.Load<Material> ("Materials/Star_D_White"),
+			Resources.Load<Material> ("Materials/Star_G_Red"),Resources.Load<Material> ("Materials/Star_SG_Red"),Resources.Load<Material> ("Materials/Star_H_Nova"),
 			Resources.Load<Material> ("Materials/Star_SG_Blue"),Resources.Load<Material> ("Materials/Star_S_Nova"),Resources.Load<Material> ("Materials/Star_HG_Blue"),
 			Resources.Load<Material> ("Materials/Star_Neutron"),Resources.Load<Material> ("Materials/Star_H_Nova"),Resources.Load<Material> ("Materials/Star_B_Hole"),
 			Resources.Load<Material> ("Materials/Star_Quasar"),Resources.Load<Material> ("Materials/Star_Pulsar")};
@@ -108,6 +117,16 @@ public class StarManager: Photon.MonoBehaviour
 	void Update( )
 	{
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
+
+			if (this.tag != playerTag) {
+				this.tag = playerTag;
+			}
+
+			foreach (GameObject stPt in starpoints) {
+				if (stPt.tag != playerTag) {
+					stPt.tag = playerTag;
+				}
+			}
 
 			ScenePhotonView = this.GetComponent<PhotonView>();
 
@@ -269,48 +288,46 @@ public class StarManager: Photon.MonoBehaviour
 	void checkClasses()
 	{
 		int skore = this.GetComponent<Score_Manager> ().score;
-		int random2 = Random.Range (0, 3);
+
 		if (skore >= advanceNum && starType == 0) {
 			int random = Random.Range (0, 2);
 			if (random == 0) {
 				upgradeStar (1);
 			} else {
-				upgradeStar (9);
+				upgradeStar (4);
 			}
 			//TODO display GUI for choice between Red Dwarf and Blue Dwarf. until then pick randomly.
 		}
-		if (skore >= 2 * advanceNum && starType == 1) {
+		if (skore >= advanceNum2 && starType == 1) {
 			upgradeStar (2);
 		}
-		if (skore >= 3 * advanceNum && starType == 2) {
+		if (skore >= advanceNum3 && starType == 2) {
 			upgradeStar (3);
 		}
-		if (skore >= 2 * advanceNum && starType == 9) {
+		if (skore >= advanceNum2 && starType == 4) {
 			upgradeStar (5);
 		}
-		if (skore >= 3 * advanceNum && starType == 5) {
+		if (skore >= advanceNum3 && starType == 5) {
 			upgradeStar (7);
 		}
-		if (skore >= 4 * advanceNum && (starType == 7 || starType == 3)) {
+		if (skore >= advanceNum4 && (starType == 7 || starType == 3)) {
 			//TODO display GUI for upgrading to Supernova. until then upgrade immediately.
 			upgradeStar (6);
 		}
-		if (skore >= 5 * advanceNum && starType == 6) {
-			//display GUI for upgrading from Supernova to black hole, neutron star, or white dwarf. until then pick randomly.
-			int random = Random.Range(0,3);
+		if (skore >= advanceNum5 && starType == 6) {
+			//display GUI for upgrading from Supernova to black hole or neutron star. until then pick randomly.
+			int random = Random.Range(0,2);
 			if (random == 0) {
 				upgradeStar (10);
-			} else if (random == 1) {
-				upgradeStar (8);
 			} else {
-				upgradeStar (4);
-			}
+				upgradeStar (8);
+			} 
 
 		}
-		if (skore >= 6 * advanceNum && starType == 10) {
+		if (skore >= advanceNum6 && starType == 10) {
 			upgradeStar (11);
 		}
-		if (skore >= 6 * advanceNum && starType == 8) {
+		if (skore >= advanceNum6 && starType == 8) {
 			upgradeStar (12);
 		}
 	}

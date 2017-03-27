@@ -55,6 +55,9 @@ public class Movement_Norm_Star : Photon.MonoBehaviour {
 		movTarget.x = Mathf.Clamp (transform.position.x, minX+2, maxX-2);
 		movTarget.y = Mathf.Clamp(transform.position.y,minY+2,maxY-2);
 
+		//movTarget.x = transform.position.x;
+		//movTarget.y = transform.position.y;
+
 		// Player Movement
 		moveFunct ();
 	

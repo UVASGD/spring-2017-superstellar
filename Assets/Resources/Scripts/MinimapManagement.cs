@@ -8,6 +8,9 @@ public class MinimapManagement : MonoBehaviour {
 	public GameObject MiniMapGUI; // MiniMap Box
 	public GameObject PlayerCamera; // PlayerCamera for size/position scaling
 
+	private Transform starBody;
+	private float playerScale;
+
 	List<GameObject> playerList = new List<GameObject>(); //List of all players in room (get position)
 	List<GameObject> iconList = new List<GameObject>(); // List containing all icons (set position)
 	List<GameObject> bgStarList = new List<GameObject>(); // List of all BG Stars in room (get position)
@@ -60,6 +63,11 @@ public class MinimapManagement : MonoBehaviour {
 		scaledX = minimapX/mapX;
 		scaledY = minimapY/mapY;
 
+		starBody = this.transform.parent.Find("Star");
+		if (starBody == null) {
+			Debug.Log ("No star body");
+		}
+
 	}
 	
 	// Update is called once per frame
@@ -71,6 +79,7 @@ public class MinimapManagement : MonoBehaviour {
 			
 		// update MiniMap position
 		origin = MiniMapGUI.transform.position;
+		playerScale = starBody.transform.localScale.x * 2.4f;
 
 
 		// 
@@ -102,8 +111,10 @@ public class MinimapManagement : MonoBehaviour {
 	}
 
 	Vector3 scaledPosition(Vector3 original) {
-		float x = (original.x*scaledX) + origin.x;
-		float y = (original.y*scaledY) + origin.y;
+		float x = (original.x * scaledX * playerScale) + origin.x;
+		float y = (original.y * scaledY * playerScale) + origin.y;
+		//float x = (original.x * scaledX) + origin.x;
+		//float y = (original.y * scaledY) + origin.y;
 		Vector3 res = new Vector3 (x,y,0);
 		return res;
 	}

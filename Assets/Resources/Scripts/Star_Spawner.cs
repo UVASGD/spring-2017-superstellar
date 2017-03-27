@@ -21,7 +21,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private int maxY;
 
 	public float starSpeed  = 0.5f; // frequency that item is spawned
-	private int numStarSpawn = 100; // max number of item to exist at once
+	public int numStarSpawn = 100; // max number of item to exist at once
 	private List<GameObject> spawnedStars = new List<GameObject>(); // holds all the spawned items
 
 	public float blazarSpeed  = 25f; // frequency that item is spawned
@@ -29,23 +29,23 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private List<GameObject> spawnedBlazars = new List<GameObject>(); // holds all the spawned items
 
 	public float magnetarSpeed  = 10f; // frequency that item is spawned
-	public int numMagnetarSpawn = 2; // max number of item to exist at once
+	public int numMagnetarSpawn = 1; // max number of item to exist at once
 	private List<GameObject> spawnedMagnetars = new List<GameObject>(); // holds all the spawned items
 
 	public float cometSpeed  = 20f; // frequency that item is spawned
-	public int numCometSpawn = 2; // max number of item to exist at once
+	public int numCometSpawn = 1; // max number of item to exist at once
 	private List<GameObject> spawnedComets = new List<GameObject>(); // holds all the spawned items
 
 	public float rogueSpeed  = 15f; // frequency that item is spawned
-	public int numRogueSpawn = 2; // max number of item to exist at once
+	public int numRogueSpawn = 1; // max number of item to exist at once
 	private List<GameObject> spawnedRogues = new List<GameObject>(); // holds all the spawned items
 
 
-	private float nextActionTime = 0.0f;
-	private float nextBlazarTime = 0.0f;
-	private float nextMagnetarTime = 0.0f;
-	private float nextCometTime = 0.0f;
-	private float nextRogueTime = 0.0f;
+	private float nextActionTime = 3.0f;
+	private float nextBlazarTime = 0.5f;
+	private float nextMagnetarTime = 1.0f;
+	private float nextCometTime = 1.5f;
+	private float nextRogueTime = 2.0f;
 	public float periodBG = 0.5f;
 	public float periodBlazar = 25f;
 	public float periodMagnetar = 10f;
@@ -53,6 +53,17 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	public float periodRogue = 15f;
 
 	private PhotonView ScenePhotonView;
+
+	public bool makeStars;
+	public bool makeBlazar;
+	public bool makeMagnetar;
+	public bool makeComet;
+	public bool makeRogue;
+
+	public bool testSpawn = false;
+	public float testX;
+	public float testY;
+	private Vector3 testLocation;
 
 
 	void Start () {
@@ -63,8 +74,8 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		mapX = bg.transform.localScale.x;
 		mapY = bg.transform.localScale.y;
 
-		maxX = (int) mapX / 2;
-		maxY = (int) mapY / 2;
+		maxX = (int) mapX / 2 - 25;
+		maxY = (int) mapY / 2 - 25;
 
 
 //		Random.seed = 80;
@@ -75,25 +86,27 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	}
 
 	void Update() {
-		if (Time.time > nextActionTime) {
+		testLocation = new Vector3 (testX, testY, 0f);
+		if (Time.time > nextActionTime && makeStars) {
 			nextActionTime += periodBG;
 			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
-//			if (Time.time > nextBlazarTime) {
-//				nextBlazarTime += periodBlazar;
-//				ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
-//			}
-//			if (Time.time > nextMagnetarTime) {
-//				nextMagnetarTime += periodMagnetar;
-//				ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
-//			}
-//			if (Time.time > nextCometTime) {
-//				nextCometTime += periodComet;
-//				ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
-//			}
-//			if (Time.time > nextRogueTime) {
-//				nextRogueTime += periodRogue;
-//				ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
-//			}
+
+		}
+		if (Time.time > nextBlazarTime && makeBlazar) {
+			nextBlazarTime += periodBlazar;
+			ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
+		}
+		if (Time.time > nextMagnetarTime && makeMagnetar) {
+			nextMagnetarTime += periodMagnetar;
+			ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
+		}
+		if (Time.time > nextCometTime && makeComet) {
+			nextCometTime += periodComet;
+			ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
+		}
+		if (Time.time > nextRogueTime && makeRogue) {
+			nextRogueTime += periodRogue;
+			ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
 		}
 	}
 
@@ -109,6 +122,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				int y = Random.Range (-maxY, maxY);
 				Vector3 target = new Vector3 (x, y, 0);
 //				Debug.Log (x + ", " + y);
+
+				if (testSpawn) {
+					target = testLocation;
+				}
 
 				// spawn star and give it random rotation, torque, and force, then add it to the list
 				GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
@@ -131,7 +148,11 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 					Vector3 target = new Vector3 (x, y, 0);
 
-					GameObject spawnedStar = Instantiate (starSpawn, target, Quaternion.identity) as GameObject;
+					if (testSpawn) {
+						target = testLocation;
+					}
+
+					GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
 					spawnedStar.transform.SetParent (container.transform);
 
 					spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
@@ -157,6 +178,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				int y = Random.Range (-maxY+5, maxY-5);
 				Vector3 target = new Vector3 (x, y, 0);
 
+				if (testSpawn) {
+					target = testLocation;
+				}
+
 				// spawn star and give it random rotation, torque, and force, then add it to the list
 				//Debug.Log("Blazar Pre-Spawned");
 				GameObject spawnedBlazar = PhotonNetwork.InstantiateSceneObject (blazarSpawn.name, target, Quaternion.identity, 0, null);
@@ -180,6 +205,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 					int y = Random.Range (-maxY, maxY);
 
 					Vector3 target = new Vector3 (x, y, 0);
+
+					if (testSpawn) {
+						target = testLocation;
+					}
 
 					GameObject spawnedBlazar = PhotonNetwork.InstantiateSceneObject (blazarSpawn.name, target, Quaternion.identity, 0, null);
 					spawnedBlazar.transform.SetParent (container.transform);
@@ -207,6 +236,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				int y = Random.Range (-maxY, maxY);
 				Vector3 target = new Vector3 (x, y, 0);
 
+				if (testSpawn) {
+					target = testLocation;
+				}
+
 				// spawn star and give it random rotation, torque, and force, then add it to the list
 				GameObject spawnedMagnetar = PhotonNetwork.InstantiateSceneObject (magnetarSpawn.name, target, Quaternion.identity, 0, null);
 				spawnedMagnetar.transform.SetParent (container.transform);
@@ -228,6 +261,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 					int y = Random.Range (-maxY, maxY);
 
 					Vector3 target = new Vector3 (x, y, 0);
+
+					if (testSpawn) {
+						target = testLocation;
+					}
 
 					GameObject spawnedMagnetar = PhotonNetwork.InstantiateSceneObject (magnetarSpawn.name, target, Quaternion.identity, 0, null);
 					spawnedMagnetar.transform.SetParent (container.transform);
@@ -256,6 +293,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				int y = Random.Range (-maxY, maxY);
 				Vector3 target = new Vector3 (x, y, 0);
 
+				if (testSpawn) {
+					target = testLocation;
+				}
+
 				// spawn star and give it random rotation, torque, and force, then add it to the list
 				GameObject spawnedComet = PhotonNetwork.InstantiateSceneObject (cometSpawn.name, target, Quaternion.identity, 0, null);
 				spawnedComet.transform.SetParent (container.transform);
@@ -277,6 +318,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 					int y = Random.Range (-maxY, maxY);
 
 					Vector3 target = new Vector3 (x, y, 0);
+
+					if (testSpawn) {
+						target = testLocation;
+					}
 
 					GameObject spawnedComet = PhotonNetwork.InstantiateSceneObject (cometSpawn.name, target, Quaternion.identity, 0, null);
 					spawnedComet.transform.SetParent (container.transform);
@@ -304,6 +349,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				int y = Random.Range (-maxY, maxY);
 				Vector3 target = new Vector3 (x, y, 0);
 
+				if (testSpawn) {
+					target = testLocation;
+				}
+
 				// spawn star and give it random rotation, torque, and force, then add it to the list
 				GameObject spawnedRogue = PhotonNetwork.InstantiateSceneObject (rogueSpawn.name, target, Quaternion.identity, 0, null);
 				spawnedRogue.transform.SetParent (container.transform);
@@ -325,6 +374,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 					int y = Random.Range (-maxY, maxY);
 
 					Vector3 target = new Vector3 (x, y, 0);
+
+					if (testSpawn) {
+						target = testLocation;
+					}
 
 					GameObject spawnedRogue = PhotonNetwork.InstantiateSceneObject (rogueSpawn.name, target, Quaternion.identity, 0, null);
 					spawnedRogue.transform.SetParent (container.transform);
