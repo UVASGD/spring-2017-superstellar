@@ -14,11 +14,11 @@ public class Health_Management : Photon.MonoBehaviour {
 
 	void Start () {
 
-		if (this.photonView != null && !this.photonView.isMine) {
-			this.enabled = false;
-			return;
-		} 
-//		Debug.Log (this.gameObject.name);
+//		if (this.photonView != null && !this.photonView.isMine) {
+//			this.enabled = false;
+//			return;
+//		} 
+		Debug.Log (this.gameObject.name);
 		ScenePhotonView = this.GetComponent<PhotonView>();
 	}
 
