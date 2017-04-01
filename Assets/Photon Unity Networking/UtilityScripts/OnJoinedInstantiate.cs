@@ -4,7 +4,7 @@ using System.Collections;
 public class OnJoinedInstantiate : MonoBehaviour
 {
 	public Transform SpawnPosition;
-    private float PositionOffset = 100.0f;
+    private float PositionOffset = 70.0f;
     public GameObject[] PrefabsToInstantiate;   // set in inspector
 
     public void OnJoinedRoom()
@@ -27,7 +27,7 @@ public class OnJoinedInstantiate : MonoBehaviour
                 random.y = 0;
                 random = random.normalized;
                 Vector3 itempos = spawnPos + this.PositionOffset * random;
-
+				itempos.z = -10;
                 PhotonNetwork.Instantiate(o.name, itempos, Quaternion.identity, 0);
             }
         }
