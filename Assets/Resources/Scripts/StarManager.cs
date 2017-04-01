@@ -292,43 +292,43 @@ public class StarManager: Photon.MonoBehaviour
 		if (skore >= advanceNum && starType == 0) {
 			int random = Random.Range (0, 2);
 			if (random == 0) {
-				upgradeStar (1);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 1); // upgradeStar (1);
 			} else {
-				upgradeStar (4);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 4); // upgradeStar (4);
 			}
 			//TODO display GUI for choice between Red Dwarf and Blue Dwarf. until then pick randomly.
 		}
 		if (skore >= advanceNum2 && starType == 1) {
-			upgradeStar (2);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 2); // upgradeStar (2);
 		}
 		if (skore >= advanceNum3 && starType == 2) {
-			upgradeStar (3);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 3); // upgradeStar (3);
 		}
 		if (skore >= advanceNum2 && starType == 4) {
-			upgradeStar (5);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 5); // upgradeStar (5);
 		}
 		if (skore >= advanceNum3 && starType == 5) {
-			upgradeStar (7);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 7); // upgradeStar (7);
 		}
 		if (skore >= advanceNum4 && (starType == 7 || starType == 3)) {
 			//TODO display GUI for upgrading to Supernova. until then upgrade immediately.
-			upgradeStar (6);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 6); // upgradeStar (6);
 		}
 		if (skore >= advanceNum5 && starType == 6) {
 			//display GUI for upgrading from Supernova to black hole or neutron star. until then pick randomly.
 			int random = Random.Range(0,2);
 			if (random == 0) {
-				upgradeStar (10);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 10); // upgradeStar (10);
 			} else {
-				upgradeStar (8);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 8); // upgradeStar (8);
 			} 
 
 		}
 		if (skore >= advanceNum6 && starType == 10) {
-			upgradeStar (11);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 11); // upgradeStar (11);
 		}
 		if (skore >= advanceNum6 && starType == 8) {
-			upgradeStar (12);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 12); // upgradeStar (12);
 		}
 	}
 
