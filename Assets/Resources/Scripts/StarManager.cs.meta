@@ -1,10 +1,13 @@
 fileFormatVersion: 2
 guid: 4ad6dffa979aa4c3590075836521b419
-timeCreated: 1479584485
+timeCreated: 1491085535
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - projectile: {instanceID: 0}
+  - starPointSprite: {instanceID: 0}
+  - upgradeClass: {fileID: 8300000, guid: 80301276d7c8d3340a2bf06e670bf128, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

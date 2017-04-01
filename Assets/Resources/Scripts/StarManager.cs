@@ -10,11 +10,13 @@ public class StarManager: Photon.MonoBehaviour
 	//sprites -> projectile and non-projected point
 	public GameObject projectile;
 	public GameObject starPointSprite;
+    public AudioClip upgradeClass;
+    private AudioSource source;
 
 
-	//variables
+    //variables
 
-	public float lifetime = 2.0f; // how long projectiles stay on screen
+    public float lifetime = 2.0f; // how long projectiles stay on screen
 	public float projForce = 500.0f; // how much force the projectiles are given when shot
 	public int starPointNum = 5; // how many points the star has
 	public int starMass = 0; // the mass of the star (the score in this game)
@@ -69,7 +71,7 @@ public class StarManager: Photon.MonoBehaviour
 
 
 	void Start() {
-
+        source = this.GetComponent<AudioSource>();
 		ScenePhotonView = this.GetComponent<PhotonView>();
 		// set initial shooting conditions
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -214,6 +216,8 @@ public class StarManager: Photon.MonoBehaviour
 	[PunRPC]
 	// reloads star under a particular class -> establishes stats and redraws the star
 	void upgradeStar(int starGrade){
+
+        source.PlayOneShot(upgradeClass, .5f);
 		
 		transform.localScale = new Vector3(starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f,starSizes [starGrade - 1]*0.5f);
 		GetComponent<Renderer> ().material = starMats [starGrade - 1];
