@@ -68,24 +68,24 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 					} else if (damage_to_give != 0) {
 						starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID, targetTag, targetOldName);
-						Debug.Log (this.gameObject.name + " tag: " + this.gameObject.tag + " giving T damage to " + other.gameObject.name + " tag: " + this.gameObject.tag);
+//						Debug.Log (this.gameObject.name + " tag: " + this.gameObject.tag + " giving T damage to " + other.gameObject.name + " tag: " + this.gameObject.tag);
 					}
 
 
 					if (this.gameObject.name == "Star_Point(Clone)" || this.gameObject.name == "Projectile(Clone)") {
 						if (damage_to_receive != 0) {
 							this.gameObject.GetComponent<Health_Management> ().Health -= damage_to_receive;
-							Debug.Log (this.gameObject.tag + " starpoint was hit by " + other.gameObject.name);
+//							Debug.Log (this.gameObject.tag + " starpoint was hit by " + other.gameObject.name);
 						}
 
 					} else if (damage_to_receive != 0) {
 						starpv.RPC ("receiveDamage", PhotonTargets.All, damage_to_receive, other.gameObject.tag);
-						Debug.Log (this.gameObject.name + " tag: " + this.gameObject.tag + " receiving T damage from " + other.gameObject.name + " tag: " + this.gameObject.tag);
+//						Debug.Log (this.gameObject.name + " tag: " + this.gameObject.tag + " receiving T damage from " + other.gameObject.name + " tag: " + this.gameObject.tag);
 
 					}
 				}
 			} else {
-				Debug.Log (this.gameObject.name + " returned null photonview ID");
+//				Debug.Log (this.gameObject.name + " returned null photonview ID");
 			}
 		}
 	}

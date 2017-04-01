@@ -89,7 +89,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		testLocation = new Vector3 (testX, testY, 0f);
 		if (Time.time > nextActionTime && makeStars) {
 			nextActionTime += periodBG;
-			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
+			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.AllBufferedViaServer);
 
 		}
 		if (Time.time > nextBlazarTime && makeBlazar) {
