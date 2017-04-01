@@ -4,7 +4,7 @@ using System.Collections;
 public class OnJoinedInstantiate : MonoBehaviour
 {
 	public Transform SpawnPosition;
-    public float PositionOffset = 2.0f;
+    private float PositionOffset = 100.0f;
     public GameObject[] PrefabsToInstantiate;   // set in inspector
 
     public void OnJoinedRoom()

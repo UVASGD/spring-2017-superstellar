@@ -89,8 +89,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		testLocation = new Vector3 (testX, testY, 0f);
 		if (Time.time > nextActionTime && makeStars) {
 			nextActionTime += periodBG;
-			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.AllBufferedViaServer);
-
+			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
 		}
 		if (Time.time > nextBlazarTime && makeBlazar) {
 			nextBlazarTime += periodBlazar;
@@ -107,6 +106,17 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		if (Time.time > nextRogueTime && makeRogue) {
 			nextRogueTime += periodRogue;
 			ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
+		}
+	}
+
+
+	[PunRPC] 
+	void SetUpBGStar() {
+		GameObject[] ss = GameObject.FindGameObjectsWithTag ("BG_Stars");
+		foreach (GameObject spawnedStar in ss) {
+			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
+			int RandAngle = Random.Range (0, 360);
+			spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 		}
 	}
 
@@ -128,12 +138,9 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				}
 
 				// spawn star and give it random rotation, torque, and force, then add it to the list
+				
 				GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
 				spawnedStar.transform.SetParent (container.transform);
-
-				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
-				int RandAngle = Random.Range (0, 360);
-				spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 				spawnedStars.Add (spawnedStar);
 
 			} else {
@@ -154,15 +161,13 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 					GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
 					spawnedStar.transform.SetParent (container.transform);
-
-					spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
-					int RandAngle = Random.Range (0, 360);
-					spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 					spawnedStars.Add (spawnedStar);
 
 
 				}
 			}
+		} else {
+			ScenePhotonView.RPC ("SetUpBGStar", PhotonTargets.AllBufferedViaServer);
 		}
 	}
 
