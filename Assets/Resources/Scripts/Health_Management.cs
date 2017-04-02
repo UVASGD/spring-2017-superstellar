@@ -8,16 +8,19 @@ public class Health_Management : Photon.MonoBehaviour {
 	// amount of health object has
 	public float Health;
 	public int scoreToGive;
+  
 
-	private static PhotonView ScenePhotonView;
+
+    private static PhotonView ScenePhotonView;
 
 
 	void Start () {
 
-//		if (this.photonView != null && !this.photonView.isMine) {
-//			this.enabled = false;
-//			return;
-//		} 
+        //		if (this.photonView != null && !this.photonView.isMine) {
+        //			this.enabled = false;
+        //			return;
+        //		} 
+        
 		Debug.Log (this.gameObject.name);
 		ScenePhotonView = this.GetComponent<PhotonView>();
 	}

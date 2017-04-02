@@ -5,9 +5,14 @@ using UnityEngine.UI;
 
 public class GoToStart : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
+    // Use this for initialization
+    public AudioClip blowupSound;
+    private AudioSource source;
+
+    void Start () {
+        source = GetComponent<AudioSource>();
+
+        source.PlayOneShot(blowupSound,.5f);
 
 	}
 

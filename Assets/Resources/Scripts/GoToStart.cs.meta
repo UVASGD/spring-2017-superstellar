@@ -1,10 +1,11 @@
 fileFormatVersion: 2
 guid: 587031cf3356c45f988be2035db0efb3
-timeCreated: 1489869780
+timeCreated: 1491169406
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - blowupSound: {fileID: 8300000, guid: 784c05da5486c2f43bc9233a55d2b49b, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
