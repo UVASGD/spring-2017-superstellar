@@ -7,11 +7,19 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	// damage that the object gives to objects that collide with it
 	public int damage_to_give;
 	private bool scoreGiven = false;
+    public AudioClip damageSound;
+    private AudioSource source;
 
-	// amount of points to give when object dies
-	public int pointsToGive;
 
-	void OnTriggerEnter2D(Collider2D other)
+    // amount of points to give when object dies
+    public int pointsToGive;
+
+    private void Start()
+    {
+        source = this.GetComponent<AudioSource>();
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
 	{
 
 		if (other.gameObject.name == "Background") {
@@ -83,8 +91,17 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			target = targetpv.gameObject;
 		}
 
+<<<<<<< HEAD
 		Health_Management healthManager = target.GetComponent<Health_Management> ();
 		healthManager.Health -= damage;
+=======
+		target.GetComponent<Health_Management> ().Health -= damage;
+        //Dont play damage sound when health is 0
+        if (target.GetComponent<Health_Management>().Health > 0)
+        {
+            source.PlayOneShot(damageSound, .5f);
+        }
+>>>>>>> ffbb07e02aa616d5096f2992dcb16515e17c13ac
 
 		// kill the object when its health is depleted
 		if (healthManager.Health <= 0) {
