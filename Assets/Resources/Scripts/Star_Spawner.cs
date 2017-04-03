@@ -112,9 +112,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 	[PunRPC] 
 	void SetUpBGStar() {
-		Debug.Log ("ummm");
 		GameObject[] ss = GameObject.FindGameObjectsWithTag ("BG_Stars");
-		Debug.Log (ss.Length);
 		foreach (GameObject spawnedStar in ss) {
 			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
 			int RandAngle = Random.Range (0, 360);

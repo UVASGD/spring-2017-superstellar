@@ -83,17 +83,20 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			target = targetpv.gameObject;
 		}
 
-		target.GetComponent<Health_Management> ().Health -= damage;
+		Health_Management healthManager = target.GetComponent<Health_Management> ();
+		healthManager.Health -= damage;
 
 		// kill the object when its health is depleted
-		if (target.GetComponent<Health_Management> ().Health <= 0) {
+		if (healthManager.Health <= 0) {
 			// if the object is an un-shot starpoint, destroy it using the shooting controls script
 			if (target.tag == "Star_Point") {
 				GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target);
 				// if the object is anything else, destroy it and give the player points
 			} else {
 				//Destroy (target);
-				gameObject.GetComponent<Score_Manager> ().score += 5;
+				int scoreGive = healthManager.scoreToGive;
+				gameObject.GetComponent<Score_Manager> ().score += scoreGive;
+				healthManager.Health -= damage;
 			}
 		}
 	}
