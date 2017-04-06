@@ -4,7 +4,7 @@ using System.Collections;
 public class OnJoinedInstantiate : MonoBehaviour
 {
 	public Transform SpawnPosition;
-    private float PositionOffset = 30.0f;
+    private float PositionOffset = 10.0f;
     public GameObject[] PrefabsToInstantiate;   // set in inspector
 
     public void OnJoinedRoom()
@@ -24,7 +24,6 @@ public class OnJoinedInstantiate : MonoBehaviour
                 }
 
                 Vector3 random = Random.insideUnitSphere;
-                random.y = 0;
                 random = random.normalized;
                 Vector3 itempos = spawnPos + this.PositionOffset * random;
 				itempos.z = -10;
