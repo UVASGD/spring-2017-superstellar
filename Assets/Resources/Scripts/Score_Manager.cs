@@ -49,6 +49,7 @@ public class Score_Manager : MonoBehaviour {
 
 	[PunRPC]
 	void displayName(string name) {
+		playerNameForDeath = name;
 		text3.text = name;
 	}
 }
