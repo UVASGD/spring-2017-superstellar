@@ -91,22 +91,22 @@ public class Star_Spawner : Photon.MonoBehaviour {
 			nextActionTime += periodBG;
 			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
 		}
-		if (Time.time > nextBlazarTime && makeBlazar) {
-			nextBlazarTime += periodBlazar;
-			ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
-		}
-		if (Time.time > nextMagnetarTime && makeMagnetar) {
-			nextMagnetarTime += periodMagnetar;
-			ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
-		}
-		if (Time.time > nextCometTime && makeComet) {
-			nextCometTime += periodComet;
-			ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
-		}
-		if (Time.time > nextRogueTime && makeRogue) {
-			nextRogueTime += periodRogue;
-			ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
-		}
+//		if (Time.time > nextBlazarTime && makeBlazar) {
+//			nextBlazarTime += periodBlazar;
+//			ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
+//		}
+//		if (Time.time > nextMagnetarTime && makeMagnetar) {
+//			nextMagnetarTime += periodMagnetar;
+//			ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
+//		}
+//		if (Time.time > nextCometTime && makeComet) {
+//			nextCometTime += periodComet;
+//			ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
+//		}
+//		if (Time.time > nextRogueTime && makeRogue) {
+//			nextRogueTime += periodRogue;
+//			ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
+//		}
 	}
 
 

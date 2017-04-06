@@ -74,7 +74,7 @@ public class MinimapManagement : MonoBehaviour {
 	void Update () {
 
 		// check if players have entered or left game
-		updateNumPlayers ();
+//		updateNumPlayers ();
 //		updateNumBGStars ();
 			
 		// update MiniMap position

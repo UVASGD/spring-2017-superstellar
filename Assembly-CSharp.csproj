@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\GitChecks\Controls_Check.cs" />
-     <Compile Include="Assets\LeaderboardInfo.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayer.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\ColorPerPlayerApply.cs" />
      <Compile Include="Assets\Photon Unity Networking\Demos\DemoBoxes\DemoBoxesGui.cs" />
@@ -162,6 +161,7 @@
      <Compile Include="Assets\Resources\Scripts\Name_Holder.cs" />
      <Compile Include="Assets\Resources\Scripts\Rogue_Shooting.cs" />
      <Compile Include="Assets\Resources\Scripts\Score_Manager.cs" />
+     <Compile Include="Assets\Resources\Scripts\ScoreboardInfo.cs" />
      <Compile Include="Assets\Resources\Scripts\Shooting_Controls_edit.cs" />
      <Compile Include="Assets\Resources\Scripts\StarManager.cs" />
      <Compile Include="Assets\Resources\Scripts\Star_Spawner.cs" />
