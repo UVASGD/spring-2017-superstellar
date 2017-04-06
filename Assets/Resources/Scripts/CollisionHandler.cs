@@ -91,17 +91,14 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			target = targetpv.gameObject;
 		}
 
-<<<<<<< HEAD
 		Health_Management healthManager = target.GetComponent<Health_Management> ();
 		healthManager.Health -= damage;
-=======
 		target.GetComponent<Health_Management> ().Health -= damage;
         //Dont play damage sound when health is 0
         if (target.GetComponent<Health_Management>().Health > 0)
         {
             source.PlayOneShot(damageSound, .5f);
         }
->>>>>>> ffbb07e02aa616d5096f2992dcb16515e17c13ac
 
 		// kill the object when its health is depleted
 		if (healthManager.Health <= 0) {

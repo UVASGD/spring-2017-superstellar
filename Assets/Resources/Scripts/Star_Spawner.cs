@@ -21,7 +21,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private int maxY;
 
 	public float starSpeed  = 0.5f; // frequency that item is spawned
-	public int numStarSpawn = 100; // max number of item to exist at once
+	public int numStarSpawn = 750; // max number of item to exist at once
 	private List<GameObject> spawnedStars = new List<GameObject>(); // holds all the spawned items
 
 	public float blazarSpeed  = 25f; // frequency that item is spawned
@@ -255,34 +255,35 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 				spawnedMagnetars.Add (spawnedMagnetar);
 
-			} else {
-
-				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
-				int index = Random.Range (0, numMagnetarSpawn);
-				if (spawnedMagnetars [index] == null) {
-
-					spawnedMagnetars.Remove (spawnedMagnetars [index]);
-					int x = Random.Range (-maxX, maxX);
-					int y = Random.Range (-maxY, maxY);
-
-					Vector3 target = new Vector3 (x, y, 0);
-
-					if (testSpawn) {
-						target = testLocation;
-					}
-
-					GameObject spawnedMagnetar = PhotonNetwork.InstantiateSceneObject (magnetarSpawn.name, target, Quaternion.identity, 0, null);
-					spawnedMagnetar.transform.SetParent (container.transform);
-					Rigidbody2D myRigidBody;
-					myRigidBody = spawnedMagnetar.GetComponentInChildren<Rigidbody2D>();
-					myRigidBody.AddTorque (Random.Range (-100, 100));
-					int RandAngle = Random.Range (0, 360);
-					myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
-					spawnedMagnetars.Add (spawnedMagnetar);
-
-
-				}
-			}
+			} 
+//			else {
+//
+//				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
+//				int index = Random.Range (0, numMagnetarSpawn);
+//				if (spawnedMagnetars [index] == null) {
+//
+//					spawnedMagnetars.Remove (spawnedMagnetars [index]);
+//					int x = Random.Range (-maxX, maxX);
+//					int y = Random.Range (-maxY, maxY);
+//
+//					Vector3 target = new Vector3 (x, y, 0);
+//
+//					if (testSpawn) {
+//						target = testLocation;
+//					}
+//
+//					GameObject spawnedMagnetar = PhotonNetwork.InstantiateSceneObject (magnetarSpawn.name, target, Quaternion.identity, 0, null);
+//					spawnedMagnetar.transform.SetParent (container.transform);
+//					Rigidbody2D myRigidBody;
+//					myRigidBody = spawnedMagnetar.GetComponentInChildren<Rigidbody2D>();
+//					myRigidBody.AddTorque (Random.Range (-100, 100));
+//					int RandAngle = Random.Range (0, 360);
+//					myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
+//					spawnedMagnetars.Add (spawnedMagnetar);
+//
+//
+//				}
+//			}
 		}
 	}
 
@@ -312,34 +313,35 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 				spawnedComets.Add (spawnedComet);
 
-			} else {
-
-				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
-				int index = Random.Range (0, numCometSpawn);
-				if (spawnedComets [index] == null) {
-
-					spawnedComets.Remove (spawnedComets [index]);
-					int x = Random.Range (-maxX, maxX);
-					int y = Random.Range (-maxY, maxY);
-
-					Vector3 target = new Vector3 (x, y, 0);
-
-					if (testSpawn) {
-						target = testLocation;
-					}
-
-					GameObject spawnedComet = PhotonNetwork.InstantiateSceneObject (cometSpawn.name, target, Quaternion.identity, 0, null);
-					spawnedComet.transform.SetParent (container.transform);
-					Rigidbody2D myRigidBody;
-					myRigidBody = spawnedComet.GetComponentInChildren<Rigidbody2D>();
-					myRigidBody.AddTorque (Random.Range (-100, 100));
-					int RandAngle = Random.Range (0, 360);
-					myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
-					spawnedComets.Add (spawnedComet);
-
-
-				}
-			}
+			} 
+//			else {
+//
+//				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
+//				int index = Random.Range (0, numCometSpawn);
+//				if (spawnedComets [index] == null) {
+//
+//					spawnedComets.Remove (spawnedComets [index]);
+//					int x = Random.Range (-maxX, maxX);
+//					int y = Random.Range (-maxY, maxY);
+//
+//					Vector3 target = new Vector3 (x, y, 0);
+//
+//					if (testSpawn) {
+//						target = testLocation;
+//					}
+//
+//					GameObject spawnedComet = PhotonNetwork.InstantiateSceneObject (cometSpawn.name, target, Quaternion.identity, 0, null);
+//					spawnedComet.transform.SetParent (container.transform);
+//					Rigidbody2D myRigidBody;
+//					myRigidBody = spawnedComet.GetComponentInChildren<Rigidbody2D>();
+//					myRigidBody.AddTorque (Random.Range (-100, 100));
+//					int RandAngle = Random.Range (0, 360);
+//					myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
+//					spawnedComets.Add (spawnedComet);
+//
+//
+//				}
+//			}
 		}
 	}
 
@@ -368,34 +370,35 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 				spawnedRogues.Add (spawnedRogue);
 
-			} else {
-
-				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
-				int index = Random.Range (0, numRogueSpawn);
-				if (spawnedRogues [index] == null) {
-
-					spawnedRogues.Remove (spawnedRogues [index]);
-					int x = Random.Range (-maxX, maxX);
-					int y = Random.Range (-maxY, maxY);
-
-					Vector3 target = new Vector3 (x, y, 0);
-
-					if (testSpawn) {
-						target = testLocation;
-					}
-
-					GameObject spawnedRogue = PhotonNetwork.InstantiateSceneObject (rogueSpawn.name, target, Quaternion.identity, 0, null);
-					spawnedRogue.transform.SetParent (container.transform);
-					Rigidbody2D myRigidBody;
-					myRigidBody = spawnedRogue.GetComponentInChildren<Rigidbody2D>();
-					myRigidBody.AddTorque (Random.Range (-100, 100));
-					int RandAngle = Random.Range (0, 360);
-					myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
-					spawnedRogues.Add (spawnedRogue);
-
-
-				}
-			}
+			} 
+//			else {
+//
+//				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
+//				int index = Random.Range (0, numRogueSpawn);
+//				if (spawnedRogues [index] == null) {
+//
+//					spawnedRogues.Remove (spawnedRogues [index]);
+//					int x = Random.Range (-maxX, maxX);
+//					int y = Random.Range (-maxY, maxY);
+//
+//					Vector3 target = new Vector3 (x, y, 0);
+//
+//					if (testSpawn) {
+//						target = testLocation;
+//					}
+//
+//					GameObject spawnedRogue = PhotonNetwork.InstantiateSceneObject (rogueSpawn.name, target, Quaternion.identity, 0, null);
+//					spawnedRogue.transform.SetParent (container.transform);
+//					Rigidbody2D myRigidBody;
+//					myRigidBody = spawnedRogue.GetComponentInChildren<Rigidbody2D>();
+//					myRigidBody.AddTorque (Random.Range (-100, 100));
+//					int RandAngle = Random.Range (0, 360);
+//					myRigidBody.AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
+//					spawnedRogues.Add (spawnedRogue);
+//
+//
+//				}
+//			}
 		}
 	}
 }
