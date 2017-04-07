@@ -30,7 +30,9 @@ public class ScoreboardInfo : MonoBehaviour {
 			psn.Add (sm.score, sm.playerNameForDeath);
 		}
 
-		foreach (int score in psn.Keys) {
+		List<int> theKeys = new List<int> (psn.Keys);
+		for(int j = theKeys.Count - 1; j >= 0; j--) {
+			int score = theKeys[j];
 			leaderboardInfo += psn[score] + ": "+ score + "\n";
 		}
 
