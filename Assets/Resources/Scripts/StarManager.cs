@@ -72,7 +72,7 @@ public class StarManager: Photon.MonoBehaviour
 	public List<float> pointAngles = new List<float>(12); // the angles at which starpoints are shot
 	public List<float> pointAngles2 = new List<float>(12); // the angles at which starpoints are regenerated
 
-	private Tag_Manager daTagMan;
+//	private Tag_Manager daTagMan;
 
 	void Start() {
 
@@ -82,9 +82,9 @@ public class StarManager: Photon.MonoBehaviour
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
-		daTagMan = FindObjectOfType<Tag_Manager> ();
+//		daTagMan = FindObjectOfType<Tag_Manager> ();
 		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
-		daTagMan.addTag (playerTag);
+//		daTagMan.addTag (playerTag);
 		this.tag = playerTag;
 		this.GetComponent<Shooting_Controls_edit> ().playerTag = playerTag;
 

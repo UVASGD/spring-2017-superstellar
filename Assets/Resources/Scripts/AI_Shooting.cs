@@ -50,15 +50,15 @@ public class AI_Shooting : Photon.MonoBehaviour {
 	private bool randoSelected = false;
 	public string playerTag;
 
-	private Tag_Manager daTagMan;
+//	private Tag_Manager daTagMan;
 
 	void Start() {
 
 
-		daTagMan = FindObjectOfType<Tag_Manager> ();
+//		daTagMan = FindObjectOfType<Tag_Manager> ();
 		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
-		Debug.Log (playerTag);
-		daTagMan.addTag (playerTag);
+//		Debug.Log (playerTag);
+//		daTagMan.addTag (playerTag);
 		this.tag = playerTag;
 
 		canShoot = new List<int>{ 0, 0, 0, 0 };
