@@ -8,9 +8,17 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	public int damage_to_give;
 	private bool scoreGiven = false;
 
+	public AudioClip damageSound;
+	private AudioSource source;
+
+
 	// amount of points to give when object dies
 	public int pointsToGive;
 
+	void Start()
+	{
+		source = GetComponent<AudioSource> ();
+	}	
 	void OnTriggerEnter2D(Collider2D other)
 	{
 
@@ -85,6 +93,11 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 		target.GetComponent<Health_Management> ().Health -= damage;
 
+		//Dont play damage sound when health is 0
+		if (target.GetComponent<Health_Management>().Health > 0)
+		{
+			source.PlayOneShot(damageSound, .5f);
+		}
 		// kill the object when its health is depleted
 		if (target.GetComponent<Health_Management> ().Health <= 0) {
 			// if the object is an un-shot starpoint, destroy it using the shooting controls script

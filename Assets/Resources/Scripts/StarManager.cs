@@ -10,6 +10,8 @@ public class StarManager: Photon.MonoBehaviour
 	//sprites -> projectile and non-projected point
 	public GameObject projectile;
 	public GameObject starPointSprite;
+	public AudioClip upgradestarclasssound;
+	private AudioSource source;
 
 
 
@@ -75,7 +77,7 @@ public class StarManager: Photon.MonoBehaviour
 	private Tag_Manager daTagMan;
 
 	void Start() {
-
+		source = GetComponent<AudioSource> ();
 		ScenePhotonView = this.GetComponent<PhotonView>();
 		// set initial shooting conditions
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
@@ -239,6 +241,9 @@ public class StarManager: Photon.MonoBehaviour
 		projForce = projSpeeds [starGrade];
 		reloadTime = projRegen [starGrade];
 
+		if (starType > 1) {
+			source.PlayOneShot (upgradestarclasssound, 0.5f);
+		}
 		GetComponent<Shooting_Controls_edit> ().preset = 1;
 		if (starPointNum < 4) {
 			GetComponent<Shooting_Controls_edit> ().presetMax = 2;
