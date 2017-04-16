@@ -49,7 +49,8 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		Debug.Log (other.gameObject.name);
+
+		// targetID set to either 1) hit star's photonviewid, 2) starpoint/projectile tag (corresponds to star it came from's photonviewid), 3) BG star with "target" as name
 		string targetID;
 		if (other.gameObject.GetComponent<PhotonView> () != null) {
 			PhotonView pv = other.gameObject.GetComponent<PhotonView> ();
@@ -62,11 +63,13 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		}
 
 		Debug.Log (gameObject.tag);
+		// Checking PhotonView of Killer (StarPoint or Projectile or Star)
 		int pvID = int.Parse(gameObject.tag);
 		PhotonView starpv = PhotonView.Find (pvID);
 
+		//check to not kill self
 		if (!targetID.Equals(pvID.ToString())) {
-			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID);
+			starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID); // give damage to target
 			if (this.gameObject.name != "Projectile(Clone)") {
 				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID.ToString ());
 			} else {
@@ -84,7 +87,9 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	[PunRPC]
 	public void giveDamage(int damage, string targetID){
 
+		// target gameobject found with parameter
 		GameObject target;
+		Debug.Log (targetID);
 		if (targetID == "target") { 
 			target = GameObject.Find (targetID);
 		} else {
