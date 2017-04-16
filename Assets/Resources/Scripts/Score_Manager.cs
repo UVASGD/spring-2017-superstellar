@@ -32,11 +32,13 @@ public class Score_Manager : MonoBehaviour {
 			PlayerPrefs.DeleteKey ("PlayerName");
 			score = 0;
 		}
-		playerNameForDeath = text3.text;
 	}
 
 	// Update is called once per frame
 	void Update () {
+		Debug.Log (text3.text);
+		playerNameForDeath = text3.text;
+
 //		score = player.GetComponent<StarManager>().starMass;
 		word1.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y, 0);
 		word2.transform.position = new Vector3 (player.transform.position.x, player.transform.position.y, 0);
