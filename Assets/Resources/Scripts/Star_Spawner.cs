@@ -169,7 +169,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				}
 			}
 		}
-		ScenePhotonView.RPC ("SetUpBGStar", PhotonTargets.AllBufferedViaServer);
+//		ScenePhotonView.RPC ("SetUpBGStar", PhotonTargets.AllBufferedViaServer);
 
 	}
 
