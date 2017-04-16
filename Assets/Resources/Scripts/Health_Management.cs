@@ -40,8 +40,8 @@ public class Health_Management : Photon.MonoBehaviour {
 				PlayerPrefs.SetString ("dclass", className);
 
 				//load death scene
-//				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
-//				PhotonNetwork.Disconnect();
+				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
+				PhotonNetwork.Disconnect();
 			} else if(this.gameObject.name == "Star_Point(Clone)"){
 				if (this.GetComponentInParent<Shooting_Controls_edit> () != null) {
 					this.GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (this.gameObject);
