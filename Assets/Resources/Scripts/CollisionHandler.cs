@@ -61,6 +61,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			targetID = other.gameObject.name;
 		}
 
+		Debug.Log (gameObject.tag);
 		int pvID = int.Parse(gameObject.tag);
 		PhotonView starpv = PhotonView.Find (pvID);
 

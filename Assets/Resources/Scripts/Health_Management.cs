@@ -38,6 +38,10 @@ public class Health_Management : Photon.MonoBehaviour {
 				PlayerPrefs.SetInt ("dscore", score);
 				PlayerPrefs.SetString ("dname", name);
 				PlayerPrefs.SetString ("dclass", className);
+
+				Debug.Log (name);
+				Debug.Log (Health);
+
 				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
 				PhotonNetwork.Disconnect();
 			} else if(this.gameObject.name == "Star_Point(Clone)"){
