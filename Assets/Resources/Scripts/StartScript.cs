@@ -11,12 +11,15 @@ public class StartScript : MonoBehaviour {
 	public GameObject Title;
 
 	void Start() {
+		PlayerPrefs.SetString ("PlayerName","");
 		Instructions.SetActive (false);
 	}
 
 	// Use this for initialization
 	public void OnStartGame () {
-		UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);
+		if (PlayerPrefs.GetString ("PlayerName") != "") {
+			UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (1);
+		}
 	}
 
 	public void showControls() {
