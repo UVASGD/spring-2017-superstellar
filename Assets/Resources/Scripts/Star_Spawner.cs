@@ -23,6 +23,8 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	public float starSpeed  = 0.5f; // frequency that item is spawned
 	public int numStarSpawn = 100; // max number of item to exist at once
 	private List<GameObject> spawnedStars = new List<GameObject>(); // holds all the spawned items
+	private List<int> torques = new List<int>();
+	private List<Vector2> forces = new List<Vector2>();
 
 	public float blazarSpeed  = 25f; // frequency that item is spawned
 	public int numBlazarSpawn = 1; // max number of item to exist at once
@@ -112,13 +114,12 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 	[PunRPC] 
 	void SetUpBGStar() {
-		Debug.Log ("ummm");
 		GameObject[] ss = GameObject.FindGameObjectsWithTag ("BG_Stars");
 		Debug.Log (ss.Length);
-		foreach (GameObject spawnedStar in ss) {
-			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
-			int RandAngle = Random.Range (0, 360);
-			spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
+		for (int i=0; i < ss.Length; i++) {
+			GameObject spawnedStar = ss [i];
+			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (torques[i]);
+			spawnedStar.GetComponent<Rigidbody2D> ().GetComponent<Rigidbody2D> ().AddForce (forces[i]);
 		}
 	}
 
@@ -142,34 +143,47 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				// spawn star and give it random rotation, torque, and force, then add it to the list
 				
 				GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
+				int torque = Random.Range (-100, 100);
+				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (torque);
+				int RandAngle = Random.Range (0, 360);
+				Vector2 force = new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200);
+				spawnedStar.GetComponent<Rigidbody2D> ().AddForce (force);
 				spawnedStar.transform.SetParent (container.transform);
 				spawnedStars.Add (spawnedStar);
 
-			} else {
-
-				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
-				int index = Random.Range (0, numStarSpawn);
-				if (spawnedStars [index] == null) {
-
-					spawnedStars.Remove (spawnedStars [index]);
-					int x = Random.Range (-maxX, maxX);
-					int y = Random.Range (-maxY, maxY);
-
-					Vector3 target = new Vector3 (x, y, 0);
-
-					if (testSpawn) {
-						target = testLocation;
-					}
-
-					GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
-					spawnedStar.transform.SetParent (container.transform);
-					spawnedStars.Add (spawnedStar);
-
-
-				}
-			}
+				torques.Add (torque);
+				forces.Add (force);
+			} 
+//			else {
+//
+//				// generate random number and see if the item in the list has been destroyed -> if so, replace it by spawning a star
+//				int index = Random.Range (0, numStarSpawn);
+//				if (spawnedStars [index] == null) {
+//
+//					spawnedStars.Remove (spawnedStars [index]);
+//					int x = Random.Range (-maxX, maxX);
+//					int y = Random.Range (-maxY, maxY);
+//
+//					Vector3 target = new Vector3 (x, y, 0);
+//
+//					if (testSpawn) {
+//						target = testLocation;
+//					}
+//
+//					GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
+//					int torque = Random.Range (-100, 100);
+//					spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (torque);
+//					int RandAngle = Random.Range (0, 360);
+//					Vector2 force = new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200);
+//					spawnedStar.GetComponent<Rigidbody2D> ().AddForce (force);
+//					spawnedStar.transform.SetParent (container.transform);
+//					spawnedStars.Add (spawnedStar);
+//
+//				}
+//			}
+		} else {
+			ScenePhotonView.RPC ("SetUpBGStar", PhotonTargets.AllBufferedViaServer);
 		}
-//		ScenePhotonView.RPC ("SetUpBGStar", PhotonTargets.AllBufferedViaServer);
 
 	}
 

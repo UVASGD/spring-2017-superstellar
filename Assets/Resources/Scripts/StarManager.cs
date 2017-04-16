@@ -11,7 +11,8 @@ public class StarManager: Photon.MonoBehaviour
 	public GameObject projectile;
 	public GameObject starPointSprite;
 	public AudioClip upgradestarclasssound;
-	private AudioSource source;
+	public AudioClip shootSound;
+	public AudioSource source;
 
 
 
@@ -113,6 +114,7 @@ public class StarManager: Photon.MonoBehaviour
 			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0); // upgradeStar (0);
 		}
 
+		source =  GameObject.FindObjectOfType<AudioSource>();
 	}
 
 

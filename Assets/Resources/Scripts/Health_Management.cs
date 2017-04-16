@@ -42,6 +42,7 @@ public class Health_Management : Photon.MonoBehaviour {
 				Debug.Log (name);
 				Debug.Log (Health);
 
+				//load death scene
 				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
 				PhotonNetwork.Disconnect();
 			} else if(this.gameObject.name == "Star_Point(Clone)"){
