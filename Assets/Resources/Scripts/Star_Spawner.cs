@@ -25,6 +25,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private List<GameObject> spawnedStars = new List<GameObject>(); // holds all the spawned items
 	private List<int> torques = new List<int>();
 	private List<Vector2> forces = new List<Vector2>();
+	private int bgSetUpCount;
 
 	public float blazarSpeed  = 25f; // frequency that item is spawned
 	public int numBlazarSpawn = 1; // max number of item to exist at once
@@ -68,6 +69,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private Vector3 testLocation;
 
 
+
 	void Start () {
 
 		container = GameObject.Find("BG Stars");
@@ -85,13 +87,22 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		//		InvokeRepeating ("Generate", 0, speed);
 
 		ScenePhotonView = this.GetComponent<PhotonView> ();
+		if (!PhotonNetwork.isMasterClient) {
+			GameObject[] ss = GameObject.FindGameObjectsWithTag ("BG_Stars");
+			for (int i = 0; i < ss.Length; i++) {
+				GameObject spawnedStar = ss [i];
+				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (torques [i]);
+				spawnedStar.GetComponent<Rigidbody2D> ().GetComponent<Rigidbody2D> ().AddForce (forces [i]);
+			}
+			bgSetUpCount = ss.Length;
+		}
 	}
 
 	void Update() {
 		testLocation = new Vector3 (testX, testY, 0f);
 		if (Time.time > nextActionTime && makeStars) {
 			nextActionTime += periodBG;
-			ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
+			GenerateBGStar (); //ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
 		}
 //		if (Time.time > nextBlazarTime && makeBlazar) {
 //			nextBlazarTime += periodBlazar;
@@ -109,22 +120,23 @@ public class Star_Spawner : Photon.MonoBehaviour {
 //			nextRogueTime += periodRogue;
 //			ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
 //		}
-	}
 
-
-	[PunRPC] 
-	void SetUpBGStar() {
-		GameObject[] ss = GameObject.FindGameObjectsWithTag ("BG_Stars");
-		Debug.Log (ss.Length);
-		for (int i=0; i < ss.Length; i++) {
-			GameObject spawnedStar = ss [i];
-			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (torques[i]);
-			spawnedStar.GetComponent<Rigidbody2D> ().GetComponent<Rigidbody2D> ().AddForce (forces[i]);
+		if (!PhotonNetwork.isMasterClient) {
+			GameObject[] ss = GameObject.FindGameObjectsWithTag ("BG_Stars");
+			if (bgSetUpCount < ss.Length) {
+				int startIndex = ss.Length - bgSetUpCount;
+				for (int i = ss.Length-bgSetUpCount; i < ss.Length; i++) {
+					GameObject spawnedStar = ss [i];
+					spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (torques [i]);
+					spawnedStar.GetComponent<Rigidbody2D> ().GetComponent<Rigidbody2D> ().AddForce (forces [i]);
+				}
+				bgSetUpCount = ss.Length;
+			}
 		}
 	}
 
 
-	[PunRPC]
+
 	void GenerateBGStar () {
 		if (PhotonNetwork.isMasterClient) {
 			// check to see if max spawn is reached
@@ -181,9 +193,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 //
 //				}
 //			}
-		} else {
-			ScenePhotonView.RPC ("SetUpBGStar", PhotonTargets.AllBufferedViaServer);
-		}
+		} 
 
 	}
 
