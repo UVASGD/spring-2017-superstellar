@@ -30,8 +30,8 @@ public class Score_Manager : MonoBehaviour {
 			player.GetPhotonView ().RPC("displayName", PhotonTargets.AllBufferedViaServer, name); // displayName(name);
 			playerNameForDeath = PlayerPrefs.GetString ("PlayerName");
 			PlayerPrefs.DeleteKey ("PlayerName");
+			score = 0;
 		}
-		score = 0;
 		playerNameForDeath = text3.text;
 	}
 
