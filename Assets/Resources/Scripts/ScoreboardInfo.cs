@@ -25,7 +25,7 @@ public class ScoreboardInfo : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		Score_Manager[] smList = GameObject.FindObjectsOfType<Score_Manager> ();
+		Score_Manager[] smList = GameObject.FindObjectsOfType<Score_Manager>();
 		foreach (Score_Manager sm in smList) {
 			psn.Add(new KeyValuePair<int, string>(sm.score, sm.playerNameForDeath));
 		}

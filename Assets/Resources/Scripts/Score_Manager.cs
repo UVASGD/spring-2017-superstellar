@@ -32,7 +32,7 @@ public class Score_Manager : MonoBehaviour {
 			PlayerPrefs.DeleteKey ("PlayerName");
 		}
 		score = 0;
-
+		playerNameForDeath = text3.text;
 	}
 
 	// Update is called once per frame
