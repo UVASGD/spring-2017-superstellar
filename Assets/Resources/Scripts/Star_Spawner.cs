@@ -157,10 +157,10 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				
 				GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
 //				int torque = Random.Range (-100, 100);
-//				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (torque);
-//				int RandAngle = Random.Range (0, 360);
+				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
+				int RandAngle = Random.Range (0, 360);
 //				Vector2 force = new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200);
-//				spawnedStar.GetComponent<Rigidbody2D> ().AddForce (force);
+				spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 				spawnedStar.transform.SetParent (container.transform);
 				spawnedStars.Add (spawnedStar);
 
