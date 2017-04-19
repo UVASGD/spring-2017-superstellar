@@ -8,18 +8,12 @@ public class Health_Management : Photon.MonoBehaviour {
 	// amount of health object has
 	public float Health;
 	public int scoreToGive;
-
-	private static PhotonView ScenePhotonView;
-
+	public int viewID;
 
 	void Start () {
-
-//		if (this.photonView != null && !this.photonView.isMine) {
-//			this.enabled = false;
-//			return;
-//		} 
-		Debug.Log (this.gameObject.name);
-		ScenePhotonView = this.GetComponent<PhotonView>();
+		if (this.gameObject.name == "BG_Star(Clone)") {
+			viewID = this.photonView.viewID;
+		}
 	}
 
 	void Update () {
@@ -27,9 +21,7 @@ public class Health_Management : Photon.MonoBehaviour {
 			scoreToGive = GetComponent<Score_Manager> ().score;
 		}
 		if (Health <= 0) {
-
 			if (this.gameObject.name == "Star") {
-
 				int score = this.GetComponent<Score_Manager> ().score;
 				string name = this.GetComponent<Score_Manager> ().playerNameForDeath;
 				int classNum = this.GetComponent<StarManager>().starType;

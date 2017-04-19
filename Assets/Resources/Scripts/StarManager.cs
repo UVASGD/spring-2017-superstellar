@@ -86,10 +86,12 @@ public class StarManager: Photon.MonoBehaviour
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 //		daTagMan = FindObjectOfType<Tag_Manager> ();
-		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
-//		daTagMan.addTag (playerTag);
-		this.tag = playerTag;
-		this.GetComponent<Shooting_Controls_edit> ().playerTag = playerTag;
+//		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
+////		daTagMan.addTag (playerTag);
+//		this.tag = playerTag;
+//		this.GetComponent<Shooting_Controls_edit> ().playerTag = playerTag;
+
+		this.GetComponent<Health_Management> ().viewID = this.photonView.viewID;
 
 		// set class variable values
 		starMats = new List<Material>{ Resources.Load<Material> ("Materials/Normal_Star_Yellow"), Resources.Load<Material> ("Materials/Star_D_Red"),
@@ -122,15 +124,15 @@ public class StarManager: Photon.MonoBehaviour
 	{
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
 
-			if (this.tag != playerTag) {
-				this.tag = playerTag;
-			}
-
-			foreach (GameObject stPt in starpoints) {
-				if (stPt.tag != playerTag) {
-					stPt.tag = playerTag;
-				}
-			}
+//			if (this.tag != playerTag) {
+//				this.tag = playerTag;
+//			}
+//
+//			foreach (GameObject stPt in starpoints) {
+//				if (stPt.tag != playerTag) {
+//					stPt.tag = playerTag;
+//				}
+//			}
 
 			ScenePhotonView = this.GetComponent<PhotonView>();
 
@@ -204,6 +206,7 @@ public class StarManager: Photon.MonoBehaviour
 			newPt.transform.parent = transform;
 			newPt.GetComponent<Health_Management> ().Health = maxPointHealth;
 			newPt.GetComponent<CollisionHandler> ().damage_to_give = maxPointDam;
+			newPt.GetComponent<Health_Management> ().viewID = this.photonView.viewID;
 			starpoints.Add (newPt);
 
 			canShoot [i] = 1;

@@ -36,7 +36,6 @@ public class Score_Manager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Debug.Log (text3.text);
 		playerNameForDeath = text3.text;
 
 //		score = player.GetComponent<StarManager>().starMass;

@@ -108,10 +108,10 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		reloadTime = GetComponent<StarManager>().reloadTime;
 		starPtDam = GetComponent<StarManager>().starPtDam;
 
-		//ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
+		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
 		// redrawStar(transform.rotation, starPointNum);
 
-		// ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen); // regenerate player health
+		 ScenePhotonView.RPC("healthRegen", PhotonTargets.All, playerRegen); // regenerate player health
 		// healthRegen (playerRegen);
 
 
@@ -236,6 +236,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
 		proj.tag = playerTag;
 
+		proj.GetComponent<Health_Management> ().viewID = this.photonView.viewID;
 		// sets projectile size, material, health, damage, and accesses its rigidbody and spriterenderer
 		starMats = GetComponent<StarManager> ().starMats;
 		starType = GetComponent<StarManager> ().starType;
