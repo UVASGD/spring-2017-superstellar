@@ -144,19 +144,18 @@ public class MinimapManagement : MonoBehaviour {
 			}
 		} else if (GameObject.FindObjectsOfType<StarManager> ().Length < playerList.Count) {
 			StarManager[] smList = GameObject.FindObjectsOfType<StarManager> ();
-			foreach (StarManager sm in smList) {
-				bool oldplayer = false;
-				foreach (GameObject g in playerList) {
+			foreach (GameObject g in playerList) {
+				bool playerAlive = false;
+				foreach (StarManager sm in smList) {
 					if (g.GetPhotonView ().ownerId == sm.photonView.ownerId) {
-						oldplayer = true;
+						playerAlive = true;
 					}
 				}
-				if (!oldplayer) {
-					GameObject icon = iconList[playerList.IndexOf (sm.gameObject)];
+				if (!playerAlive) {
+					GameObject icon = iconList[playerList.IndexOf (g)];
 					Destroy (icon);
-					playerList.Remove (sm.gameObject);
+					playerList.Remove (g);
 				}
-
 			}
 		}
 	}
