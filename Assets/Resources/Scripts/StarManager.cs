@@ -29,7 +29,6 @@ public class StarManager: Photon.MonoBehaviour
 	public float playerRegen = 1; // how quickly the player regenerates their health
 	public float reloadTime = 2.0f; //time to regen point
 	public string className = "Main Sequence";
-	public string playerTag;
 
 	private int advanceNum = 40;
 	private int advanceNum2 = 100;
@@ -75,7 +74,6 @@ public class StarManager: Photon.MonoBehaviour
 	public List<float> pointAngles = new List<float>(12); // the angles at which starpoints are shot
 	public List<float> pointAngles2 = new List<float>(12); // the angles at which starpoints are regenerated
 
-//	private Tag_Manager daTagMan;
 
 	void Start() {
 		source = GetComponent<AudioSource> ();
@@ -84,12 +82,6 @@ public class StarManager: Photon.MonoBehaviour
 		canShoot = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		autoShoot = new List<int>{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		shootOnMouse = new List<int>{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-
-//		daTagMan = FindObjectOfType<Tag_Manager> ();
-//		playerTag = this.GetComponent<PhotonView> ().viewID.ToString();
-////		daTagMan.addTag (playerTag);
-//		this.tag = playerTag;
-//		this.GetComponent<Shooting_Controls_edit> ().playerTag = playerTag;
 
 		this.GetComponent<Health_Management> ().viewID = this.photonView.viewID;
 
@@ -124,15 +116,6 @@ public class StarManager: Photon.MonoBehaviour
 	{
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
 
-//			if (this.tag != playerTag) {
-//				this.tag = playerTag;
-//			}
-//
-//			foreach (GameObject stPt in starpoints) {
-//				if (stPt.tag != playerTag) {
-//					stPt.tag = playerTag;
-//				}
-//			}
 
 			ScenePhotonView = this.GetComponent<PhotonView>();
 
@@ -199,7 +182,6 @@ public class StarManager: Photon.MonoBehaviour
 		for(int i = 0; i < numPoints; i++)
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
-			newPt.tag = playerTag;
 			newPt.transform.localScale = new Vector3(starSizes [starGrade]*0.6f,starSizes [starGrade]*1f,starSizes [starGrade]*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMats [starGrade];
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));

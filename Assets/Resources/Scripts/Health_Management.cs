@@ -20,7 +20,7 @@ public class Health_Management : Photon.MonoBehaviour {
 		if (this.gameObject.name == "Star") {
 			scoreToGive = GetComponent<Score_Manager> ().score;
 		}
-		if (Health <= 0) {
+		if (Health <= 0 && this.photonView.isMine) {
 			if (this.gameObject.name == "Star") {
 				int score = this.GetComponent<Score_Manager> ().score;
 				string name = this.GetComponent<Score_Manager> ().playerNameForDeath;

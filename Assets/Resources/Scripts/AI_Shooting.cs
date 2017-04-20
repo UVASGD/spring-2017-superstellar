@@ -254,8 +254,6 @@ public class AI_Shooting : Photon.MonoBehaviour {
 		for(int i = 0; i < numPoints; i++)
 		{
 			GameObject newPt = Instantiate(starPointSprite, transform.position, Quaternion.identity) as GameObject;
-
-			newPt.tag = playerTag;
 			newPt.transform.localScale = new Vector3(starSize*0.6f,starSize*1f,starSize*0.5f);
 			newPt.GetComponent<Renderer> ().material = starMat;
 			newPt.transform.RotateAround(transform.position,Vector3.forward, (pointAngles2 [i] + 90));

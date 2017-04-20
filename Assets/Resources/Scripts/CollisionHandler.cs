@@ -61,8 +61,8 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 			target.GetComponent<Health_Management> ().Health -= damage;
 
-			//Dont play damage sound when health is 0
-			if (target.GetComponent<Health_Management> ().Health > 0 && target.name != "Body") {
+			//Play damage sound if target health is > 0 and target is not an AI
+			if (target.GetComponent<Health_Management> ().Health > 0) {
 				source.PlayOneShot (damageSound, .5f);
 			}
 			// kill the object when its health is depleted
@@ -70,10 +70,16 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				if (target.tag == "Star_Point") { 
 					GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target); // if the object is an un-shot starpoint, destroy it using the shooting controls script
 				} else if (gameObject.name == "Star") { 
-					gameObject.GetComponent<Score_Manager> ().score += target.GetComponent<Health_Management> ().scoreToGive; // if the object is anything else, destroy it and give the player points
+					PhotonView pv = PhotonView.Find (this.GetComponent<Health_Management> ().viewID);
+					pv.RPC ("updateScore", PhotonTargets.AllBuffered, target.GetComponent<Health_Management> ().scoreToGive); // if the object is anything else, destroy it and give the player points
 				}
 			}
 		}
+	}
+
+	[PunRPC]
+	public void updateScore(int score) {
+		gameObject.GetComponent<Score_Manager> ().score += score;
 	}
 
 }

@@ -25,7 +25,6 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private float playerRegen = 1;
 	private float reloadTime = 2.0f; //time to regen point
 	private float colReload = 0.1f;
-	public string playerTag;
 
 
 	private List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
@@ -234,8 +233,6 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		//clones existing projectile gameobject
 		GameObject proj = Instantiate (projectile, transform.position, Quaternion.identity) as GameObject;
-		proj.tag = playerTag;
-
 		proj.GetComponent<Health_Management> ().viewID = this.photonView.viewID;
 		// sets projectile size, material, health, damage, and accesses its rigidbody and spriterenderer
 		starMats = GetComponent<StarManager> ().starMats;

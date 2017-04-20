@@ -10,14 +10,13 @@ using UnityEngine.UI;
 
 public class Statistics : MonoBehaviour {
 
-
-
 	public GameObject word1;
 	public GameObject word2;
 	public GameObject word3;
 	public string replayName;
 
 	void Start () {
+		
 		string dscore = (PlayerPrefs.GetInt ("dscore")).ToString();
 		string dname = (PlayerPrefs.GetString("dname")).ToString();
 		string dclass = (PlayerPrefs.GetString("dclass")).ToString();
@@ -31,5 +30,6 @@ public class Statistics : MonoBehaviour {
 		PlayerPrefs.DeleteKey ("dname");
 
 		replayName = dname;
+
 	}
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GoToStart : MonoBehaviour {
+public class DeathScript : MonoBehaviour {
 
 	public AudioClip blowupSound;
 	private AudioSource source;
@@ -22,9 +22,5 @@ public class GoToStart : MonoBehaviour {
 		PlayerPrefs.SetString ("PlayerName", GameObject.FindObjectOfType<Statistics> ().replayName);
 		UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(1);
 	}
-
-	// Update is called once per frame
-	void Update () {
 		
-	}
 }

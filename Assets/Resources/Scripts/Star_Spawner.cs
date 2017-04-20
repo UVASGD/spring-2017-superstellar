@@ -4,13 +4,15 @@ using System.Collections.Generic;
 
 public class Star_Spawner : Photon.MonoBehaviour {
 
-	private GameObject container;
+
 	public GameObject starSpawn; // item to spawn
 	public GameObject blazarSpawn;
 	public GameObject magnetarSpawn;
 	public GameObject cometSpawn;
 	public GameObject rogueSpawn;
 	public GameObject bg; // background object
+
+	private GameObject container;
 
 	// map dimensions
 	private float mapX;
@@ -41,16 +43,17 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private List<GameObject> spawnedRogues = new List<GameObject>(); // holds all the spawned items
 
 
+	public float periodBG;
+	public float periodBlazar;
+	public float periodMagnetar;
+	public float periodComet;
+	public float periodRogue;
+
 	private float nextActionTime = 3.0f;
 	private float nextBlazarTime = 0.5f;
 	private float nextMagnetarTime = 1.0f;
 	private float nextCometTime = 1.5f;
 	private float nextRogueTime = 2.0f;
-	public float periodBG = 0.5f;
-	public float periodBlazar = 25f;
-	public float periodMagnetar = 10f;
-	public float periodComet = 20f;
-	public float periodRogue = 15f;
 
 	private PhotonView ScenePhotonView;
 
@@ -60,7 +63,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	public bool makeComet;
 	public bool makeRogue;
 
-	public bool testSpawn = false;
+	public bool testSpawn;
 	public float testX;
 	public float testY;
 	private Vector3 testLocation;
@@ -75,6 +78,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 
 	void Start () {
+		
 		ScenePhotonView = this.GetComponent<PhotonView> ();
 
 		container = GameObject.Find("BG Stars");
@@ -86,9 +90,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 		maxX = (int) mapX / 2 - 25;
 		maxY = (int) mapY / 2 - 25;
 
-
 //		Random.seed = 80;
-
 
 	}
 
