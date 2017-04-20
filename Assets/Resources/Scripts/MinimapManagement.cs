@@ -11,6 +11,7 @@ public class MinimapManagement : MonoBehaviour {
 	private Transform starBody;
 	private float playerScale;
 
+	List<int> viewIDList = new List<int>(); //List of all players in room (get position)
 	List<GameObject> playerList = new List<GameObject>(); //List of all players in room (get position)
 	List<GameObject> iconList = new List<GameObject>(); // List containing all icons (set position)
 	List<GameObject> bgStarList = new List<GameObject>(); // List of all BG Stars in room (get position)
@@ -41,6 +42,7 @@ public class MinimapManagement : MonoBehaviour {
 		StarManager[] smList = GameObject.FindObjectsOfType<StarManager> ();
 		foreach (StarManager sm in smList) {
 			playerList.Add (sm.gameObject);
+			viewIDList.Add (sm.gameObject.GetComponent<PhotonView>().viewID);
 			GameObject icon = Instantiate (PlayerPosIcon, scaledPosition (sm.gameObject.transform.position), Quaternion.identity);
 			icon.transform.SetParent (this.transform);
 			icon.transform.position = scaledPosition (sm.gameObject.transform.position);
@@ -132,6 +134,7 @@ public class MinimapManagement : MonoBehaviour {
 				}
 				if (!oldplayer) {
 					playerList.Add (sm.gameObject);
+					viewIDList.Add (sm.gameObject.GetComponent<PhotonView>().viewID);
 					GameObject icon = Instantiate (PlayerPosIcon, scaledPosition (sm.gameObject.transform.position), Quaternion.identity);
 					icon.transform.SetParent (this.transform);
 					icon.transform.position = scaledPosition (sm.gameObject.transform.position);
@@ -144,17 +147,18 @@ public class MinimapManagement : MonoBehaviour {
 			}
 		} else if (GameObject.FindObjectsOfType<StarManager> ().Length < playerList.Count) {
 			StarManager[] smList = GameObject.FindObjectsOfType<StarManager> ();
-			foreach (GameObject g in playerList) {
+			foreach (int viewID in viewIDList) {
 				bool playerAlive = false;
 				foreach (StarManager sm in smList) {
-					if (g.GetPhotonView ().ownerId == sm.photonView.ownerId) {
+					if (viewID == sm.photonView.viewID) {
 						playerAlive = true;
 					}
 				}
 				if (!playerAlive) {
-					GameObject icon = iconList[playerList.IndexOf (g)];
+					GameObject player = playerList[viewIDList.IndexOf (viewID)];
+					GameObject icon = iconList[viewIDList.IndexOf (viewID)];
 					Destroy (icon);
-					playerList.Remove (g);
+					playerList.Remove (player);
 				}
 			}
 		}
