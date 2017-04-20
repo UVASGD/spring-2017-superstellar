@@ -19,6 +19,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
+		
 		handleCollision (other.gameObject);
 	}
 
@@ -26,7 +27,6 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	{
 		handleCollision (other.gameObject);
 	}
-
 
 	void handleCollision(GameObject other) {
 		
@@ -83,5 +83,6 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	public void updateScore(int score) {
 		gameObject.GetComponent<Score_Manager> ().score += score;
 	}
+		
 
 }
