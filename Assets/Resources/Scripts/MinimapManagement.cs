@@ -89,8 +89,7 @@ public class MinimapManagement : MonoBehaviour {
 			GameObject icon = iconList [playerList.IndexOf (p)];
 			icon.transform.position = scaledPosition (p.transform.position);
 		}
-
-
+			
 		// show BG Stars on MiniMap (removed because of lag issues)
 //		displayBGStars ();
 
@@ -138,7 +137,7 @@ public class MinimapManagement : MonoBehaviour {
 					GameObject icon = Instantiate (PlayerPosIcon, scaledPosition (sm.gameObject.transform.position), Quaternion.identity);
 					icon.transform.SetParent (this.transform);
 					icon.transform.position = scaledPosition (sm.gameObject.transform.position);
-					if (sm.gameObject.GetPhotonView ().isMine) {
+					if (sm.gameObject.GetPhotonView ().isMine) { 
 						icon.GetComponent<SpriteRenderer> ().material = Resources.Load<Material> ("Materials/Local_Player_Icon");
 					}
 					iconList.Add (icon);
@@ -158,7 +157,9 @@ public class MinimapManagement : MonoBehaviour {
 					GameObject player = playerList[viewIDList.IndexOf (viewID)];
 					GameObject icon = iconList[viewIDList.IndexOf (viewID)];
 					Destroy (icon);
+					iconList.Remove (icon);
 					playerList.Remove (player);
+					viewIDList.Remove (viewID);
 				}
 			}
 		}

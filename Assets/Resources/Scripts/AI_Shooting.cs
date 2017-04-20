@@ -52,8 +52,15 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 //	private Tag_Manager daTagMan;
 
+	void OnEnable()
+	{
+		if (!PhotonNetwork.isMasterClient) {
+			this.enabled = false;
+		} 
+	}
+
 	void Start() {
-		
+
 		canShoot = new List<int>{ 0, 0, 0, 0 };
 		for (int i = 0; i < starPointNum; i++) {
 			canShoot [i] = 1;

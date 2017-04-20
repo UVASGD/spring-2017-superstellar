@@ -57,9 +57,11 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	[PunRPC]
 	public void giveDamage(int damage, int targetID){
 		if (PhotonView.Find (targetID)) {
+			
 			GameObject target = PhotonView.Find (targetID).gameObject;
-
 			target.GetComponent<Health_Management> ().Health -= damage;
+
+			Debug.Log (target.name);
 
 			//Play damage sound if target health is > 0 and target is not an AI
 			if (target.GetComponent<Health_Management> ().Health > 0) {
