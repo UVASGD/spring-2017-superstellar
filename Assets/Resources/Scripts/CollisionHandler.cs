@@ -79,7 +79,9 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	[PunRPC]
 	public void updateScore(int score) {
-		gameObject.GetComponent<Score_Manager> ().score += score;
+		if (this.photonView.isMine) {
+			gameObject.GetComponent<Score_Manager> ().score += score;
+		}
 	}
 		
 }
