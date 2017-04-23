@@ -42,11 +42,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				if (this.gameObject.name != "Projectile(Clone)") {
 					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID);
 				} else {
-					if (this.gameObject.transform.parent) {
-						Destroy (this.gameObject.transform.parent.gameObject);
-					} else {
-						Destroy (this.gameObject);
-					}
+					starpv.RPC ("destroyObj", PhotonTargets.All);
 				}
 			}
 		}
@@ -57,11 +53,8 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	[PunRPC]
 	public void giveDamage(int damage, int targetID){
 		if (PhotonView.Find (targetID)) {
-			
 			GameObject target = PhotonView.Find (targetID).gameObject;
 			target.GetComponent<Health_Management> ().Health -= damage;
-
-			Debug.Log (target.name);
 
 			//Play damage sound if target health is > 0 and target is not an AI
 			if (target.GetComponent<Health_Management> ().Health > 0) {
@@ -84,5 +77,13 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		gameObject.GetComponent<Score_Manager> ().score += score;
 	}
 		
+	[PunRPC]
+	public void destroyObj() {
+		if (this.gameObject.transform.parent) {
+			Destroy (this.gameObject.transform.parent.gameObject);
+		} else {
+			Destroy (this.gameObject);
+		}
+	}
 
 }
