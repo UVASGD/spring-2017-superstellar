@@ -49,6 +49,8 @@ public class Health_Management : Photon.MonoBehaviour {
 				Debug.Log ("Destroys background stars for everyone ayyy");
 				this.GetComponent<PhotonView> ().RPC ("destroyObj", PhotonTargets.All);
 			}
+		} else {
+			Debug.Log ("What if he she were not kill?");
 		}
 	}
 
