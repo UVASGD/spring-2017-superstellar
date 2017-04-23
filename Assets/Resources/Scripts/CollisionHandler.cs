@@ -42,7 +42,12 @@ public class CollisionHandler : Photon.MonoBehaviour {
 				if (this.gameObject.name != "Projectile(Clone)") {
 					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID);
 				} else {
-					starpv.RPC ("destroyObj", PhotonTargets.All);
+					if (this.gameObject.transform.parent) {
+						Destroy (this.gameObject.transform.parent.gameObject);
+					} else {
+						Destroy (this.gameObject);
+					}
+
 				}
 			}
 		}
@@ -77,13 +82,4 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		gameObject.GetComponent<Score_Manager> ().score += score;
 	}
 		
-	[PunRPC]
-	public void destroyObj() {
-		if (this.gameObject.transform.parent) {
-			Destroy (this.gameObject.transform.parent.gameObject);
-		} else {
-			Destroy (this.gameObject);
-		}
-	}
-
 }
