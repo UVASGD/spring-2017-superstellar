@@ -103,8 +103,8 @@ public class StarManager: Photon.MonoBehaviour
 		starBodyDam = new List<int>{ 20, 15, 40, 60, 15, 70, 30, 100, 10, 30, 40, 50, 5 };
 		starClassNames = new List<string>{"Main Sequence","Red Dwarf","Red Giant","Red Supergiant","White Dwarf","Blue Supergiant","Supernova","Blue Hypergiant","Neutron","Hypernova","Black Hole","Quasar","Pulsar"};
 
-		// initialize star to class 0
-		if (starSizes.Count > 0) {
+		// initialize star to class 0 if no starpoints
+		if (this.transform.childCount == 0) {
 			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0); // upgradeStar (0);
 		}
 

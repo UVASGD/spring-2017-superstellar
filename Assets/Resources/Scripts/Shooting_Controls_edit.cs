@@ -301,6 +301,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		//projctl.GetComponent<Renderer> ().material = Resources.Load<Material> ("Materials/Star_Pulsar");
 	}
 
+
 	[PunRPC]
 	// regenerate starpoints after they were shot off or destroyed
 	IEnumerator reload(GameObject strPont,SpriteRenderer sprIndex, float delayTime, int strPt, int strClassN)
@@ -309,8 +310,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		//Debug.Log ("Delay Time: " + delayTime);
 
 		// checks to make sure the star class is still the same
-		Debug.Log("starClassN",strClassN);
-		Debug.Log("starType",starType);
+		Debug.Log("starClassN" + strClassN);
+		Debug.Log("starType" + starType);
 		if (strClassN == starType) {
 
 			// reloads the un-shot starpoint into the proper spriterenderer, and then removes it from the to-do list of spriterenderers
@@ -324,6 +325,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			// sets the starpoint as able to be shot and able to collide with objects
 			canShoot [strPt] = 1;
 			strPont.GetComponent<Collider2D>().enabled = true;
+
 		}
 	}
 
@@ -332,8 +334,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	public void destroyStarPoint(GameObject starIndex){
 
 		// makes sure the starpoint still exists (ie it wasn't just shot)
-		Debug.Log("canShoot",canShoot [starpoints.FindIndex(d => d == starIndex)] == 1)
-		if (canShoot [starpoints.FindIndex(d => d == starIndex)] == 1){
+		Debug.Log("canShoot" + ((canShoot [starpoints.FindIndex(d => d == starIndex)]) == 1));
+		if (canShoot [starpoints.FindIndex(d => d == starIndex)] == 1) {
 
 			// turns off collider, disables shooting of that starpoint, adds the spriterenderer to the regen to-do list, and turns the sprite into the "nub"
 			starIndex.GetComponent<Collider2D> ().enabled = false;

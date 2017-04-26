@@ -38,6 +38,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 			//check to not kill self
 			if (viewID != pvID && other.name != "Projectile(Clone)") {
+				Debug.Log ("");
 				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, viewID); // give damage to target
 				if (this.gameObject.name != "Projectile(Clone)") {
 					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID);
