@@ -91,7 +91,7 @@ public class StarManager: Photon.MonoBehaviour
 			Resources.Load<Material> ("Materials/Star_SG_Blue"),Resources.Load<Material> ("Materials/Star_S_Nova"),Resources.Load<Material> ("Materials/Star_HG_Blue"),
 			Resources.Load<Material> ("Materials/Star_Neutron"),Resources.Load<Material> ("Materials/Star_H_Nova"),Resources.Load<Material> ("Materials/Star_B_Hole"),
 			Resources.Load<Material> ("Materials/Star_Quasar"),Resources.Load<Material> ("Materials/Star_Pulsar")};
-		projSpeeds = new List<float>{ 300f, 400f, 500f, 600f, 500f, 600f, 700f, 800f, 800f, 600f, 600f, 500f, 700f };
+		projSpeeds = new List<float>{ 400f, 450f, 550f, 650f, 550f, 650f, 700f, 800f, 800f, 650f, 650f, 550f, 700f };
 		projLife = new List<float>{ 2f, 3f, 2f, 2f, 1.5f, 2f, 1f, 2f, 0.75f, 1f, 1.5f, 1.5f, 0.5f };
 		projRegen = new List<float>{ 2f, 1.5f, 2f, 2.5f, 0.5f, 2f, 1f, 2.5f, 0.25f, 0.75f, 1.5f, 1f, 0.125f };
 		starPtClass = new List<int>{ 5, 4, 6, 8, 4, 10, 6, 12, 3, 7, 11, 9, 2 };
@@ -131,7 +131,6 @@ public class StarManager: Photon.MonoBehaviour
 
 			// downgrade star class (testing purposes)
 
-			/*
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
 			{
 				starType = starType - 1;
@@ -144,7 +143,6 @@ public class StarManager: Photon.MonoBehaviour
 				starType = starType + 1;
 				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
 			}
-			*/
 
 
 		}
