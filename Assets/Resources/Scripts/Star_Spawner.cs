@@ -69,14 +69,6 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private Vector3 testLocation;
 
 
-	void OnEnable()
-	{
-		if (!PhotonNetwork.isMasterClient) {
-			this.enabled = false;
-		} 
-	}
-
-
 	void Start () {
 		
 		ScenePhotonView = this.GetComponent<PhotonView> ();
@@ -95,32 +87,33 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	}
 
 	void Update() {
-		testLocation = new Vector3 (testX, testY, 0f);
-		if (Time.time > nextActionTime && makeStars) {
-			nextActionTime += periodBG;
-			GenerateBGStar (); //ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
-		}
-		if (Time.time > nextBlazarTime && makeBlazar) {
-			nextBlazarTime += periodBlazar;
+		if (PhotonNetwork.isMasterClient) {
+			testLocation = new Vector3 (testX, testY, 0f);
+			if (Time.time > nextActionTime && makeStars) {
+				nextActionTime += periodBG;
+				GenerateBGStar (); //ScenePhotonView.RPC ("GenerateBGStar", PhotonTargets.All);
+			}
+			if (Time.time > nextBlazarTime && makeBlazar) {
+				nextBlazarTime += periodBlazar;
 //			ScenePhotonView.RPC ("GenerateBlazar", PhotonTargets.All);
-			GenerateBlazar();
-		}
-		if (Time.time > nextMagnetarTime && makeMagnetar) {
-			nextMagnetarTime += periodMagnetar;
+				GenerateBlazar ();
+			}
+			if (Time.time > nextMagnetarTime && makeMagnetar) {
+				nextMagnetarTime += periodMagnetar;
 //			ScenePhotonView.RPC ("GenerateMagnetar", PhotonTargets.All);
-			GenerateMagnetar();
-		}
-		if (Time.time > nextCometTime && makeComet) {
-			nextCometTime += periodComet;
+				GenerateMagnetar ();
+			}
+			if (Time.time > nextCometTime && makeComet) {
+				nextCometTime += periodComet;
 //			ScenePhotonView.RPC ("GenerateComet", PhotonTargets.All);
-			GenerateComet();
-		}
-		if (Time.time > nextRogueTime && makeRogue) {
-			nextRogueTime += periodRogue;
+				GenerateComet ();
+			}
+			if (Time.time > nextRogueTime && makeRogue) {
+				nextRogueTime += periodRogue;
 //			ScenePhotonView.RPC ("GenerateRogue", PhotonTargets.All);
-			GenerateRogue();
+				GenerateRogue ();
+			}
 		}
-
 	}
 		
 

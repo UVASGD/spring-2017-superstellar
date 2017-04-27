@@ -350,6 +350,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 			}
 		}
+
 	}
 
 }

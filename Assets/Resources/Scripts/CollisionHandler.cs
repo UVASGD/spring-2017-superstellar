@@ -31,17 +31,18 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	void handleCollision(GameObject other) {
 		
 		if (!ignoreObjects.Contains(other.name)) {
-			int viewID = other.GetComponent<Health_Management> ().viewID;
+			int targetID = other.GetComponent<Health_Management> ().viewID;
 
-			int pvID = gameObject.GetComponent<Health_Management> ().viewID;
-			PhotonView starpv = PhotonView.Find (pvID);
+			int myID = gameObject.GetComponent<Health_Management> ().viewID;
+			PhotonView starpv = PhotonView.Find (myID);
 
 			//check to not kill self
-			if (viewID != pvID && other.name != "Projectile(Clone)") {
-				Debug.Log ("");
-				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, viewID); // give damage to target
+			if (targetID != myID && other.name != "Projectile(Clone)") {
+				Debug.Log (other.name + " " + targetID);
+				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID); // give damage to target
 				if (this.gameObject.name != "Projectile(Clone)") {
-					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, pvID);
+					Debug.Log (this.gameObject.name + " " + myID);
+					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, myID);
 				} else {
 					if (this.gameObject.transform.parent) {
 						Destroy (this.gameObject.transform.parent.gameObject);
