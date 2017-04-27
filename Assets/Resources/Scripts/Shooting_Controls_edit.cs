@@ -335,19 +335,20 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		// makes sure the starpoint still exists (ie it wasn't just shot)
 		Debug.Log("canShoot" + ((canShoot [starpoints.FindIndex(d => d == starIndex)]) == 1));
-		if (canShoot [starpoints.FindIndex(d => d == starIndex)] == 1) {
-		Debug.Log("in method");
-		if (canShoot [starpoints.FindIndex(d => d == starIndex)] == 1){
-			Debug.Log("canshoot");
-			// turns off collider, disables shooting of that starpoint, adds the spriterenderer to the regen to-do list, and turns the sprite into the "nub"
-			starIndex.GetComponent<Collider2D> ().enabled = false;
-			canShoot [starpoints.FindIndex(d => d == starIndex)] = 0;
-			spri.Add (starIndex.GetComponent<SpriteRenderer> ());
-			starIndex.GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
+		if (canShoot [starpoints.FindIndex (d => d == starIndex)] == 1) {
+			Debug.Log ("in method");
+			if (canShoot [starpoints.FindIndex (d => d == starIndex)] == 1) {
+				Debug.Log ("canshoot");
+				// turns off collider, disables shooting of that starpoint, adds the spriterenderer to the regen to-do list, and turns the sprite into the "nub"
+				starIndex.GetComponent<Collider2D> ().enabled = false;
+				canShoot [starpoints.FindIndex (d => d == starIndex)] = 0;
+				spri.Add (starIndex.GetComponent<SpriteRenderer> ());
+				starIndex.GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite> ("Sprites/Point_Launched_White");
 
-			// tells the point to regenerate
-			StartCoroutine(reload(starIndex,starIndex.GetComponent<SpriteRenderer>(),reloadTime, starpoints.FindIndex(d => d == starIndex), starType));
+				// tells the point to regenerate
+				StartCoroutine (reload (starIndex, starIndex.GetComponent<SpriteRenderer> (), reloadTime, starpoints.FindIndex (d => d == starIndex), starType));
 
+			}
 		}
 	}
 
