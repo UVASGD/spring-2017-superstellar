@@ -6,6 +6,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 
 	public GameObject starSpawn; // item to spawn
+	public GameObject starGreenSpawn;
 	public GameObject blazarSpawn;
 	public GameObject magnetarSpawn;
 	public GameObject cometSpawn;
@@ -42,6 +43,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	public int numRogueSpawn; // max number of item to exist at once
 	private List<GameObject> spawnedRogues = new List<GameObject>(); // holds all the spawned items
 
+	public float chanceToSpawnGreen = 0.75f;
 
 	public float periodBG;
 	public float periodBlazar;
@@ -132,7 +134,14 @@ public class Star_Spawner : Photon.MonoBehaviour {
 			}
 
 			// spawn star and give it random rotation, torque, and force, then add it to the list
-			GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
+			GameObject spawnedStar;
+			int n = Random.Range (0, numStarSpawn);
+
+			if (n <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
+				spawnedStar = PhotonNetwork.InstantiateSceneObject (starGreenSpawn.name, target, Quaternion.identity, 0, null);
+			} else { //spawn normal star
+				spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
+			}
 			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
 			int RandAngle = Random.Range (0, 360);
 			spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
@@ -155,13 +164,18 @@ public class Star_Spawner : Photon.MonoBehaviour {
 					target = testLocation;
 				}
 
-				GameObject spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
+				GameObject spawnedStar;
+				if (index <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
+					spawnedStar = PhotonNetwork.InstantiateSceneObject (starGreenSpawn.name, target, Quaternion.identity, 0, null);
+				} else { //spawn normal star
+					spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
+				}
+
 				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
 				int RandAngle = Random.Range (0, 360);
 				spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 				spawnedStar.transform.SetParent (container.transform);
 				spawnedStars.Add (spawnedStar);
-
 			}
 		}
 

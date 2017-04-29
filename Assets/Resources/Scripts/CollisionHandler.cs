@@ -71,10 +71,13 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			if (target.GetComponent<Health_Management> ().Health <= 0) {
 				if (target.tag == "Star_Point") { 
 					GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target); // if the object is an un-shot starpoint, destroy it using the shooting controls script
-				} else if (gameObject.name == "Star") { 
+				} else if (gameObject.name == "Star") {
 					PhotonView pv = PhotonView.Find (this.GetComponent<Health_Management> ().viewID);
 					if (pv.isMine) {
 						pv.RPC ("updateScore", PhotonTargets.AllBuffered, target.GetComponent<Health_Management> ().scoreToGive); // if the object is anything else, destroy it and give the player points
+						if (target.name == "BG_Star_Green") {
+							pv.RPC ("fullyHeal", PhotonTargets.AllBuffered);
+						}
 					}
 				}
 			}
@@ -84,6 +87,12 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	[PunRPC]
 	public void updateScore(int score) {
 		gameObject.GetComponent<Score_Manager> ().score += score;
+	}
+
+	[PunRPC]
+	public void fullyHeal(){
+		Debug.Log ("My name is " + gameObject.name);
+		gameObject.GetComponent<Health_Management> ().Health = gameObject.GetComponent<StarManager> ().maxPlayerHealth;
 	}
 		
 }
