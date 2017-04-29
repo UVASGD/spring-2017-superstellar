@@ -14,6 +14,9 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	void Start()
 	{
 		source = GameObject.Find("Background").GetComponent<AudioSource> ();
+		if (!this.photonView.isMine && this.gameObject.name == "Star") {
+			this.enabled = false;
+		}
 	}	
 
 
