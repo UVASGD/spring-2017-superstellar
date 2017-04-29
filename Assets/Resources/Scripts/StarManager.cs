@@ -105,7 +105,7 @@ public class StarManager: Photon.MonoBehaviour
 
 		// initialize star to class 0 if no starpoints
 		if (this.transform.childCount == 0) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0); // upgradeStar (0);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0, (float)starBodyHealth[0]); // upgradeStar (0);
 		}
 
 		source =  GameObject.FindObjectOfType<AudioSource>();
@@ -204,7 +204,7 @@ public class StarManager: Photon.MonoBehaviour
 
 	[PunRPC]
 	// reloads star under a particular class -> establishes stats and redraws the star
-	void upgradeStar(int starGrade){
+	void upgradeStar(int starGrade, float maxHealth){
 
 		transform.localScale = new Vector3(starSizes [starGrade]*0.5f,starSizes [starGrade]*0.5f,starSizes [starGrade]*0.5f);
 		GetComponent<Renderer> ().material = starMats [starGrade];
@@ -219,7 +219,7 @@ public class StarManager: Photon.MonoBehaviour
 		Debug.Log ("Changed class to " + className);
 
 
-		GetComponent<Health_Management> ().Health = maxPlayerHealth;
+		GetComponent<Health_Management> ().Health = maxHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
 
 		ScenePhotonView = this.GetComponent<PhotonView> ();
@@ -284,45 +284,51 @@ public class StarManager: Photon.MonoBehaviour
 		if (skore >= advanceNum && starType == 0) {
 			int random = Random.Range (0, 2);
 			if (random == 0) {
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 1); // upgradeStar (1);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 1, healthToGive(1)); // upgradeStar (1);
 			} else {
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 4); // upgradeStar (4);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 4, healthToGive(4)); // upgradeStar (4);
 			}
 			//TODO display GUI for choice between Red Dwarf and Blue Dwarf. until then pick randomly.
 		}
 		if (skore >= advanceNum2 && starType == 1) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 2); // upgradeStar (2);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 2, healthToGive(2)); // upgradeStar (2);
 		}
 		if (skore >= advanceNum3 && starType == 2) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 3); // upgradeStar (3);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 3, healthToGive(3)); // upgradeStar (3);
 		}
 		if (skore >= advanceNum2 && starType == 4) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 5); // upgradeStar (5);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 5, healthToGive(5)); // upgradeStar (5);
 		}
 		if (skore >= advanceNum3 && starType == 5) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 7); // upgradeStar (7);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 7, healthToGive(7)); // upgradeStar (7);
 		}
 		if (skore >= advanceNum4 && (starType == 7 || starType == 3)) {
 			//TODO display GUI for upgrading to Supernova. until then upgrade immediately.
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 6); // upgradeStar (6);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 6, healthToGive(6)); // upgradeStar (6);
 		}
 		if (skore >= advanceNum5 && starType == 6) {
 			//display GUI for upgrading from Supernova to black hole or neutron star. until then pick randomly.
 			int random = Random.Range(0,2);
 			if (random == 0) {
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 10); // upgradeStar (10);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 10, healthToGive(10)); // upgradeStar (10);
 			} else {
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 8); // upgradeStar (8);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 8, healthToGive(8)); // upgradeStar (8);
 			} 
 
 		}
 		if (skore >= advanceNum6 && starType == 10) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 11); // upgradeStar (11);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 11, healthToGive(11)); // upgradeStar (11);
 		}
 		if (skore >= advanceNum6 && starType == 8) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 12); // upgradeStar (12);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 12, healthToGive(12)); // upgradeStar (12);
 		}
 	}
 
+
+	float healthToGive(int starType) {
+		float percentMissingHealth = (maxPlayerHealth - GetComponent<Health_Management> ().Health) / maxPlayerHealth;
+		float percentNewHealth = 1 - (0.5f * percentMissingHealth);
+		return percentNewHealth * starBodyHealth[starType];
+	}
 
 }
