@@ -43,7 +43,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	public int numRogueSpawn; // max number of item to exist at once
 	private List<GameObject> spawnedRogues = new List<GameObject>(); // holds all the spawned items
 
-	public float chanceToSpawnGreen = 0.75f;
+	public float chanceToSpawnGreen;
 
 	public float periodBG;
 	public float periodBlazar;
@@ -165,7 +165,8 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				}
 
 				GameObject spawnedStar;
-				if (index <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
+				int n = Random.Range (0, numStarSpawn);
+				if (n <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
 					spawnedStar = PhotonNetwork.InstantiateSceneObject (starGreenSpawn.name, target, Quaternion.identity, 0, null);
 				} else { //spawn normal star
 					spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
