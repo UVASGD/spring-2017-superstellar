@@ -324,7 +324,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 			// sets the starpoint as able to be shot and able to collide with objects
 			canShoot [strPt] = 1;
-			strPont.GetComponent<Collider2D>().enabled = true;
+			if (this.photonView.isMine) {
+				strPont.GetComponent<Collider2D> ().enabled = true;
+			}
 
 		}
 	}

@@ -21,9 +21,8 @@ public class Health_Management : Photon.MonoBehaviour {
 			scoreToGive = GetComponent<Score_Manager> ().score;
 		}
 		if (Health <= 0) {
-			Debug.Log ("Health is 0");
 			if (this.gameObject.name == "Star" && this.photonView.isMine) {
-				Debug.Log ("Sepukku");
+				Debug.Log ("my health is <= 0");
 				int score = this.GetComponent<Score_Manager> ().score;
 				string name = this.GetComponent<Score_Manager> ().playerNameForDeath;
 				int classNum = this.GetComponent<StarManager> ().starType;
@@ -37,7 +36,7 @@ public class Health_Management : Photon.MonoBehaviour {
 				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
 				PhotonNetwork.Disconnect ();
 			} else if (this.gameObject.name == "Star_Point(Clone)") {
-				Debug.Log ("Ayyyy, mah triggers");
+				Debug.Log ("star point health <= 0");
 				if (this.GetComponentInParent<Shooting_Controls_edit> () != null) {
 					Debug.Log ("destroy mah star points");
 					this.GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (this.gameObject);
@@ -50,7 +49,7 @@ public class Health_Management : Photon.MonoBehaviour {
 				this.GetComponent<PhotonView> ().RPC ("destroyObj", PhotonTargets.All);
 			}
 		} else {
-			Debug.Log ("What if he she were not kill?");
+//			Debug.Log ("What if he she were not kill?");
 		}
 	}
 
