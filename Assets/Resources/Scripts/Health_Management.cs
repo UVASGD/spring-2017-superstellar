@@ -11,7 +11,7 @@ public class Health_Management : Photon.MonoBehaviour {
 	public int viewID;
 
 	void Start () {
-		if (this.gameObject.name == "BG_Star(Clone)") {
+		if (this.gameObject.name == "BG_Star(Clone)" || this.gameObject.name == "BG_Star_Green(Clone)") {
 			viewID = this.photonView.viewID;
 		}
 	}
