@@ -101,9 +101,6 @@ public class AI_Shooting : Photon.MonoBehaviour {
 			} else {
 			autoShootAll = false;
 		}*/
-
-
-
 			// check to see if stars can be shot
 			for (int i = 0; i < starPointNum; i++) {
 				// check conditions to see if starpoint can be shot

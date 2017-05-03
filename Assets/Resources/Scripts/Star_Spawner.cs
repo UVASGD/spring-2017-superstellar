@@ -55,7 +55,7 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	public float periodComet;
 	public float periodRogue;
 
-	private float nextActionTime = 3.0f;
+	private float nextActionTime = 0.1f;
 	private float nextBlazarTime = 0.5f;
 	private float nextMagnetarTime = 1.0f;
 	private float nextCometTime = 1.5f;
@@ -120,9 +120,6 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				GenerateRogue ();
 			}
 		}
-		foreach (GameObject star in spawnedStars) {
-			Debug.Log (star.GetComponent<Rigidbody2D> ().angularVelocity);
-		}
 	}
 		
 
@@ -153,7 +150,8 @@ public class Star_Spawner : Photon.MonoBehaviour {
 			} else { //spawn normal star
 				spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
 			}
-			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
+
+			spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-10, 10));
 			int RandAngle = Random.Range (0, 360);
 			spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 			spawnedStar.transform.SetParent (container.transform);
@@ -187,7 +185,9 @@ public class Star_Spawner : Photon.MonoBehaviour {
 					spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
 				}
 
-				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-100, 100));
+				Debug.Log (spawnedStars.Contains (spawnedStar));
+				spawnedStar.GetComponent<Rigidbody2D> ().AddTorque (Random.Range (-10, 10));
+				Debug.Log (spawnedStar.GetComponent<Rigidbody2D> ().angularVelocity);
 				int RandAngle = Random.Range (0, 360);
 				spawnedStar.GetComponent<Rigidbody2D> ().AddForce (new Vector2 (Mathf.Sin (RandAngle * Mathf.Deg2Rad), -Mathf.Cos (RandAngle * Mathf.Deg2Rad)) * Random.Range (10, 200));
 				spawnedStar.transform.SetParent (container.transform);
