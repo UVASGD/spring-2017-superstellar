@@ -92,8 +92,8 @@ public class StarManager: Photon.MonoBehaviour
 			Resources.Load<Material> ("Materials/Star_Neutron"),Resources.Load<Material> ("Materials/Star_H_Nova"),Resources.Load<Material> ("Materials/Star_B_Hole"),
 			Resources.Load<Material> ("Materials/Star_Quasar"),Resources.Load<Material> ("Materials/Star_Pulsar")};
 		projSpeeds = new List<float>{ 400f, 450f, 550f, 650f, 550f, 650f, 700f, 800f, 800f, 650f, 650f, 550f, 700f };
-		projLife = new List<float>{ 2f, 3f, 2f, 2f, 1.5f, 2f, 1f, 2f, 0.75f, 1f, 1.5f, 1.5f, 0.5f };
-		projRegen = new List<float>{ 2f, 1.5f, 2f, 2.5f, 0.5f, 2f, 1f, 2.5f, 0.25f, 0.75f, 1.5f, 1f, 0.125f };
+		projLife = new List<float>{ 2f, 3f, 2f, 2f, 0.75f, 2f, 1f, 2f, 0.75f, 1f, 1.5f, 1.5f, 0.38f };
+		projRegen = new List<float>{ 0.66f, 0.5f, 0.66f, 0.833f, 0.25f, 1.5f, 0.33f, 1.7f, 0.33f, 0.216f, 0.5f, 0.333f, 0.12f };
 		starPtClass = new List<int>{ 5, 4, 6, 8, 4, 10, 6, 12, 3, 7, 11, 9, 2 };
 		starPtHealth = new List<int>{ 10, 15, 20, 30, 20, 50, 20, 70, 10, 30, 20, 30, 5 };
 		starSizes = new List<float>{ 1f, 0.95f, 1.22f, 1.58f, 0.87f, 2f, 1.12f, 2.25f, 0.77f, 1.18f, 0.89f, 0.79f, 0.71f };
@@ -133,14 +133,14 @@ public class StarManager: Photon.MonoBehaviour
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
 			{
 				//starType = starType - 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType - 1); //	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType - 1, (float)starBodyHealth[starType - 1]); //	upgradeStar(starType);
 			}
 
 			// upgrade star class (testing purposes)
 			if (Input.GetKeyDown (KeyCode.U) && starType < 12)
 			{
 				starType = starType + 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType, (float)starBodyHealth[starType]); //	upgradeStar(starType);
 			}
 
 
