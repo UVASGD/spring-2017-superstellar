@@ -275,7 +275,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		GetComponent<Rigidbody2D> ().AddForce (-pointVectList [point - 1] *  GetComponent<StarManager> ().projForce/10f);
 
 		//sound effect
-		GetComponent<StarManager>().source.PlayOneShot(GetComponent<StarManager>().shootSound,0.75f);
+		if (GetComponent<StarManager> ().source) {
+			GetComponent<StarManager> ().source.PlayOneShot (GetComponent<StarManager> ().shootSound, 0.75f);
+		}
 		// tells starpoint regeneration function to run
 		StartCoroutine(reload(starpoints [point - 1],spr,reloadTime, point - 1, starType));
 		StartCoroutine (collideEnable (proj, colReload, projCol));

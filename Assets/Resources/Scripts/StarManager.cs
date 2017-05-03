@@ -105,14 +105,13 @@ public class StarManager: Photon.MonoBehaviour
 
 		// initialize star to class 0 if no starpoints
 		if (this.transform.childCount == 0) {
-			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0, (float)starBodyHealth[0]); // upgradeStar (0);
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBuffered, 0, (float)starBodyHealth[0]); // upgradeStar (0);
 		}
 	}
 
 
 	void Update( )
 	{
-//		Debug.Log (source);
 
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
 
@@ -226,7 +225,7 @@ public class StarManager: Photon.MonoBehaviour
 		projForce = projSpeeds [starGrade];
 		reloadTime = projRegen [starGrade];
 
-		if (starType > 0) {
+		if (starType > 0 && source) {
 			source.PlayOneShot (upgradestarclasssound, 0.3f);
 		}
 		GetComponent<Shooting_Controls_edit> ().preset = 1;

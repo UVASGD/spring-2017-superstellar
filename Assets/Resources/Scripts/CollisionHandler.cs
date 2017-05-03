@@ -27,7 +27,6 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-
 		handleCollision (other.gameObject);
 	}
 
@@ -44,15 +43,18 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			int myID = gameObject.GetComponent<Health_Management> ().viewID;
 			PhotonView starpv = PhotonView.Find (myID);
 
+			Debug.Log (starpv.viewID);
+
+			Debug.Log ("I am a " + this.gameObject.name);
 			//check to not kill self
 			if (targetID != myID && other.name != "Projectile(Clone)") {
 //				Debug.Log (other.name + " " + targetID);
 				Debug.Log ("Giving Damage to Target");
-				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID); // give damage to target
+				starpv.RPC ("giveDamage", PhotonTargets.AllViaServer, damage_to_give, targetID); // give damage to target
 				if (this.gameObject.name != "Projectile(Clone)") {
 //					Debug.Log (this.gameObject.name + " " + myID);
 					Debug.Log("Giving Damage to Myself");
-					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, myID);
+					starpv.RPC ("giveDamage", PhotonTargets.AllViaServer, damage_to_give, myID);
 				} else {
 					if (this.gameObject.transform.parent) {
 						Destroy (this.gameObject.transform.parent.gameObject);
@@ -71,6 +73,13 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	public void giveDamage(int damage, int targetID){
 		if (PhotonView.Find (targetID)) {
 			GameObject target = PhotonView.Find (targetID).gameObject;
+
+			Debug.Log("Target : " + target.name + "; targetID : " + targetID);
+			Debug.Log (this.photonView.viewID);
+			Debug.Log (this.photonView.isSceneView);
+			Debug.Log(target.GetPhotonView ().isMine);
+
+
 			target.GetComponent<Health_Management> ().Health -= damage;
 
 			//Play damage sound if target health is > 0 and target is not an AI
