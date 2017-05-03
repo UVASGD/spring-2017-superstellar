@@ -56,7 +56,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private List<int> starBodyDam = new List<int> (13);
 	public int starType;
 
-
+	private Sprite highlightedSprite;
 
 
 	//Direction Vectors for projectiles
@@ -132,6 +132,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		reloadTime = GetComponent<StarManager>().reloadTime;
 		starPtDam = GetComponent<StarManager>().starPtDam;
 		starMats = GetComponent<StarManager> ().starMats;
+		highlightedSprite = GetComponent<StarManager> ().highlightedSprite;
 
 		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
 		// redrawStar(transform.rotation, starPointNum);
@@ -203,8 +204,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 					if (i == currentInd) {
 						shootOnMouse [i] = 1;
 
-						//starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon"); //change starpoint that can shoot color to white
-						starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
+						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon"); //change starpoint that can shoot color to white
+//						starpoints[i].GetComponent<SpriteRenderer> ().sprite = highlightedSprite;
 					} else {
 						shootOnMouse [i] = 0;
 						starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
@@ -218,14 +219,14 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 							starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 						} else {
 							shootOnMouse [i] = 1;
-//							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
-							starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
+							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//							starpoints[i].GetComponent<SpriteRenderer> ().sprite = highlightedSprite;
 						}
 					} else {
 						if (currAngle > 90 && currAngle < 270) {
 							shootOnMouse [i] = 1;
-//							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
-							starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
+							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//							starpoints[i].GetComponent<SpriteRenderer> ().sprite = highlightedSprite;
 						} else {
 							shootOnMouse [i] = 0;
 							starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
@@ -239,8 +240,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 						starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 					} else {
 						shootOnMouse [i] = 1;
-//						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
-						starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
+						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//						starpoints[i].GetComponent<SpriteRenderer> ().sprite = highlightedSprite;
 					}
 					break;
 				case 4:
@@ -251,8 +252,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 					} else {
 						shootOnMouse [i] = 1;
-//						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
-						starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
+						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//						starpoints[i].GetComponent<SpriteRenderer> ().sprite = highlightedSprite;
 
 					}
 					break;

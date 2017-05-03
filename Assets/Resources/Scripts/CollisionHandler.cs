@@ -48,7 +48,11 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			Debug.Log ("I am a " + this.gameObject.name);
 			//check to not kill self
 			if (targetID != myID && other.name != "Projectile(Clone)") {
-				starpv.RPC ("giveDamage", PhotonTargets.Others, damage_to_give, targetID); // give damage to target
+				if (other.name == "Star") {
+					starpv.RPC ("giveDamage", PhotonTargets.Others, damage_to_give, targetID); // give damage to target
+				} else {
+					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID); // give damage to target
+				}
 				if (this.gameObject.name != "Projectile(Clone)") {
 					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, myID);
 				} else {
@@ -82,9 +86,9 @@ public class CollisionHandler : Photon.MonoBehaviour {
 					GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target); // if the object is an un-shot starpoint, destroy it using the shooting controls script
 				} else if (gameObject.name == "Star") { 
 					PhotonView pv = PhotonView.Find (this.GetComponent<Health_Management> ().viewID);
-					if (pv.isMine) {
-						pv.RPC ("updateScore", PhotonTargets.AllBuffered, target.GetComponent<Health_Management> ().scoreToGive); // if the object is anything else, destroy it and give the player points
-					}
+//					if (pv.isMine) {
+					pv.RPC ("updateScore", PhotonTargets.AllBuffered, target.GetComponent<Health_Management> ().scoreToGive); // if the object is anything else, destroy it and give the player points
+//					}
 				}
 			}
 		}
