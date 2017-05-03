@@ -194,7 +194,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			if (i< starPointNum) {
 
 				float currAngle = (360 / starPointNum) * i;
-				Debug.Log ("Hallo in case one thank" + i+"vs"+currentInd);
+//				Debug.Log ("Hallo in case one thank" + i+"vs"+currentInd);
 
 				switch (preset) {
 
@@ -202,8 +202,9 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 				case 1:
 					if (i == currentInd) {
 						shootOnMouse [i] = 1;
-						//change color of starpoint that can shoot
-						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+
+						//starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon"); //change starpoint that can shoot color to white
+						starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
 					} else {
 						shootOnMouse [i] = 0;
 						starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
@@ -217,12 +218,14 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 							starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 						} else {
 							shootOnMouse [i] = 1;
-							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+							starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
 						}
 					} else {
 						if (currAngle > 90 && currAngle < 270) {
 							shootOnMouse [i] = 1;
-							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+							starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
 						} else {
 							shootOnMouse [i] = 0;
 							starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
@@ -236,7 +239,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 						starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 					} else {
 						shootOnMouse [i] = 1;
-						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+						starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
 					}
 					break;
 				case 4:
@@ -247,7 +251,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 					} else {
 						shootOnMouse [i] = 1;
-						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+//						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+						starpoints[i].GetComponent<SpriteRenderer> ().sprite = Resources.Load<Sprite>("Sprites/Point_Attached_New");
 
 					}
 					break;

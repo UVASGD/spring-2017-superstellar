@@ -130,18 +130,18 @@ public class StarManager: Photon.MonoBehaviour
 
 			// downgrade star class (testing purposes)
 
-			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
-			{
-				//starType = starType - 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType - 1, (float)starBodyHealth[starType - 1]); //	upgradeStar(starType);
-			}
-
-			// upgrade star class (testing purposes)
-			if (Input.GetKeyDown (KeyCode.U) && starType < 12)
-			{
-				starType = starType + 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType, (float)starBodyHealth[starType]); //	upgradeStar(starType);
-			}
+//			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
+//			{
+//				//starType = starType - 1;
+//				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType - 1, (float)starBodyHealth[starType - 1]); //	upgradeStar(starType);
+//			}
+//
+//			// upgrade star class (testing purposes)
+//			if (Input.GetKeyDown (KeyCode.U) && starType < 12)
+//			{
+//				starType = starType + 1;
+//				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType, (float)starBodyHealth[starType]); //	upgradeStar(starType);
+//			}
 
 
 		}

@@ -27,7 +27,7 @@ public class LoadingGUI : MonoBehaviour
 		{
 			enabled = false;
 			Renderer bg = GameObject.Find ("Background").GetComponent<Renderer> ();
-			bg.material.mainTextureScale = new Vector2 (5,5);
+			bg.material.mainTextureScale = new Vector2 (15,15);
 		}
 	}
 
