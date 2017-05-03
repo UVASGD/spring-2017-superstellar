@@ -120,6 +120,9 @@ public class Star_Spawner : Photon.MonoBehaviour {
 				GenerateRogue ();
 			}
 		}
+		foreach (GameObject star in spawnedStars) {
+			Debug.Log (star.GetComponent<Rigidbody2D> ().angularVelocity);
+		}
 	}
 		
 
