@@ -68,7 +68,9 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 		ScenePhotonView = this.GetComponent<PhotonView> ();
 		// initialize AI
-		ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBuffered); //upgradeStar ();
+		if (this.transform.childCount == 0) {
+			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBuffered); //upgradeStar ();	
+		}
 		this.GetComponent<Health_Management> ().viewID = this.photonView.viewID;
 
 	}
