@@ -48,13 +48,9 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			Debug.Log ("I am a " + this.gameObject.name);
 			//check to not kill self
 			if (targetID != myID && other.name != "Projectile(Clone)") {
-//				Debug.Log (other.name + " " + targetID);
-				Debug.Log ("Giving Damage to Target");
-				starpv.RPC ("giveDamage", PhotonTargets.AllViaServer, damage_to_give, targetID); // give damage to target
+				starpv.RPC ("giveDamage", PhotonTargets.Others, damage_to_give, targetID); // give damage to target
 				if (this.gameObject.name != "Projectile(Clone)") {
-//					Debug.Log (this.gameObject.name + " " + myID);
-					Debug.Log("Giving Damage to Myself");
-					starpv.RPC ("giveDamage", PhotonTargets.AllViaServer, damage_to_give, myID);
+					starpv.RPC ("giveDamage", PhotonTargets.Others, damage_to_give, myID);
 				} else {
 					if (this.gameObject.transform.parent) {
 						Destroy (this.gameObject.transform.parent.gameObject);
@@ -79,17 +75,16 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			Debug.Log (this.photonView.isSceneView);
 			Debug.Log(target.GetPhotonView ().isMine);
 
-
 			target.GetComponent<Health_Management> ().Health -= damage;
 
 			//Play damage sound if target health is > 0 and target is not an AI
 			if (target.GetComponent<Health_Management> ().Health > 0) {
 				source.PlayOneShot (damageSound, .5f);
 			}
+
 			// kill the object when its health is depleted
 			if (target.GetComponent<Health_Management> ().Health <= 0) {
 				if (target.tag == "Star_Point") { 
-					Debug.Log ("supposed to destroy starpoint");
 					GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target); // if the object is an un-shot starpoint, destroy it using the shooting controls script
 				} else if (gameObject.name == "Star") { 
 					PhotonView pv = PhotonView.Find (this.GetComponent<Health_Management> ().viewID);
