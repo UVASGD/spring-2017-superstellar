@@ -25,6 +25,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 	private float playerRegen = 1;
 	private float reloadTime = 2.0f; //time to regen point
 	private float colReload = 0.1f;
+	private int currentInd = 0;
+	private int oldStarPointNum = 5;
 
 
 	private List<GameObject> starpoints = new List<GameObject>(); //holds the non-projected points
@@ -97,6 +99,29 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 	void Update( )
 	{
+		if (oldStarPointNum != starPointNum) {
+			oldStarPointNum = starPointNum;
+			currentInd = 0;
+		} 
+
+		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+			Debug.Log ("ayyy, you clicked one" + currentInd);
+			shootOnMouse [currentInd] = 0;
+			currentInd = currentInd + 1;
+			Debug.Log ("starpointNum: " + starPointNum);
+			if (currentInd >= starPointNum) {
+				currentInd = 0;
+			}
+		} else if (Input.GetKeyDown (KeyCode.Alpha2)) {
+			Debug.Log ("ayyy, you clicked two" + currentInd);
+			shootOnMouse [currentInd] = 0;
+			Debug.Log ("spricount: " + spri.Count);
+			currentInd = currentInd - 1;
+			Debug.Log ("starpointNum: " + starPointNum);
+			if (currentInd < 0) {
+				currentInd = starPointNum-1;
+			}
+		}
 		starpoints = GetComponent<StarManager>().starpoints;
 		starSizes = GetComponent<StarManager>().starSizes;
 		starType = GetComponent<StarManager>().starType;
@@ -106,6 +131,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		projForce = GetComponent<StarManager>().projForce;
 		reloadTime = GetComponent<StarManager>().reloadTime;
 		starPtDam = GetComponent<StarManager>().starPtDam;
+		starMats = GetComponent<StarManager> ().starMats;
 
 		ScenePhotonView.RPC("redrawStar", PhotonTargets.All, transform.rotation, starPointNum); // calculate the directions to shoot projectiles at that instant
 		// redrawStar(transform.rotation, starPointNum);
@@ -141,6 +167,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 			for (int i = 0; i < 12; i++) {
 				if (starPointNum > i) {
 					shootOnMouse [i] = 1;
+					starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
 				} else {
 					shootOnMouse [i] = 0;
 				}
@@ -149,6 +176,7 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 
 		if (Input.GetKeyDown (KeyCode.R))
 		{
+			currentInd = 0;
 			if (preset == -1) {
 				preset = 1;
 			} else {
@@ -163,44 +191,64 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		for (int i = 0; i < 12; i++) {
 
 			// checks to see if starpoints exist
-			if (starPointNum > i) {
+			if (i< starPointNum) {
 
 				float currAngle = (360 / starPointNum) * i;
+				Debug.Log ("Hallo in case one thank" + i+"vs"+currentInd);
+
 				switch (preset) {
+
+				//mode where you shoot one point
 				case 1:
-					if (i == 0) {
+					if (i == currentInd) {
 						shootOnMouse [i] = 1;
+						//change color of starpoint that can shoot
+						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
 					} else {
 						shootOnMouse [i] = 0;
+						starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 					}
 					break;
 				case 2:
-					if (i == 0) {
+					
+					if (i == currentInd) {
 						if (starPointNum < 5) {
 							shootOnMouse [i] = 0;
+							starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 						} else {
 							shootOnMouse [i] = 1;
+							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
 						}
 					} else {
 						if (currAngle > 90 && currAngle < 270) {
 							shootOnMouse [i] = 1;
+							starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
 						} else {
 							shootOnMouse [i] = 0;
+							starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 						}
 					}
 					break;
 				case 3:
-					if (i == 0 || i == Mathf.FloorToInt ((float)starPointNum / 2) || i == Mathf.CeilToInt ((float)starPointNum / 2)) {
+					Debug.Log ("In mode 3");
+					if (i == currentInd || i == Mathf.FloorToInt ((float)starPointNum / 2) || i == Mathf.CeilToInt ((float)starPointNum / 2)) {
 						shootOnMouse [i] = 0;
+						starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
 					} else {
 						shootOnMouse [i] = 1;
+						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
 					}
 					break;
 				case 4:
-					if (currAngle > 90 && currAngle < 270 || i == 0) {
+					if (currAngle > 90 && currAngle < 270 || i == currentInd) {
 						shootOnMouse [i] = 0;
+						starpoints [i].GetComponent<SpriteRenderer> ().material = starMats [starType];
+
+
 					} else {
 						shootOnMouse [i] = 1;
+						starpoints[i].GetComponent<SpriteRenderer> ().material=Resources.Load<Material>("Materials/Local_Player_Icon");
+
 					}
 					break;
 				}
