@@ -7,6 +7,8 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 	public GameObject starSpawn; // item to spawn
 	public GameObject starGreenSpawn;
+	public GameObject starRedSpawn;
+	public GameObject starBlueSpawn;
 	public GameObject blazarSpawn;
 	public GameObject magnetarSpawn;
 	public GameObject cometSpawn;
@@ -44,6 +46,8 @@ public class Star_Spawner : Photon.MonoBehaviour {
 	private List<GameObject> spawnedRogues = new List<GameObject>(); // holds all the spawned items
 
 	public float chanceToSpawnGreen;
+	public float chanceToSpawnRed;
+	public float chanceToSpawnBlue;
 
 	public float periodBG;
 	public float periodBlazar;
@@ -137,7 +141,11 @@ public class Star_Spawner : Photon.MonoBehaviour {
 			GameObject spawnedStar;
 			int n = Random.Range (0, numStarSpawn);
 
-			if (n <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
+			if (n <= chanceToSpawnBlue * numStarSpawn) { //spawn green star
+				spawnedStar = PhotonNetwork.InstantiateSceneObject (starBlueSpawn.name, target, Quaternion.identity, 0, null);
+			} else if (n <= chanceToSpawnRed * numStarSpawn) { //spawn green star
+				spawnedStar = PhotonNetwork.InstantiateSceneObject (starRedSpawn.name, target, Quaternion.identity, 0, null);
+			} else if (n <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
 				spawnedStar = PhotonNetwork.InstantiateSceneObject (starGreenSpawn.name, target, Quaternion.identity, 0, null);
 			} else { //spawn normal star
 				spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);
@@ -166,7 +174,11 @@ public class Star_Spawner : Photon.MonoBehaviour {
 
 				GameObject spawnedStar;
 				int n = Random.Range (0, numStarSpawn);
-				if (n <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
+				if (n <= chanceToSpawnBlue * numStarSpawn) { //spawn green star
+					spawnedStar = PhotonNetwork.InstantiateSceneObject (starBlueSpawn.name, target, Quaternion.identity, 0, null);
+				} else if (n <= chanceToSpawnRed * numStarSpawn) { //spawn green star
+					spawnedStar = PhotonNetwork.InstantiateSceneObject (starRedSpawn.name, target, Quaternion.identity, 0, null);
+				} else if (n <= chanceToSpawnGreen * numStarSpawn) { //spawn green star
 					spawnedStar = PhotonNetwork.InstantiateSceneObject (starGreenSpawn.name, target, Quaternion.identity, 0, null);
 				} else { //spawn normal star
 					spawnedStar = PhotonNetwork.InstantiateSceneObject (starSpawn.name, target, Quaternion.identity, 0, null);

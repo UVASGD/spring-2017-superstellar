@@ -9,17 +9,24 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	public AudioClip damageSound;
 	private AudioSource source;
 	private List<string> ignoreObjects = new List<string>{"Background","AI_Collider","Top","Bottom","Left","Right"};
+	private List<string> detectObjects = new List<string>{"Star"};
 	public int pointsToGive; // amount of points to give when object dies
 
 	void Start()
 	{
 		source = GameObject.Find("Background").GetComponent<AudioSource> ();
+//		if (detectObjects.Contains(this.gameObject.name)) {
+//			if (this.photonView != null) {
+//				if (!this.photonView.isMine) {
+//					this.enabled = false;
+//				}
+//			}
+//		}
 	}	
 
 
 	void OnTriggerEnter2D(Collider2D other)
 	{
-		
 		handleCollision (other.gameObject);
 	}
 
@@ -29,20 +36,25 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	}
 
 	void handleCollision(GameObject other) {
-		
+
 		if (!ignoreObjects.Contains(other.name)) {
 			int targetID = other.GetComponent<Health_Management> ().viewID;
 
 			int myID = gameObject.GetComponent<Health_Management> ().viewID;
 			PhotonView starpv = PhotonView.Find (myID);
 
+			Debug.Log (starpv.viewID);
+
+			Debug.Log ("I am a " + this.gameObject.name);
 			//check to not kill self
 			if (targetID != myID && other.name != "Projectile(Clone)") {
-				Debug.Log (other.name + " " + targetID);
-				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID); // give damage to target
+//				Debug.Log (other.name + " " + targetID);
+				Debug.Log ("Giving Damage to Target");
+				starpv.RPC ("giveDamage", PhotonTargets.AllViaServer, damage_to_give, targetID); // give damage to target
 				if (this.gameObject.name != "Projectile(Clone)") {
-					Debug.Log (this.gameObject.name + " " + myID);
-					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, myID);
+//					Debug.Log (this.gameObject.name + " " + myID);
+					Debug.Log("Giving Damage to Myself");
+					starpv.RPC ("giveDamage", PhotonTargets.AllViaServer, damage_to_give, myID);
 				} else {
 					if (this.gameObject.transform.parent) {
 						Destroy (this.gameObject.transform.parent.gameObject);
@@ -55,12 +67,19 @@ public class CollisionHandler : Photon.MonoBehaviour {
 		}
 
 	}
-		
+
 
 	[PunRPC]
 	public void giveDamage(int damage, int targetID){
 		if (PhotonView.Find (targetID)) {
 			GameObject target = PhotonView.Find (targetID).gameObject;
+
+			Debug.Log("Target : " + target.name + "; targetID : " + targetID);
+			Debug.Log (this.photonView.viewID);
+			Debug.Log (this.photonView.isSceneView);
+			Debug.Log(target.GetPhotonView ().isMine);
+
+
 			target.GetComponent<Health_Management> ().Health -= damage;
 
 			//Play damage sound if target health is > 0 and target is not an AI
@@ -70,14 +89,12 @@ public class CollisionHandler : Photon.MonoBehaviour {
 			// kill the object when its health is depleted
 			if (target.GetComponent<Health_Management> ().Health <= 0) {
 				if (target.tag == "Star_Point") { 
+					Debug.Log ("supposed to destroy starpoint");
 					GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (target); // if the object is an un-shot starpoint, destroy it using the shooting controls script
-				} else if (gameObject.name == "Star") {
+				} else if (gameObject.name == "Star") { 
 					PhotonView pv = PhotonView.Find (this.GetComponent<Health_Management> ().viewID);
 					if (pv.isMine) {
 						pv.RPC ("updateScore", PhotonTargets.AllBuffered, target.GetComponent<Health_Management> ().scoreToGive); // if the object is anything else, destroy it and give the player points
-						if (target.name == "BG_Star_Green(Clone)") {
-							pv.RPC ("fullyHeal", PhotonTargets.AllBuffered);
-						}
 					}
 				}
 			}
@@ -86,16 +103,7 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 	[PunRPC]
 	public void updateScore(int score) {
-//		Debug.Log ("My name is " + gameObject.name);
-//		Debug.Log ("My score is " + gameObject.GetComponent<Score_Manager> ().score);
 		gameObject.GetComponent<Score_Manager> ().score += score;
 	}
 
-	[PunRPC]
-	public void fullyHeal(){
-//		Debug.Log ("My name is " + gameObject.name);
-//		Debug.Log ("My health is " + gameObject.GetComponent<Health_Management> ().Health);
-		gameObject.GetComponent<Health_Management> ().Health = gameObject.GetComponent<StarManager> ().maxPlayerHealth;
-	}
-		
 }

@@ -16,8 +16,6 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
     /// <summary>if we don't want to connect in Start(), we have to "remember" if we called ConnectUsingSettings()</summary>
     private bool ConnectInUpdate = true;
 
-	private bool firstPlayer = false;
-
 
     public virtual void Start()
     {
@@ -59,7 +57,6 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 		Debug.Log("OnPhotonRandomJoinFailed() was called by PUN. No random room available, so we create one. Calling: PhotonNetwork.CreateRoom(null, new RoomOptions() {maxPlayers = "+ numPlayers + "}, null);");
 
 		PhotonNetwork.CreateRoom(null, new RoomOptions() { MaxPlayers = numPlayers }, null);
-		firstPlayer = true;
     }
 
     // the following methods are implemented to give you some context. re-implement them as needed.
@@ -71,8 +68,8 @@ public class ConnectAndJoinRandom : Photon.MonoBehaviour
 
     public void OnJoinedRoom()
     {
-		if (firstPlayer) {
-			PhotonNetwork.Instantiate ("Star_Spawner", Vector3.zero, Quaternion.identity, 0);
+		if (PhotonNetwork.isMasterClient) {
+			PhotonNetwork.InstantiateSceneObject ("Star_Spawner", Vector3.zero, Quaternion.identity, 0, null);
 		}
 
         Debug.Log("OnJoinedRoom() called by PUN. Now this client is in a room. From here on, your game would be running. For reference, all callbacks are listed in enum: PhotonNetworkingMessage");

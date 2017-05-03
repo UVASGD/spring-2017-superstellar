@@ -54,9 +54,9 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 	void OnEnable()
 	{
-		if (!PhotonNetwork.isMasterClient) {
-			this.enabled = false;
-		} 
+//		if (!PhotonNetwork.isMasterClient) {
+//			this.enabled = false;
+//		} 
 	}
 
 	void Start() {
@@ -76,7 +76,9 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 	void Update( )
 	{
-
+		Debug.Log (PhotonNetwork.isMasterClient);
+		if (PhotonNetwork.isMasterClient) {
+			
 		// calibrate movTarget with player position
 		movTarget.x = transform.position.x;
 		movTarget.y = transform.position.y;
@@ -102,14 +104,14 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 
 
-		// check to see if stars can be shot
-		for (int i = 0; i < starPointNum; i++) {
-			// check conditions to see if starpoint can be shot
-			if (autoShootAll && canShoot [i] == 1) {
-				ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i + 1); //Shoot(i+1);
-			}
-		} 
-
+			// check to see if stars can be shot
+			for (int i = 0; i < starPointNum; i++) {
+				// check conditions to see if starpoint can be shot
+				if (autoShootAll && canShoot [i] == 1) {
+					ScenePhotonView.RPC ("Shoot", PhotonTargets.All, i + 1); //Shoot(i+1);
+				}
+			} 
+		}
 	}
 
 
@@ -280,7 +282,7 @@ public class AI_Shooting : Photon.MonoBehaviour {
 		GetComponent<Renderer> ().material = starMat;
 		GetComponent<Health_Management> ().Health = maxPlayerHealth;
 		GetComponent<CollisionHandler> ().damage_to_give = maxPlayerDam;
-		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, 4); //resetShooting (transform.rotation, starPointNum);
+		ScenePhotonView.RPC("resetShooting", PhotonTargets.All, transform.rotation, starPointNum); //resetShooting (transform.rotation, starPointNum);
 
 	}
 

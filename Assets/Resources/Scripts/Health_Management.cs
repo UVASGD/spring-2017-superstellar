@@ -11,7 +11,8 @@ public class Health_Management : Photon.MonoBehaviour {
 	public int viewID;
 
 	void Start () {
-		if (this.gameObject.name == "BG_Star(Clone)" || this.gameObject.name == "BG_Star_Green(Clone)") {
+		if (this.gameObject.name == "BG_Star(Clone)" || this.gameObject.name == "BG_Star_Green(Clone)" 
+			|| this.gameObject.name == "BG_Star_Red(Clone)" || this.gameObject.name == "BG_Star_Blue(Clone)") {
 			viewID = this.photonView.viewID;
 		}
 	}
@@ -21,9 +22,8 @@ public class Health_Management : Photon.MonoBehaviour {
 			scoreToGive = GetComponent<Score_Manager> ().score;
 		}
 		if (Health <= 0) {
-			Debug.Log ("Health is 0");
 			if (this.gameObject.name == "Star" && this.photonView.isMine) {
-				Debug.Log ("Sepukku");
+//				Debug.Log ("my health is <= 0");
 				int score = this.GetComponent<Score_Manager> ().score;
 				string name = this.GetComponent<Score_Manager> ().playerNameForDeath;
 				int classNum = this.GetComponent<StarManager> ().starType;
@@ -51,6 +51,7 @@ public class Health_Management : Photon.MonoBehaviour {
 			}
 		} else {
 			//Debug.Log ("What if he she were not kill?");
+
 		}
 	}
 
