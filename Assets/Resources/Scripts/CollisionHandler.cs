@@ -15,13 +15,13 @@ public class CollisionHandler : Photon.MonoBehaviour {
 	void Start()
 	{
 		source = GameObject.Find("Background").GetComponent<AudioSource> ();
-		if (detectObjects.Contains(this.gameObject.name)) {
-			if (this.photonView != null) {
-				if (!this.photonView.isMine) {
-					this.enabled = false;
-				}
-			}
-		}
+//		if (detectObjects.Contains(this.gameObject.name)) {
+//			if (this.photonView != null) {
+//				if (!this.photonView.isMine) {
+//					this.enabled = false;
+//				}
+//			}
+//		}
 	}	
 
 
@@ -46,10 +46,12 @@ public class CollisionHandler : Photon.MonoBehaviour {
 
 			//check to not kill self
 			if (targetID != myID && other.name != "Projectile(Clone)") {
-				Debug.Log (other.name + " " + targetID);
+//				Debug.Log (other.name + " " + targetID);
+				Debug.Log ("Giving Damage to Target");
 				starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, targetID); // give damage to target
 				if (this.gameObject.name != "Projectile(Clone)") {
-					Debug.Log (this.gameObject.name + " " + myID);
+//					Debug.Log (this.gameObject.name + " " + myID);
+					Debug.Log("Giving Damage to Myself");
 					starpv.RPC ("giveDamage", PhotonTargets.All, damage_to_give, myID);
 				} else {
 					if (this.gameObject.transform.parent) {

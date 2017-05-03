@@ -111,6 +111,7 @@ public class MinimapManagement : MonoBehaviour {
 
 	}
 
+
 	Vector3 scaledPosition(Vector3 original) {
 		float x = (original.x * scaledX * playerScale) + origin.x;
 		float y = (original.y * scaledY * playerScale) + origin.y;

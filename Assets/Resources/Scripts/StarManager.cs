@@ -107,13 +107,13 @@ public class StarManager: Photon.MonoBehaviour
 		if (this.transform.childCount == 0) {
 			ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, 0, (float)starBodyHealth[0]); // upgradeStar (0);
 		}
-
-		source =  GameObject.FindObjectOfType<AudioSource>();
 	}
 
 
 	void Update( )
 	{
+//		Debug.Log (source);
+
 		if (this.GetComponent<Movement_Norm_Star> ().enabled == true) {
 
 

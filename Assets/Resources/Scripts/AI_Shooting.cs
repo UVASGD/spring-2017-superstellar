@@ -76,7 +76,7 @@ public class AI_Shooting : Photon.MonoBehaviour {
 
 	void Update( )
 	{
-
+		Debug.Log (PhotonNetwork.isMasterClient);
 		if (PhotonNetwork.isMasterClient) {
 			
 		// calibrate movTarget with player position

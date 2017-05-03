@@ -310,8 +310,8 @@ public class Shooting_Controls_edit: Photon.MonoBehaviour
 		//Debug.Log ("Delay Time: " + delayTime);
 
 		// checks to make sure the star class is still the same
-		Debug.Log("starClassN" + strClassN);
-		Debug.Log("starType" + starType);
+//		Debug.Log("starClassN" + strClassN);
+//		Debug.Log("starType" + starType);
 		if (strClassN == starType) {
 
 			// reloads the un-shot starpoint into the proper spriterenderer, and then removes it from the to-do list of spriterenderers

@@ -22,7 +22,7 @@ public class Health_Management : Photon.MonoBehaviour {
 		}
 		if (Health <= 0) {
 			if (this.gameObject.name == "Star" && this.photonView.isMine) {
-				Debug.Log ("my health is <= 0");
+//				Debug.Log ("my health is <= 0");
 				int score = this.GetComponent<Score_Manager> ().score;
 				string name = this.GetComponent<Score_Manager> ().playerNameForDeath;
 				int classNum = this.GetComponent<StarManager> ().starType;
@@ -36,16 +36,16 @@ public class Health_Management : Photon.MonoBehaviour {
 				UnityEngine.SceneManagement.SceneManager.LoadSceneAsync (2);
 				PhotonNetwork.Disconnect ();
 			} else if (this.gameObject.name == "Star_Point(Clone)") {
-				Debug.Log ("star point health <= 0");
+//				Debug.Log ("star point health <= 0");
 				if (this.GetComponentInParent<Shooting_Controls_edit> () != null) {
-					Debug.Log ("destroy mah star points");
+//					Debug.Log ("destroy mah star points");
 					this.GetComponentInParent<Shooting_Controls_edit> ().destroyStarPoint (this.gameObject);
 				} else if (this.GetComponentInParent<AI_Shooting> () != null) {
-					Debug.Log ("destroy da AI points");
+//					Debug.Log ("destroy da AI points");
 					this.GetComponentInParent<AI_Shooting> ().destroyStarPoint (this.gameObject);
 				}
 			} else {
-				Debug.Log ("Destroys background stars for everyone ayyy");
+//				Debug.Log ("Destroys background stars for everyone ayyy");
 				this.GetComponent<PhotonView> ().RPC ("destroyObj", PhotonTargets.All);
 			}
 		} else {
@@ -56,10 +56,10 @@ public class Health_Management : Photon.MonoBehaviour {
 	[PunRPC]
 	void destroyObj() {
 		if (this.gameObject.name == "Body") {
-			Debug.Log ("Destroyed AI");
+//			Debug.Log ("Destroyed AI");
 			Destroy (this.gameObject.transform.parent.gameObject);
 		} else {
-			Debug.Log ("Destroyed gameobject");
+//			Debug.Log ("Destroyed gameobject");
 			Destroy (this.gameObject);
 		}
 	}
