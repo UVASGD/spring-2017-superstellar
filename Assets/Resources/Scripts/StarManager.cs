@@ -133,8 +133,8 @@ public class StarManager: Photon.MonoBehaviour
 
 			if (Input.GetKeyDown (KeyCode.Y) && starType > 0)
 			{
-				starType = starType - 1;
-				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType); //	upgradeStar(starType);
+				//starType = starType - 1;
+				ScenePhotonView.RPC("upgradeStar", PhotonTargets.AllBufferedViaServer, starType - 1); //	upgradeStar(starType);
 			}
 
 			// upgrade star class (testing purposes)
@@ -226,8 +226,8 @@ public class StarManager: Photon.MonoBehaviour
 		projForce = projSpeeds [starGrade];
 		reloadTime = projRegen [starGrade];
 
-		if (starType > 1) {
-			source.PlayOneShot (upgradestarclasssound, 0.5f);
+		if (starType > 0) {
+			source.PlayOneShot (upgradestarclasssound, 0.3f);
 		}
 		GetComponent<Shooting_Controls_edit> ().preset = 1;
 		if (starPointNum < 4) {
